@@ -4,6 +4,31 @@ import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Menu, Send, X, Glo
 import products from "./products.json";
 import { pagePath, type Lang, type PageKey } from "./routes";
 type NavItem = { href: string; label: string };
+declare global { interface Window { dataLayer?: Array<Record<string, unknown>> } }
+
+function trackConversion(event: string, details: Record<string, unknown> = {}) {
+  const payload = { event, ...details };
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(payload);
+  window.dispatchEvent(new CustomEvent("royalbeans:conversion", { detail: payload }));
+}
+
+export function ConversionTracker() {
+  useEffect(() => {
+    const trackClick = (event: MouseEvent) => {
+      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href]");
+      if (!link) return;
+      const href = link.href;
+      const label = link.textContent?.trim().replace(/\s+/g, " ").slice(0, 100) || link.getAttribute("aria-label") || "";
+      if (href.includes("wa.me/")) trackConversion("whatsapp_click", { label, location: window.location.pathname });
+      else if (href.includes("?product=")) trackConversion("product_enquiry", { product: new URL(href).searchParams.get("product"), location: window.location.pathname });
+      else if (/\/contacto\/?$|\/en\/contact\/?$/.test(new URL(href).pathname)) trackConversion("contact_cta_click", { label, location: window.location.pathname });
+    };
+    document.addEventListener("click", trackClick);
+    return () => document.removeEventListener("click", trackClick);
+  }, []);
+  return null;
+}
 export function Brand() { return <><span className="brand-mark"><img src="/images/logo.webp" alt="" width="52" height="60" /></span><span className="brand-copy"><strong>ROYAL BEANS</strong><small>- PERÚ -</small></span></>; }
 
 export function WhatsappIcon({ size = 22 }: { size?: number }) {
@@ -112,6 +137,7 @@ export function HomeProductCarousel({ lang }: { lang: Lang }) {
   const [startIndex, setStartIndex] = useState(0);
   const [motion, setMotion] = useState<-1 | 1 | null>(null);
   const [visibleCount, setVisibleCount] = useState(3);
+  const currentProduct = products[startIndex];
 
   useEffect(() => {
     const updateVisibleCount = () => setVisibleCount(window.innerWidth >= 900 ? 3 : window.innerWidth >= 600 ? 2 : 1);
@@ -153,15 +179,17 @@ export function HomeProductCarousel({ lang }: { lang: Lang }) {
         </div>
       </div>
       <div className="product-carousel-viewport" aria-label={lang === "es" ? "Catálogo circular de productos" : "Circular product catalogue"} onPointerDown={event => { pointerStart.current = event.clientX; }} onPointerUp={event => { if (pointerStart.current === null) return; const distance = event.clientX - pointerStart.current; pointerStart.current = null; if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1); }}>
-        <div className={`product-carousel-track ${motion === 1 ? "is-moving-next" : motion === -1 ? "is-moving-previous" : ""}`} data-visible={visibleCount} aria-live="polite">
+        <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{lang === "es" ? `Producto ${startIndex + 1} de ${products.length}: ${currentProduct.es}` : `Product ${startIndex + 1} of ${products.length}: ${currentProduct.en}`}</p>
+        <div className={`product-carousel-track ${motion === 1 ? "is-moving-next" : motion === -1 ? "is-moving-previous" : ""}`} data-visible={visibleCount}>
           {visibleProducts.map(({ product, key }, offset) => {
             const active = motion === 1 ? offset >= 2 && offset <= visibleCount + 1 : motion === -1 ? offset <= visibleCount - 1 : offset >= 1 && offset <= visibleCount;
             const exiting = motion === 1 ? offset === 1 : motion === -1 ? offset === visibleCount : false;
             const incoming = motion === 1 ? offset === visibleCount + 1 : motion === -1 ? offset === 0 : false;
             return <article className={`home-product-card ${active ? "is-active" : ""} ${exiting ? "is-exiting" : ""} ${incoming ? "is-incoming" : ""}`} key={key} aria-hidden={!active || undefined}>
-            <img src={product.image} alt={product[lang]} loading={offset < 4 ? "eager" : "lazy"} width="720" height="720" />
+            <img src={product.image} alt={product[lang]} loading="lazy" decoding="async" fetchPriority="low" width="720" height="720" />
             <a className="home-product-panel" href={`${pagePath("contacto", lang)}?product=${encodeURIComponent(product.es)}`} tabIndex={active ? undefined : -1} aria-label={`${lang === "es" ? "Consultar" : "Enquire about"} ${product[lang]}`}>
               <strong>{product[lang]}</strong>
+              <span aria-hidden="true"><ArrowUpRight size={17} /></span>
             </a>
           </article>;})}
         </div>
@@ -182,7 +210,7 @@ export function ContactForm({ lang }: { lang: Lang }) {
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); const form = new FormData(event.currentTarget);
     const text = `${lang === "es" ? "Hola, soy" : "Hello, I am"} ${form.get("name")} (${form.get("company") || "—"}).\nEmail: ${form.get("email")}\n${lang === "es" ? "País" : "Country"}: ${form.get("country")}\n${message}`;
-    setLoading(true); window.open(`https://wa.me/51961804500?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer"); setStatus(true); timer.current = setTimeout(() => setLoading(false), 400);
+    setLoading(true); trackConversion("contact_form_submit", { channel: "whatsapp", location: window.location.pathname }); window.open(`https://wa.me/51961804500?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer"); setStatus(true); timer.current = setTimeout(() => setLoading(false), 400);
   };
   return <form className="contact-form" onSubmit={submit} aria-busy={loading}>
     <h3 className="full-field">{lang === "es" ? "Cultivemos una nueva conexión." : "Let’s grow a new connection."}</h3>

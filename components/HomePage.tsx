@@ -1,5 +1,6 @@
 import { Check, Globe2, Leaf, MapPin, Sprout, ArrowUpRight, PackageCheck, Mail, Phone } from "lucide-react";
-import { AnimatedCounter, Brand, ContactForm, FacebookIcon, Header, HomeProductCarousel, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
+import { AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
+import products from "./products.json";
 
 import { pages, pagePath, type Lang, type PageKey } from "./routes";
 
@@ -105,7 +106,7 @@ const content = {
 export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?: PageKey }) {
   const t = content[lang];
   const nav = (Object.keys(pages) as PageKey[]).map(key => ({ href: pagePath(key, lang), label: pages[key].label[lang] }));
-  const schema = {
+  const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Royal Beans Perú S.A.C.",
@@ -117,15 +118,45 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
     telephone: "+51 961 804 500",
     sameAs: ["https://www.instagram.com/royalbeans_peru/", "https://www.facebook.com/profile.php?id=61573866174999"],
   };
+  const schema = page === "inicio" ? {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema,
+      {
+        "@type": "ItemList",
+        name: lang === "es" ? "Productos de Royal Beans Perú" : "Royal Beans Perú products",
+        numberOfItems: products.length,
+        itemListElement: products.map((product, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Product",
+            name: product[lang],
+            image: `https://royalbeansperu.com${product.image}`,
+            url: `https://royalbeansperu.com${pagePath("productos", lang)}`,
+            brand: { "@type": "Brand", name: "Royal Beans Perú" },
+          },
+        })),
+      },
+    ],
+  } : organizationSchema;
 
   return (
     <>
       <a className="skip-link" href="#contenido">{lang === "es" ? "Ir al contenido" : "Skip to content"}</a>
+      <ConversionTracker />
       <Header nav={nav} lang={lang} page={page} />
       <main id="contenido" className={page === "inicio" ? "home-page" : "inner-page"}>
         {page !== "inicio" && <div className="page-intro"><div className="container"><nav className="breadcrumbs" aria-label={lang === "es" ? "Ruta de navegación" : "Breadcrumb"}><a href={pagePath("inicio", lang)}>{pages.inicio.label[lang]}</a><span>/</span><span aria-current="page">{pages[page].label[lang]}</span></nav><h1>{pages[page].label[lang]}</h1><p>{pages[page].description[lang]}</p></div></div>}
         {page === "inicio" && (<section id="inicio" className="hero" aria-labelledby="hero-title">
-          <img className="hero-image" src="/images/hero.webp" alt="" fetchPriority="high" width="1400" height="900" />
+          <picture className="hero-picture" aria-hidden="true">
+            <source media="(max-width: 599px)" type="image/avif" srcSet="/images/hero-mobile.avif" />
+            <source media="(max-width: 599px)" type="image/webp" srcSet="/images/hero-mobile.webp" />
+            <source media="(max-width: 1199px)" type="image/avif" srcSet="/images/hero-tablet.avif" />
+            <source media="(max-width: 1199px)" type="image/webp" srcSet="/images/hero-tablet.webp" />
+            <source type="image/avif" srcSet="/images/hero-desktop.avif" />
+            <img className="hero-image" src="/images/hero-desktop.webp" alt="" fetchPriority="high" width="1920" height="1080" />
+          </picture>
           <div className="hero-noise" aria-hidden="true" />
           <div className="hero-content container">
             <p className="eyebrow eyebrow-light"><span />{t.heroEyebrow}</p>
@@ -149,7 +180,7 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
                 <h2 id="home-about-title">{lang === "es" ? "Calidad peruana, lista para el mundo." : "Peruvian quality, ready for the world."}</h2>
                 <p>{lang === "es" ? "Royal Beans Perú conecta el trabajo del campo con compradores que valoran el origen, la constancia y una relación comercial directa." : "Royal Beans Perú connects the work of the field with buyers who value origin, consistency and direct business relationships."}</p>
                 <ul>
-                  {(lang === "es" ? ["Empresa peruana ubicada en Lambayeque", "Acopio, proceso y comercialización especializada", "Trabajo cercano con agricultores", "Selección y trazabilidad de la materia prima", "Atención a mayoristas y mercados internacionales"] : ["Peruvian company based in Lambayeque", "Specialized sourcing, processing and marketing", "Close work with growers", "Raw material selection and traceability", "Service for wholesalers and international markets"]).map(item => <li key={item}><span><Check size={16} strokeWidth={2.5} /></span>{item}</li>)}
+                  {(lang === "es" ? ["Origen en Lambayeque", "Acopio y proceso especializado", "Cercanía con agricultores", "Selección con trazabilidad", "Atención nacional e internacional"] : ["Based in Lambayeque", "Specialized sourcing and processing", "Close to growers", "Selection with traceability", "Domestic and international service"]).map(item => <li key={item}><span><Check size={16} strokeWidth={2.5} /></span>{item}</li>)}
                 </ul>
                 <a className="text-link" href={pagePath("nosotros", lang)}>{lang === "es" ? "Conocer nuestra historia" : "Discover our story"}<ArrowUpRight size={18} /></a>
               </div>
