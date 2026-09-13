@@ -1,8 +1,12 @@
-import { Check, Globe2, Leaf, MapPin, Sprout, ArrowUpRight, PackageCheck, Mail, Phone } from "lucide-react";
+import { Check, Globe2, Leaf, MapPin, Sprout, ArrowUpRight, PackageCheck, Mail, Phone, UserRound } from "lucide-react";
 import { AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
 import products from "./products.json";
 
 import { pages, pagePath, type Lang, type PageKey } from "./routes";
+
+function PeruMapIcon({ size = 22 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.2 2.3 9.9 3.5 7.7 2.6 5.2 3.6l.4 2.3-2 2 1 2.5-.8 2.7 1.9 1.8.5 3.5 2.2 3.2 2.8-1.1 1.4-2.8 2.5-1.9.4-3.2 2-2-1-2.5 1.3-2.4-2.2-1.2-2.3-2.2Z" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/><circle cx="7.2" cy="10.8" r="1.25" fill="currentColor"/><path d="m7.2 12.1.1 2.4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/></svg>;
+}
 
 const content = {
   es: {
@@ -165,10 +169,10 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
             <div className="hero-buttons"><a className="button button-lime" href={pagePath("productos", lang)}>{t.heroCta}<ArrowUpRight size={18} /></a><a className="button button-outline" href={pagePath("contacto", lang)}>{lang === "es" ? "Hablemos de negocios" : "Let’s talk business"}<ArrowUpRight size={18} /></a></div>
           </div>
           <div className="origin-strip"><div className="container">
-            <article><span className="feature-icon"><Sprout size={22} /></span><strong>{lang === "es" ? "Origen peruano" : "Peruvian origin"}</strong></article>
+            <article><span className="feature-icon"><PeruMapIcon size={22} /></span><strong>{lang === "es" ? "Origen peruano" : "Peruvian origin"}</strong></article>
             <article><span className="feature-icon"><PackageCheck size={22} /></span><strong>{lang === "es" ? "Selección cuidadosa" : "Carefully selected"}</strong></article>
             <article><span className="feature-icon"><Globe2 size={22} /></span><strong>{lang === "es" ? "Vocación exportadora" : "Export focused"}</strong></article>
-            <article><span className="feature-icon"><Leaf size={22} /></span><strong>{lang === "es" ? "Cerca del agricultor" : "Close to growers"}</strong></article>
+            <article><span className="feature-icon"><UserRound size={22} /></span><strong>{lang === "es" ? "Cerca del agricultor" : "Close to growers"}</strong></article>
           </div></div>
         </section>)}
 
