@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Next.js generated files
+.next/
+out/
+
+# Tests and local captures
+verification/
+coverage/
+*.png
+*.jpg
+*.jpeg
+
+# Deployment packages
+*.zip
+
+# Environment and logs
+.env*
+!.env.example
+*.log
+npm-debug.log*
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
