@@ -40,9 +40,18 @@ p { text-wrap: pretty; }
 .site-header, .site-header.is-scrolled {
   position: fixed; height: var(--header-height); padding: 12px var(--gutter);
   grid-template-columns: 200px minmax(0, 1fr) 114px; gap: 18px;
-  transition: background .25s ease, box-shadow .25s ease;
+  transition: background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
 }
-.site-header:not(.is-scrolled) { background: linear-gradient(90deg, #052f26e8 0%, #052f26c8 48%, #052f2675 100%); backdrop-filter: blur(7px); }
+.site-header:not(.is-scrolled) {
+  background: linear-gradient(108deg, #052f26fa 0%, #0a493cf5 27%, #24765fe9 54%, #0d5848ed 76%, #052f26f5 100%);
+  box-shadow: 0 14px 38px #052f2629, inset 0 -1px #c5e59b24;
+  backdrop-filter: blur(12px) saturate(1.18);
+}
+.site-header.is-scrolled {
+  background: linear-gradient(108deg, #052f26fc 0%, #094438fa 28%, #1a6854f7 54%, #0c5142f9 76%, #052f26fc 100%);
+  box-shadow: 0 10px 34px #052f2640, inset 0 -1px #c5e59b1f;
+  backdrop-filter: blur(18px) saturate(1.16);
+}
 .brand { gap: 10px; }
 .brand > img { width: 40px; height: 48px; }
 .brand > span { font-size: .875rem; letter-spacing: .05em; }
