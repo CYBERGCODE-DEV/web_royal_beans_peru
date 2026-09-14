@@ -18,6 +18,9 @@ coverage/
 # Environment and logs
 .env*
 !.env.example
+public/cms-config/database.local.php
+public/uploads/*
+!public/uploads/.htaccess
 *.log
 npm-debug.log*
 

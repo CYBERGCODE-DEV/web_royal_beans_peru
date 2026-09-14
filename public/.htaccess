@@ -1,9 +1,11 @@
-DirectoryIndex index.html
+DirectoryIndex index.html index.php
 Options -Indexes
 ErrorDocument 404 /404.html
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
 <IfModule mod_expires.c>
   ExpiresActive On

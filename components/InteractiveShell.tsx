@@ -4,7 +4,21 @@ import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Menu, Play, Send, 
 import products from "./products.json";
 import { pagePath, type Lang, type PageKey } from "./routes";
 type NavItem = { href: string; label: string };
+type CatalogProduct = { id?: number; es: string; en: string; category: string; image: string; line?: "conventional" | "retail" };
 declare global { interface Window { dataLayer?: Array<Record<string, unknown>> } }
+
+function useCatalogProducts(line: "conventional" | "retail", fallback: CatalogProduct[], featured = false) {
+  const [items, setItems] = useState<CatalogProduct[]>(fallback);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`/api/products.php?line=${line}${featured ? "&featured=1" : ""}`, { headers: { Accept: "application/json" }, cache: "no-store", signal: controller.signal })
+      .then(response => response.ok ? response.json() : Promise.reject(new Error("Catalogue unavailable")))
+      .then(payload => { if (Array.isArray(payload.products) && (line === "retail" || payload.products.length)) setItems(payload.products); })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [line, featured]);
+  return items;
+}
 
 function trackConversion(event: string, details: Record<string, unknown> = {}) {
   const payload = { event, ...details };
@@ -27,6 +41,27 @@ export function ConversionTracker() {
     document.addEventListener("click", trackClick);
     return () => document.removeEventListener("click", trackClick);
   }, []);
+  return null;
+}
+export function ContentHydrator({ page, lang }: { page: string; lang: Lang }) {
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`/api/content.php?page=${encodeURIComponent(page)}&lang=${lang}`, { cache: "no-store", signal: controller.signal })
+      .then(response => response.ok ? response.json() : Promise.reject(new Error("Content unavailable")))
+      .then(payload => {
+        Object.entries(payload.fields ?? {}).forEach(([key, field]) => {
+          const data = field as { type?: string; value?: string };
+          if (!data.value) return;
+          document.querySelectorAll<HTMLElement>(`[data-cms="${CSS.escape(key)}"]`).forEach(element => {
+            if (data.type === "image" && element instanceof HTMLImageElement) element.src = data.value as string;
+            else if (data.type === "url" && element instanceof HTMLAnchorElement) element.href = data.value as string;
+            else element.textContent = data.value as string;
+          });
+        });
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [page, lang]);
   return null;
 }
 export function Brand() { return <><span className="brand-mark"><img src="/images/logo.webp" alt="" width="52" height="60" /></span><span className="brand-copy"><strong>ROYAL BEANS</strong><small>- PERÚ -</small></span></>; }
@@ -142,16 +177,19 @@ export function Header({ nav, lang, page, languagePaths }: { nav: NavItem[]; lan
     <nav id="mobile-menu" className="mobile-menu" hidden={!open} aria-label={lang === "es" ? "Navegación móvil" : "Mobile navigation"}>{nav.map(item => <a key={item.href} href={item.href} aria-current={active === item.href ? "page" : undefined} onClick={() => setOpen(false)}>{item.label}<ArrowUpRight size={18} /></a>)}</nav>
   </header>;
 }
-export function ProductCatalog({ lang }: { lang: Lang }) {
+export function ProductCatalog({ lang, line = "conventional" }: { lang: Lang; line?: "conventional" | "retail" }) {
   const [category, setCategory] = useState("all"); const [expanded, setExpanded] = useState(true);
+  const catalogProducts = useCatalogProducts(line, line === "conventional" ? products : []);
   const categories: Record<string, string> = lang === "es" ? { all: "Todos", pulses: "Legumbres", grains: "Granos y semillas", corn: "Maíces", spices: "Especias" } : { all: "All products", pulses: "Pulses", grains: "Grains & seeds", corn: "Corn", spices: "Spices" };
-  const filtered = products.filter(p => category === "all" || p.category === category);
+  const filtered = catalogProducts.filter(p => category === "all" || p.category === category);
   const contactHref = (product: string) => `${pagePath("contacto", lang)}?product=${encodeURIComponent(product)}`;
   return <><div className="catalog-toolbar"><div className="product-filters" role="group" aria-label={lang === "es" ? "Filtrar productos" : "Filter products"}>{Object.entries(categories).map(([key, label]) => <button key={key} aria-pressed={category === key} onClick={() => { setCategory(key); setExpanded(true); }}>{label}</button>)}</div><span className="product-count" aria-live="polite">{String(filtered.length).padStart(2, "0")} {lang === "es" ? "productos" : "products"}</span></div>
-    <div className={`product-grid ${expanded ? "is-expanded" : ""}`}>{filtered.map((product, index) => <article className="product-card" key={product.es}>
+    {filtered.length ? <div className={`product-grid ${expanded ? "is-expanded" : ""}`}>{filtered.map((product, index) => <article className="product-card" key={product.id ?? product.es}>
       <a href={contactHref(product.es)} className="product-image" aria-label={`${lang === "es" ? "Consultar" : "Enquire about"} ${product[lang]}`}><span className="product-index">{String(index + 1).padStart(2, "0")}</span><img src={product.image} alt={product[lang]} loading="lazy" width="720" height="720" /><span className="product-arrow"><ArrowUpRight size={20} /></span></a><div className="product-meta"><p>{categories[product.category]}</p><h3><a href={contactHref(product.es)}>{product[lang]}</a></h3></div>
-    </article>)}</div>{filtered.length > 4 && <button className="catalog-more text-link" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? (lang === "es" ? "Ver menos" : "Show less") : (lang === "es" ? `Explorar los ${filtered.length} productos` : `Explore all ${filtered.length} products`)}<ArrowRight size={18} /></button>}</>;
+    </article>)}</div> : <div className="catalog-empty"><span><PackageIcon /></span><h3>{lang === "es" ? "Catálogo en preparación" : "Catalogue in preparation"}</h3><p>{lang === "es" ? "Añade los productos Retail desde el panel administrativo para publicarlos aquí." : "Add Retail products from the administration panel to publish them here."}</p></div>}{filtered.length > 4 && <button className="catalog-more text-link" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? (lang === "es" ? "Ver menos" : "Show less") : (lang === "es" ? `Explorar los ${filtered.length} productos` : `Explore all ${filtered.length} products`)}<ArrowRight size={18} /></button>}</>;
 }
+
+function PackageIcon() { return <svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="m3 8 9 5 9-5M3 8v8l9 5 9-5V8M12 13v8"/></svg>; }
 
 export function HomeProductCarousel({ lang }: { lang: Lang }) {
   const animationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -160,7 +198,8 @@ export function HomeProductCarousel({ lang }: { lang: Lang }) {
   const [startIndex, setStartIndex] = useState(0);
   const [motion, setMotion] = useState<-1 | 1 | null>(null);
   const [visibleCount, setVisibleCount] = useState(3);
-  const currentProduct = products[startIndex];
+  const catalogProducts = useCatalogProducts("conventional", products, true);
+  const currentProduct = catalogProducts[startIndex] ?? catalogProducts[0];
 
   useEffect(() => {
     const updateVisibleCount = () => setVisibleCount(window.innerWidth >= 900 ? 3 : window.innerWidth >= 600 ? 2 : 1);
@@ -178,15 +217,15 @@ export function HomeProductCarousel({ lang }: { lang: Lang }) {
     animationLocked.current = true;
     setMotion(direction);
     animationTimer.current = setTimeout(() => {
-      setStartIndex(current => (current + direction + products.length) % products.length);
+      setStartIndex(current => (current + direction + catalogProducts.length) % catalogProducts.length);
       setMotion(null);
       animationLocked.current = false;
     }, reducedMotion ? 40 : 700);
   };
 
   const visibleProducts = Array.from({ length: visibleCount + 2 }, (_, offset) => {
-    const index = (startIndex - 1 + offset + products.length) % products.length;
-    return { product: products[index], key: `${startIndex}-${offset}` };
+    const index = (startIndex - 1 + offset + catalogProducts.length) % catalogProducts.length;
+    return { product: catalogProducts[index], key: `${startIndex}-${offset}-${catalogProducts[index]?.id ?? catalogProducts[index]?.es}` };
   });
 
   return <section className="home-products" aria-labelledby="home-products-title">
@@ -202,7 +241,7 @@ export function HomeProductCarousel({ lang }: { lang: Lang }) {
         </div>
       </div>
       <div className="product-carousel-viewport" aria-label={lang === "es" ? "Catálogo circular de productos" : "Circular product catalogue"} onPointerDown={event => { pointerStart.current = event.clientX; }} onPointerUp={event => { if (pointerStart.current === null) return; const distance = event.clientX - pointerStart.current; pointerStart.current = null; if (Math.abs(distance) > 45) move(distance < 0 ? 1 : -1); }}>
-        <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{lang === "es" ? `Producto ${startIndex + 1} de ${products.length}: ${currentProduct.es}` : `Product ${startIndex + 1} of ${products.length}: ${currentProduct.en}`}</p>
+        <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{lang === "es" ? `Producto ${startIndex + 1} de ${catalogProducts.length}: ${currentProduct?.es ?? ""}` : `Product ${startIndex + 1} of ${catalogProducts.length}: ${currentProduct?.en ?? ""}`}</p>
         <div className={`product-carousel-track ${motion === 1 ? "is-moving-next" : motion === -1 ? "is-moving-previous" : ""}`} data-visible={visibleCount}>
           {visibleProducts.map(({ product, key }, offset) => {
             const active = motion === 1 ? offset >= 2 && offset <= visibleCount + 1 : motion === -1 ? offset <= visibleCount - 1 : offset >= 1 && offset <= visibleCount;
@@ -227,15 +266,18 @@ export function ContactForm({ lang }: { lang: Lang }) {
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get("product");
     const product = products.find(p => p.es === requested || p.en === requested);
-    if (product) setMessage(`${lang === "es" ? "Me interesa" : "I am interested in"} ${product[lang]}. `);
+    if (requested) setMessage(`${lang === "es" ? "Me interesa" : "I am interested in"} ${product?.[lang] ?? requested}. `);
     return () => { if (timer.current) clearTimeout(timer.current); };
   }, [lang]);
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); const form = new FormData(event.currentTarget);
     const text = `${lang === "es" ? "Hola, soy" : "Hello, I am"} ${form.get("name")} (${form.get("company") || "—"}).\nEmail: ${form.get("email")}\n${lang === "es" ? "País" : "Country"}: ${form.get("country")}\n${message}`;
+    const requested = new URLSearchParams(window.location.search).get("product") ?? "";
+    fetch("/api/inquiries.php", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, keepalive: true, body: JSON.stringify({ name: form.get("name"), company: form.get("company"), email: form.get("email"), country: form.get("country"), product: requested, message, locale: lang, website: form.get("website") }) }).catch(() => undefined);
     setLoading(true); trackConversion("contact_form_submit", { channel: "whatsapp", location: window.location.pathname }); window.open(`https://wa.me/51961804500?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer"); setStatus(true); timer.current = setTimeout(() => setLoading(false), 400);
   };
   return <form className="contact-form" onSubmit={submit} aria-busy={loading}>
+    <label className="honeypot" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
     <h3 className="full-field">{lang === "es" ? "Cultivemos una nueva conexión." : "Let’s grow a new connection."}</h3>
     <label><span>{lang === "es" ? "Nombre completo" : "Full name"} *</span><input name="name" autoComplete="name" required maxLength={120} placeholder={lang === "es" ? "Tu nombre" : "Your name"} /></label>
     <label><span>{lang === "es" ? "Empresa" : "Company"}</span><input name="company" autoComplete="organization" maxLength={160} placeholder={lang === "es" ? "Tu empresa" : "Your company"} /></label>
