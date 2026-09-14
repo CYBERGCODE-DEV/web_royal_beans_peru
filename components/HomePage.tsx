@@ -1,5 +1,5 @@
-import { BadgeCheck, Check, Globe2, Leaf, MapPin, ArrowUpRight, Mail, Phone } from "lucide-react";
-import { AboutVideo, AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
+import { BadgeCheck, Check, Globe2, Leaf, MapPin, ArrowUpRight, ArrowRight, Mail, Phone, Sprout, History, Handshake, Target, Telescope, Fingerprint, Warehouse, SlidersHorizontal, ShieldCheck, SearchCheck, Container, FileCheck2, Truck } from "lucide-react";
+import { AboutVideo, AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, HorizontalRail, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
 import products from "./products.json";
 
 import { pages, pagePath, type Lang, type PageKey } from "./routes";
@@ -143,7 +143,7 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
   const aboutPage = lang === "es" ? {
     heroTitle: "Del campo peruano al mundo.",
     heroText: "Seleccionamos productos agrícolas con trazabilidad, atención directa y una clara vocación exportadora.",
-    introTitle: "Origen que se convierte en confianza.",
+    introTitle: "Origen que inspira confianza.",
     introText: "Royal Beans Perú conecta agricultores, productos y compradores mediante una operación cercana y responsable.",
     pillars: [
       ["Nuestra Esencia", "Origen, cercanía y compromiso guían cada decisión."],
@@ -173,7 +173,7 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
   } : {
     heroTitle: "From Peruvian fields to the world.",
     heroText: "We select agricultural products with traceability, direct service and a clear export focus.",
-    introTitle: "Origin transformed into trust.",
+    introTitle: "Origin that inspires trust.",
     introText: "Royal Beans Perú connects growers, products and buyers through a close and responsible operation.",
     pillars: [
       ["Our Essence", "Origin, proximity and commitment guide every decision."],
@@ -263,7 +263,7 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
               <div className="about-hero-panel">
                 <img src="/images/about-field.webp" alt="" width="1400" height="800" fetchPriority="high" />
                 <div className="about-hero-content">
-                  <p className="about-hero-kicker">{pages.nosotros.label[lang]}</p>
+                  <p className="about-hero-kicker"><span />{pages.nosotros.label[lang]}</p>
                   <h1 id="about-hero-title">{aboutPage.heroTitle}</h1>
                   <p>{aboutPage.heroText}</p>
                 </div>
@@ -278,7 +278,10 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
                 <p>{aboutPage.introText}</p>
               </div>
               <div className="about-pillar-grid">
-                {aboutPage.pillars.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}
+                {aboutPage.pillars.map(([title, text], index) => {
+                  const Icon = [Sprout, History, Handshake][index];
+                  return <article key={title}><span className="about-card-icon"><Icon size={24} strokeWidth={1.6} /></span><div><h3>{title}</h3><p>{text}</p></div></article>;
+                })}
               </div>
               <div className="about-video-grid">
                 <div className="about-video-copy"><p className="eyebrow"><span />{aboutPage.videoKicker}</p><h3>{aboutPage.videoTitle}</h3><p>{lang === "es" ? "Conoce el trabajo, el equipo y el origen que forman parte de Royal Beans Perú." : "Discover the work, team and origin behind Royal Beans Perú."}</p></div>
@@ -292,9 +295,9 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
               <p className="eyebrow eyebrow-light"><span />{lang === "es" ? "Nuestra dirección" : "Our direction"}</p>
               <h2 id="about-principles-title">{aboutPage.principlesTitle}</h2>
               <div className="about-principles-grid">
-                <article><span>01</span><h3>{lang === "es" ? "Nuestra Misión" : "Our Mission"}</h3><p>{aboutPage.mission}</p></article>
-                <article><span>02</span><h3>{lang === "es" ? "Nuestra Visión" : "Our Vision"}</h3><p>{aboutPage.vision}</p></article>
-                <article><span>03</span><h3>{lang === "es" ? "Lo que nos define" : "What defines us"}</h3><ul>{aboutPage.values.map(value => <li key={value}><Check size={16} />{value}</li>)}</ul></article>
+                <article><span className="about-card-icon"><Target size={24} strokeWidth={1.6} /></span><h3>{lang === "es" ? "Nuestra Misión" : "Our Mission"}</h3><p>{aboutPage.mission}</p></article>
+                <article><span className="about-card-icon"><Telescope size={24} strokeWidth={1.6} /></span><h3>{lang === "es" ? "Nuestra Visión" : "Our Vision"}</h3><p>{aboutPage.vision}</p></article>
+                <article><span className="about-card-icon"><Fingerprint size={24} strokeWidth={1.6} /></span><h3>{lang === "es" ? "Lo que nos define" : "What defines us"}</h3><ul>{aboutPage.values.map(value => <li key={value}><Check size={16} />{value}</li>)}</ul></article>
               </div>
             </div>
           </section>
@@ -302,14 +305,19 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
           <section className="about-trace section-pad" aria-labelledby="about-trace-title">
             <div className="container">
               <div className="about-section-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Trazabilidad de productos" : "Product traceability"}</p><h2 id="about-trace-title">{aboutPage.traceTitle}</h2></div><p>{aboutPage.traceText}</p></div>
-              <ol className="trace-steps">{aboutPage.trace.map(([title, text], index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol>
+              <HorizontalRail label={lang === "es" ? "Carrusel de etapas de trazabilidad" : "Traceability stages carousel"} previousLabel={lang === "es" ? "Ver etapas anteriores" : "View previous stages"} nextLabel={lang === "es" ? "Ver etapas siguientes" : "View next stages"}>
+                <ol className="trace-steps">{aboutPage.trace.map(([title, text], index) => {
+                  const Icon = [Warehouse, SlidersHorizontal, ShieldCheck, SearchCheck, Container, FileCheck2, Truck][index];
+                  return <li key={title}><span className="trace-icon"><Icon size={23} strokeWidth={1.6} /></span><div><h3>{title}</h3><p>{text}</p></div>{index < aboutPage.trace.length - 1 && <span className="trace-arrow" aria-hidden="true"><ArrowRight size={17} /></span>}</li>;
+                })}</ol>
+              </HorizontalRail>
             </div>
           </section>
 
           <section className="about-standards section-pad" aria-labelledby="about-standards-title">
             <div className="container">
               <div className="about-section-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Estándares de calidad" : "Quality standards"}</p><h2 id="about-standards-title">{aboutPage.standardsTitle}</h2></div><p>{aboutPage.standardsText}</p></div>
-              <div className="standards-grid">{aboutPage.standards.map(([title, text]) => <article key={title}><span><BadgeCheck size={28} strokeWidth={1.6} /></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+              <div className="standards-viewport" tabIndex={0} aria-label={lang === "es" ? "Certificaciones y estándares" : "Certifications and standards"}><div className="standards-grid">{aboutPage.standards.map(([title, text]) => <article key={title}><span className="certificate-icon"><BadgeCheck size={27} strokeWidth={1.55} /></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></div>
             </div>
           </section>
 

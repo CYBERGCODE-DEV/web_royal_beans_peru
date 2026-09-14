@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Menu, Play, Send, X, Globe2 } from "lucide-react";
 import products from "./products.json";
 import { pagePath, type Lang, type PageKey } from "./routes";
@@ -38,6 +38,20 @@ export function AboutVideo({ lang }: { lang: Lang }) {
     <img src="/images/about-video-poster.jpg" alt="" width="1280" height="720" />
     <span><Play size={22} fill="currentColor" />{lang === "es" ? "Reproducir video" : "Play video"}</span>
   </button>;
+}
+
+export function HorizontalRail({ children, label, previousLabel, nextLabel }: { children: ReactNode; label: string; previousLabel: string; nextLabel: string }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const move = (direction: -1 | 1) => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const max = viewport.scrollWidth - viewport.clientWidth;
+    const atStart = viewport.scrollLeft <= 2;
+    const atEnd = viewport.scrollLeft >= max - 2;
+    const left = direction === 1 && atEnd ? 0 : direction === -1 && atStart ? max : viewport.scrollLeft + direction * Math.min(viewport.clientWidth * .72, 560);
+    viewport.scrollTo({ left, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  };
+  return <div className="horizontal-rail"><div className="rail-controls" aria-label={label}><button type="button" onClick={() => move(-1)} aria-label={previousLabel}><ChevronLeft size={20} /></button><button type="button" onClick={() => move(1)} aria-label={nextLabel}><ChevronRight size={20} /></button></div><div ref={viewportRef} className="trace-viewport" tabIndex={0} aria-label={label}>{children}</div></div>;
 }
 
 export function WhatsappIcon({ size = 22 }: { size?: number }) {
@@ -87,7 +101,7 @@ export function Header({ nav, lang, page }: { nav: NavItem[]; lang: Lang; page: 
     const update = () => setScrolled(window.scrollY > 28);
     update(); window.addEventListener("scroll", update, { passive: true });
     const reveal = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("reveal-in"); reveal.unobserve(entry.target); } }); }, { threshold: 0.12 });
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".section-heading,.presence-intro,.impact-copy,.image-reveal,.event-grid figure,.home-about-media,.product-card").forEach(el => reveal.observe(el));
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".section-heading,.presence-intro,.impact-copy,.image-reveal,.event-grid figure,.home-about-media,.product-card,.about-pillar-grid article,.trace-steps li,.standards-grid article").forEach(el => reveal.observe(el));
     return () => { window.removeEventListener("scroll", update); reveal.disconnect(); };
   }, []);
   useEffect(() => {
