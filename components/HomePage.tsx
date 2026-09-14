@@ -103,7 +103,9 @@ const content = {
   },
 };
 
-export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?: PageKey }) {
+type ProductLine = "conventional" | "retail";
+
+export default function HomePage({ lang, page = "inicio", productLine }: { lang: Lang; page?: PageKey; productLine?: ProductLine }) {
   const t = content[lang];
   const nav = (Object.keys(pages) as PageKey[]).map(key => ({ href: pagePath(key, lang), label: pages[key].label[lang] }));
   const organizationSchema = {
@@ -133,7 +135,30 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
     contact: { kicker: "Contact us", title: "Let’s discuss your next operation.", text: "Tell us the product, volume and destination. Our team will handle your enquiry directly.", section: "We are ready to listen.", note: "Choose your preferred channel or complete the form to prepare your enquiry." },
     ctaKicker: "Let's talk business", ctaTitle: "Let’s build an opportunity together.", ctaButton: "Contact us",
   };
-  const schema = page === "inicio" ? {
+  const productLines = lang === "es" ? {
+    overview: {
+      kicker: "Nuestras líneas", title: "Una oferta para cada canal.", text: "Elige la línea que se ajusta a tu operación y conoce sus soluciones.", details: "Ver detalles",
+      conventional: { title: "Línea Convencional", text: "Productos agrícolas seleccionados para exportadores, distribuidores y compradores mayoristas.", label: "Comercio a granel" },
+      retail: { title: "Línea Retail", text: "Presentaciones pensadas para marcas, tiendas y canales de consumo final.", label: "Soluciones de consumo" },
+    },
+    conventional: { kicker: "Línea Convencional", title: "Origen peruano para operaciones de volumen.", text: "Nuestro portafolio de exportación reúne legumbres, granos, maíces, semillas y especias con atención comercial directa.", section: "Encuentra el producto para tu próxima operación.", note: "Consulta disponibilidad, presentación y volumen con nuestro equipo." },
+    retail: { kicker: "Línea Retail", title: "Productos listos para acercarse al consumidor.", text: "Desarrollamos propuestas para canales minoristas según producto, presentación y requerimiento comercial.", section: "Una línea flexible para cada punto de venta.", note: "Nuestro equipo coordina formatos y alternativas según las necesidades de tu marca o canal.", features: [["Presentación", "Formatos definidos según el canal"], ["Producto", "Selección de origen peruano"], ["Atención", "Desarrollo comercial directo"]], button: "Solicitar catálogo retail" },
+    back: "Volver a líneas de productos",
+  } : {
+    overview: {
+      kicker: "Our lines", title: "A portfolio for every channel.", text: "Choose the line that fits your operation and explore its solutions.", details: "View details",
+      conventional: { title: "Conventional Line", text: "Selected agricultural products for exporters, distributors and wholesale buyers.", label: "Bulk trade" },
+      retail: { title: "Retail Line", text: "Presentations designed for brands, stores and consumer channels.", label: "Consumer solutions" },
+    },
+    conventional: { kicker: "Conventional Line", title: "Peruvian origin for volume operations.", text: "Our export portfolio includes pulses, grains, corn, seeds and spices with direct commercial service.", section: "Find the product for your next operation.", note: "Ask our team about availability, presentation and volume." },
+    retail: { kicker: "Retail Line", title: "Products prepared to reach consumers.", text: "We develop proposals for retail channels according to product, presentation and commercial requirements.", section: "A flexible line for every point of sale.", note: "Our team coordinates formats and alternatives based on the needs of your brand or channel.", features: [["Presentation", "Formats defined for each channel"], ["Product", "Selection of Peruvian origin"], ["Service", "Direct commercial development"]], button: "Request retail catalogue" },
+    back: "Back to product lines",
+  };
+  const productOverviewPath = pagePath("productos", lang);
+  const conventionalPath = lang === "es" ? "/productos/linea-convencional/" : "/en/products/conventional-line/";
+  const retailPath = lang === "es" ? "/productos/linea-retail/" : "/en/products/retail-line/";
+  const productListPath = productLine === "conventional" ? conventionalPath : pagePath("productos", lang);
+  const schema = page === "inicio" || productLine === "conventional" ? {
     "@context": "https://schema.org",
     "@graph": [
       organizationSchema,
@@ -148,7 +173,7 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
             "@type": "Product",
             name: product[lang],
             image: `https://royalbeansperu.com${product.image}`,
-            url: `https://royalbeansperu.com${pagePath("productos", lang)}`,
+            url: `https://royalbeansperu.com${productListPath}`,
             brand: { "@type": "Brand", name: "Royal Beans Perú" },
           },
         })),
@@ -221,7 +246,7 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
     <>
       <a className="skip-link" href="#contenido">{lang === "es" ? "Ir al contenido" : "Skip to content"}</a>
       <ConversionTracker />
-      <Header nav={nav} lang={lang} page={page} />
+      <Header nav={nav} lang={lang} page={page} languagePaths={productLine ? { es: productLine === "conventional" ? "/productos/linea-convencional/" : "/productos/linea-retail/", en: productLine === "conventional" ? "/en/products/conventional-line/" : "/en/products/retail-line/" } : undefined} />
       <main id="contenido" className={page === "inicio" ? "home-page" : page === "nosotros" ? "inner-page about-page" : `inner-page content-page ${page}-page`}>
         {page === "inicio" && (<section id="inicio" className="hero" aria-labelledby="hero-title">
           <picture className="hero-picture" aria-hidden="true">
@@ -336,11 +361,26 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
           <section className="about-cta" aria-labelledby="about-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{aboutPage.ctaKicker}</p><h2 id="about-cta-title">{aboutPage.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto", lang)}>{aboutPage.ctaButton}<ArrowUpRight size={18} /></a></div></section>
         </>}
 
-        {page === "productos" && <>
-          <section id="productos" className="subpage-hero subpage-hero-products" aria-labelledby="products-hero-title"><div className="container product-hero-layout"><div className="subpage-hero-content"><p className="eyebrow eyebrow-light"><span />{secondary.products.kicker}</p><h1 id="products-hero-title">{secondary.products.title}</h1><p>{secondary.products.text}</p></div><div className="product-hero-mosaic" aria-hidden="true"><figure><img src="/images/product-1.webp" alt="" fetchPriority="high" /></figure><figure><img src="/images/product-4.webp" alt="" fetchPriority="high" /></figure><figure><img src="/images/product-13.webp" alt="" fetchPriority="high" /></figure><figure><img src="/images/product-27.webp" alt="" fetchPriority="high" /></figure><span>29 <small>{lang === "es" ? "productos" : "products"}</small></span></div></div></section>
-          <section className="content-traits" aria-label={lang === "es" ? "Características del catálogo" : "Catalogue features"}><div className="container">{secondary.products.traits.map(([title,text],index) => { const Icon=[PackageCheck,ScanLine,Ship][index]; return <article key={title}><span><Icon size={23} strokeWidth={1.6} /></span><div><h2>{title}</h2><p>{text}</p></div></article>; })}</div></section>
-          <section className="products products-catalog section-pad" aria-labelledby="products-catalog-title"><div className="container"><div className="content-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Nuestros productos" : "Our products"}</p><h2 id="products-catalog-title">{secondary.products.section}</h2></div><p>{secondary.products.note}</p></div><ProductCatalog lang={lang} /></div></section>
+        {page === "productos" && !productLine && <>
+          <section id="productos" className="subpage-hero subpage-hero-products" aria-labelledby="products-hero-title"><div className="container product-hero-layout"><div className="subpage-hero-content"><p className="eyebrow eyebrow-light"><span />{secondary.products.kicker}</p><h1 id="products-hero-title">{secondary.products.title}</h1><p>{secondary.products.text}</p></div><div className="product-hero-mosaic" aria-hidden="true"><figure><img src="/images/product-1.webp" alt="" fetchPriority="high" /></figure><figure><img src="/images/product-4.webp" alt="" fetchPriority="high" /></figure><figure><img src="/images/product-13.webp" alt="" fetchPriority="high" /></figure><figure><img src="/images/expo-team.webp" alt="" fetchPriority="high" /></figure><span>2 <small>{lang === "es" ? "líneas" : "lines"}</small></span></div></div></section>
+          <section className="product-lines-section section-pad" aria-labelledby="product-lines-title"><div className="container"><div className="product-lines-heading"><p className="eyebrow"><span />{productLines.overview.kicker}</p><h2 id="product-lines-title">{productLines.overview.title}</h2><p>{productLines.overview.text}</p></div><div className="product-lines-grid">
+            <article className="product-line-card product-line-card-conventional"><a href={conventionalPath} aria-label={`${productLines.overview.details}: ${productLines.overview.conventional.title}`}><img src="/images/product-4.webp" alt="" loading="lazy" /><div className="product-line-card-copy"><small>{productLines.overview.conventional.label}</small><h3>{productLines.overview.conventional.title}</h3><p>{productLines.overview.conventional.text}</p><span>{productLines.overview.details}<ArrowUpRight size={18} /></span></div></a></article>
+            <article className="product-line-card product-line-card-retail"><a href={retailPath} aria-label={`${productLines.overview.details}: ${productLines.overview.retail.title}`}><img src="/images/expo-team.webp" alt="" loading="lazy" /><div className="product-line-card-copy"><small>{productLines.overview.retail.label}</small><h3>{productLines.overview.retail.title}</h3><p>{productLines.overview.retail.text}</p><span>{productLines.overview.details}<ArrowUpRight size={18} /></span></div></a></article>
+          </div></div></section>
           <section className="content-cta" aria-labelledby="products-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{secondary.ctaKicker}</p><h2 id="products-cta-title">{secondary.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto",lang)}>{secondary.ctaButton}<ArrowUpRight size={18} /></a></div></section>
+        </>}
+
+        {page === "productos" && productLine === "conventional" && <>
+          <section id="productos" className="subpage-hero product-line-detail-hero product-line-detail-conventional" aria-labelledby="conventional-hero-title"><div className="container product-line-detail-layout"><div className="subpage-hero-content"><a className="product-line-back" href={productOverviewPath}><ArrowRight size={16} />{productLines.back}</a><p className="eyebrow eyebrow-light"><span />{productLines.conventional.kicker}</p><h1 id="conventional-hero-title">{productLines.conventional.title}</h1><p>{productLines.conventional.text}</p></div><div className="product-line-detail-visual" aria-hidden="true"><img src="/images/product-1.webp" alt="" fetchPriority="high" /><img src="/images/product-4.webp" alt="" fetchPriority="high" /><span>29 <small>{lang === "es" ? "productos" : "products"}</small></span></div></div></section>
+          <section className="content-traits" aria-label={lang === "es" ? "Características del catálogo" : "Catalogue features"}><div className="container">{secondary.products.traits.map(([title,text],index) => { const Icon=[PackageCheck,ScanLine,Ship][index]; return <article key={title}><span><Icon size={23} strokeWidth={1.6} /></span><div><h2>{title}</h2><p>{text}</p></div></article>; })}</div></section>
+          <section className="products products-catalog section-pad" aria-labelledby="products-catalog-title"><div className="container"><div className="content-heading"><div><p className="eyebrow"><span />{productLines.conventional.kicker}</p><h2 id="products-catalog-title">{productLines.conventional.section}</h2></div><p>{productLines.conventional.note}</p></div><ProductCatalog lang={lang} /></div></section>
+          <section className="content-cta" aria-labelledby="products-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{secondary.ctaKicker}</p><h2 id="products-cta-title">{secondary.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto",lang)}>{secondary.ctaButton}<ArrowUpRight size={18} /></a></div></section>
+        </>}
+
+        {page === "productos" && productLine === "retail" && <>
+          <section id="productos" className="subpage-hero product-line-detail-hero product-line-detail-retail" aria-labelledby="retail-hero-title"><div className="container product-line-detail-layout"><div className="subpage-hero-content"><a className="product-line-back" href={productOverviewPath}><ArrowRight size={16} />{productLines.back}</a><p className="eyebrow eyebrow-light"><span />{productLines.retail.kicker}</p><h1 id="retail-hero-title">{productLines.retail.title}</h1><p>{productLines.retail.text}</p></div><figure className="retail-hero-visual"><img src="/images/expo-team.webp" alt={lang === "es" ? "Equipo Royal Beans Perú presentando productos" : "Royal Beans Perú team presenting products"} fetchPriority="high" /><figcaption><PackageCheck size={20} /><span>{lang === "es" ? "Propuestas según canal" : "Channel-specific proposals"}</span></figcaption></figure></div></section>
+          <section className="retail-line-section section-pad" aria-labelledby="retail-line-title"><div className="container"><div className="content-heading"><div><p className="eyebrow"><span />{productLines.retail.kicker}</p><h2 id="retail-line-title">{productLines.retail.section}</h2></div><p>{productLines.retail.note}</p></div><div className="retail-feature-grid">{productLines.retail.features.map(([title,text],index) => { const Icon=[PackageCheck,Leaf,Handshake][index]; return <article key={title}><span><Icon size={24} strokeWidth={1.55} /></span><h3>{title}</h3><p>{text}</p></article>; })}</div><a className="button button-forest retail-catalog-button" href={`${pagePath("contacto",lang)}?linea=retail`}>{productLines.retail.button}<ArrowUpRight size={18} /></a></div></section>
+          <section className="content-cta" aria-labelledby="retail-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{secondary.ctaKicker}</p><h2 id="retail-cta-title">{secondary.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto",lang)}>{secondary.ctaButton}<ArrowUpRight size={18} /></a></div></section>
         </>}
 
         {page === "participacion" && <>
