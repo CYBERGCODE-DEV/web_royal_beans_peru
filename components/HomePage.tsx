@@ -141,18 +141,18 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
     ],
   } : organizationSchema;
   const aboutPage = lang === "es" ? {
-    heroTitle: "Cultivamos confianza desde el origen.",
-    heroText: "Conectamos productos agrícolas peruanos con compradores que valoran la calidad, la trazabilidad y una relación comercial directa.",
-    introTitle: "Una empresa que crece cerca del campo.",
-    introText: "Royal Beans Perú integra conocimiento agrícola, selección responsable y atención cercana en cada operación.",
+    heroTitle: "Del campo peruano al mundo.",
+    heroText: "Seleccionamos productos agrícolas con trazabilidad, atención directa y una clara vocación exportadora.",
+    introTitle: "Origen que se convierte en confianza.",
+    introText: "Royal Beans Perú conecta agricultores, productos y compradores mediante una operación cercana y responsable.",
     pillars: [
       ["Nuestra Esencia", "Origen, cercanía y compromiso guían cada decisión."],
       ["Nuestra Historia", "Nacimos en Lambayeque en 2022 para llevar productos peruanos a nuevos mercados."],
       ["Nuestro Propósito", "Crear relaciones duraderas entre agricultores y compradores."],
     ],
     videoKicker: "Conócenos",
-    videoTitle: "Royal Beans Perú, desde el campo.",
-    principlesTitle: "Una forma clara de trabajar.",
+    videoTitle: "Así trabajamos. Así crecemos.",
+    principlesTitle: "Principios que guían cada operación.",
     mission: "Comercializar productos agrícolas confiables, atendiendo cada requerimiento con calidad y responsabilidad.",
     vision: "Ser un aliado peruano reconocido por su origen, cumplimiento y capacidad exportadora.",
     values: ["Cercanía", "Trazabilidad", "Cumplimiento"],
@@ -162,27 +162,27 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
       ["Acopio", "Recepción de origen"], ["Proceso", "Limpieza y selección"], ["Control de Calidad", "Parámetros verificados"],
       ["Inspección", "Revisión del lote"], ["Carga", "Acondicionamiento seguro"], ["Documentación", "Expediente completo"], ["Despacho", "Salida coordinada"],
     ],
-    standardsTitle: "Estándares que respaldan nuestro trabajo.",
+    standardsTitle: "Calidad respaldada en cada etapa.",
     standardsText: "Referencias y controles aplicados a nuestra operación comercial.",
     standards: [
       ["FDA", "Registro para mercados internacionales"], ["SENASA", "Control sanitario nacional"], ["HACCP Interno", "Procedimientos preventivos"],
     ],
     ctaKicker: "Hablemos de negocios",
-    ctaTitle: "Construyamos una operación confiable.",
+    ctaTitle: "Conversemos sobre su próxima operación.",
     ctaButton: "Contáctanos",
   } : {
-    heroTitle: "Building trust from the source.",
-    heroText: "We connect Peruvian agricultural products with buyers who value quality, traceability and direct business relationships.",
-    introTitle: "A company growing close to the field.",
-    introText: "Royal Beans Perú combines agricultural knowledge, responsible selection and close service in every operation.",
+    heroTitle: "From Peruvian fields to the world.",
+    heroText: "We select agricultural products with traceability, direct service and a clear export focus.",
+    introTitle: "Origin transformed into trust.",
+    introText: "Royal Beans Perú connects growers, products and buyers through a close and responsible operation.",
     pillars: [
       ["Our Essence", "Origin, proximity and commitment guide every decision."],
       ["Our Story", "We began in Lambayeque in 2022 to take Peruvian products into new markets."],
       ["Our Purpose", "To create lasting relationships between growers and buyers."],
     ],
     videoKicker: "Meet us",
-    videoTitle: "Royal Beans Perú, from the field.",
-    principlesTitle: "A clear way of working.",
+    videoTitle: "How we work. How we grow.",
+    principlesTitle: "Principles guiding every operation.",
     mission: "To market reliable agricultural products while meeting every requirement with quality and responsibility.",
     vision: "To be a Peruvian partner recognized for origin, reliability and export capability.",
     values: ["Proximity", "Traceability", "Reliability"],
@@ -192,13 +192,13 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
       ["Sourcing", "Origin reception"], ["Processing", "Cleaning and selection"], ["Quality Control", "Verified parameters"],
       ["Inspection", "Lot review"], ["Loading", "Safe preparation"], ["Documentation", "Complete records"], ["Dispatch", "Coordinated departure"],
     ],
-    standardsTitle: "Standards supporting our work.",
+    standardsTitle: "Quality supported at every stage.",
     standardsText: "References and controls applied to our commercial operation.",
     standards: [
       ["FDA", "International market registration"], ["SENASA", "National sanitary control"], ["Internal HACCP", "Preventive procedures"],
     ],
     ctaKicker: "Let's talk business",
-    ctaTitle: "Let’s build a reliable operation.",
+    ctaTitle: "Let’s discuss your next operation.",
     ctaButton: "Contact us",
   };
 
@@ -263,7 +263,6 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
               <div className="about-hero-panel">
                 <img src="/images/about-field.webp" alt="" width="1400" height="800" fetchPriority="high" />
                 <div className="about-hero-content">
-                  <nav className="about-hero-breadcrumbs" aria-label={lang === "es" ? "Ruta de navegación" : "Breadcrumb"}><a href={pagePath("inicio", lang)}>{pages.inicio.label[lang]}</a><span>/</span><span aria-current="page">{pages.nosotros.label[lang]}</span></nav>
                   <p className="about-hero-kicker">{pages.nosotros.label[lang]}</p>
                   <h1 id="about-hero-title">{aboutPage.heroTitle}</h1>
                   <p>{aboutPage.heroText}</p>
