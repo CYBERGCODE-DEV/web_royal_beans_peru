@@ -47,6 +47,26 @@ export function ConversionTracker() {
 }
 export function ContentHydrator({ page, lang }: { page: string; lang: Lang }) {
   useEffect(() => {
+    const roots = Array.from(document.querySelectorAll<HTMLElement>("header, main, footer"));
+    const used = new Set(Array.from(document.querySelectorAll<HTMLElement>("[data-cms]")).map(element => element.dataset.cms || ""));
+    const safe = (value: string) => value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 46);
+    roots.forEach((root, rootIndex) => {
+      const sections = root.matches("main") ? Array.from(root.querySelectorAll<HTMLElement>(":scope > section")) : [root];
+      sections.forEach((section, sectionIndex) => {
+        const sectionName = safe(section.id || Array.from(section.classList).find(name => !["section-pad","container"].includes(name)) || `${root.tagName.toLowerCase()}-${rootIndex}-${sectionIndex}`) || `section-${sectionIndex}`;
+        section.dataset.cmsSection = sectionName;
+        const elements = Array.from(section.querySelectorAll<HTMLElement>('h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption span,figcaption p,a.button,a.text-link,.footer-column>a,.footer-column>p,.brand-copy strong,.brand-copy small,img:not([alt=""])'));
+        const counters: Record<string, number> = {};
+        elements.forEach(element => {
+          if (element.dataset.cms || element.closest("[data-product-id]")) return;
+          const kind = element instanceof HTMLImageElement ? "image" : safe(element.tagName.toLowerCase() + "-" + (element.className || "text"));
+          counters[kind] = (counters[kind] || 0) + 1;
+          let key = `${sectionName}.${kind}-${counters[kind]}`;
+          while (used.has(key)) { counters[kind] += 1; key = `${sectionName}.${kind}-${counters[kind]}`; }
+          used.add(key); element.dataset.cms = key;
+        });
+      });
+    });
     const controller = new AbortController();
     fetch(`/api/content.php?page=${encodeURIComponent(page)}&lang=${lang}`, { cache: "no-store", signal: controller.signal })
       .then(response => response.ok ? response.json() : Promise.reject(new Error("Content unavailable")))
