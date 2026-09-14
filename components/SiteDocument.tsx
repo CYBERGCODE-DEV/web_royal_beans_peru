@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "Royal Beans Perú",
   },
   robots: { index: true, follow: true },
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: [{ url: "/favicon-64.png", type: "image/png", sizes: "64x64" }], apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }] },
 };
 
 export default function SiteDocument({ children, lang }: Readonly<{ children: React.ReactNode; lang: "es" | "en" }>) {
