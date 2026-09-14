@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Menu, Play, Send, 
 import products from "./products.json";
 import { pagePath, type Lang, type PageKey } from "./routes";
 type NavItem = { href: string; label: string };
-type CatalogProduct = { id?: number; es: string; en: string; category: string; image: string; line?: "conventional" | "retail" };
+type CatalogProduct = { id?: number; es: string; en: string; slug_es?: string; slug_en?: string; category: string; image: string; line?: "conventional" | "retail" };
 declare global { interface Window { dataLayer?: Array<Record<string, unknown>> } }
 
 function useCatalogProducts(line: "conventional" | "retail", fallback: CatalogProduct[], featured = false) {
@@ -19,6 +19,8 @@ function useCatalogProducts(line: "conventional" | "retail", fallback: CatalogPr
   }, [line, featured]);
   return items;
 }
+function productSlug(product: CatalogProduct, lang: Lang) { return product[lang === "es" ? "slug_es" : "slug_en"] || product[lang].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+function productDetailHref(product: CatalogProduct, lang: Lang, line: "conventional" | "retail") { const route = lang === "es" ? (line === "retail" ? "/productos/linea-retail/" : "/productos/linea-convencional/") : (line === "retail" ? "/en/products/retail-line/" : "/en/products/conventional-line/"); return `${route}${productSlug(product, lang)}/`; }
 
 function trackConversion(event: string, details: Record<string, unknown> = {}) {
   const payload = { event, ...details };
@@ -182,10 +184,10 @@ export function ProductCatalog({ lang, line = "conventional" }: { lang: Lang; li
   const catalogProducts = useCatalogProducts(line, line === "conventional" ? products : []);
   const categories: Record<string, string> = lang === "es" ? { all: "Todos", pulses: "Legumbres", grains: "Granos y semillas", corn: "Maíces", spices: "Especias" } : { all: "All products", pulses: "Pulses", grains: "Grains & seeds", corn: "Corn", spices: "Spices" };
   const filtered = catalogProducts.filter(p => category === "all" || p.category === category);
-  const contactHref = (product: string) => `${pagePath("contacto", lang)}?product=${encodeURIComponent(product)}`;
+  const detailHref = (product: CatalogProduct) => productDetailHref(product, lang, line);
   return <><div className="catalog-toolbar"><div className="product-filters" role="group" aria-label={lang === "es" ? "Filtrar productos" : "Filter products"}>{Object.entries(categories).map(([key, label]) => <button key={key} aria-pressed={category === key} onClick={() => { setCategory(key); setExpanded(true); }}>{label}</button>)}</div><span className="product-count" aria-live="polite">{String(filtered.length).padStart(2, "0")} {lang === "es" ? "productos" : "products"}</span></div>
     {filtered.length ? <div className={`product-grid ${expanded ? "is-expanded" : ""}`}>{filtered.map((product, index) => <article className="product-card" key={product.id ?? product.es}>
-      <a href={contactHref(product.es)} className="product-image" aria-label={`${lang === "es" ? "Consultar" : "Enquire about"} ${product[lang]}`}><span className="product-index">{String(index + 1).padStart(2, "0")}</span><img src={product.image} alt={product[lang]} loading="lazy" width="720" height="720" /><span className="product-arrow"><ArrowUpRight size={20} /></span></a><div className="product-meta"><p>{categories[product.category]}</p><h3><a href={contactHref(product.es)}>{product[lang]}</a></h3></div>
+      <a href={detailHref(product)} className="product-image" aria-label={`${lang === "es" ? "Ver detalles de" : "View details for"} ${product[lang]}`}><span className="product-index">{String(index + 1).padStart(2, "0")}</span><img src={product.image} alt={product[lang]} loading="lazy" width="720" height="720" /><span className="product-arrow"><ArrowUpRight size={20} /></span></a><div className="product-meta"><p>{categories[product.category]}</p><h3><a href={detailHref(product)}>{product[lang]}</a></h3></div>
     </article>)}</div> : <div className="catalog-empty"><span><PackageIcon /></span><h3>{lang === "es" ? "Catálogo en preparación" : "Catalogue in preparation"}</h3><p>{lang === "es" ? "Añade los productos Retail desde el panel administrativo para publicarlos aquí." : "Add Retail products from the administration panel to publish them here."}</p></div>}{filtered.length > 4 && <button className="catalog-more text-link" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? (lang === "es" ? "Ver menos" : "Show less") : (lang === "es" ? `Explorar los ${filtered.length} productos` : `Explore all ${filtered.length} products`)}<ArrowRight size={18} /></button>}</>;
 }
 
@@ -249,7 +251,7 @@ export function HomeProductCarousel({ lang }: { lang: Lang }) {
             const incoming = motion === 1 ? offset === visibleCount + 1 : motion === -1 ? offset === 0 : false;
             return <article className={`home-product-card ${active ? "is-active" : ""} ${exiting ? "is-exiting" : ""} ${incoming ? "is-incoming" : ""}`} key={key} aria-hidden={!active || undefined}>
             <img src={product.image} alt={product[lang]} loading="lazy" decoding="async" fetchPriority="low" width="720" height="720" />
-            <a className="home-product-panel" href={`${pagePath("contacto", lang)}?product=${encodeURIComponent(product.es)}`} tabIndex={active ? undefined : -1} aria-label={`${lang === "es" ? "Consultar" : "Enquire about"} ${product[lang]}`}>
+            <a className="home-product-panel" href={productDetailHref(product, lang, "conventional")} tabIndex={active ? undefined : -1} aria-label={`${lang === "es" ? "Ver detalles de" : "View details for"} ${product[lang]}`}>
               <strong>{product[lang]}</strong>
               <span aria-hidden="true"><ArrowUpRight size={17} /></span>
             </a>

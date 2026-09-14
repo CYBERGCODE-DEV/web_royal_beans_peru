@@ -9,6 +9,8 @@ try {
     $sql = "SELECT p.id, p.image_path AS image, l.slug AS line, c.slug AS category,
       MAX(CASE WHEN t.locale='es' THEN t.name END) AS es,
       MAX(CASE WHEN t.locale='en' THEN t.name END) AS en,
+      MAX(CASE WHEN t.locale='es' THEN t.slug END) AS slug_es,
+      MAX(CASE WHEN t.locale='en' THEN t.slug END) AS slug_en,
       MAX(CASE WHEN t.locale='es' THEN t.short_description END) AS description_es,
       MAX(CASE WHEN t.locale='en' THEN t.short_description END) AS description_en
       FROM products p

@@ -47,3 +47,18 @@ function save_upload(PDO $db, array $file, int $userId): string {
     $s->execute([$path,mb_substr((string) $file['name'],0,255),$mime,(int) $file['size'],$userId]);
     return $path;
 }
+function save_document(PDO $db, array $file, int $userId): string {
+    if (($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) return '';
+    if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK || ($file['size'] ?? 0) > 12 * 1024 * 1024) throw new RuntimeException('El PDF no es válido o supera 12 MB.');
+    $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
+    if ($mime !== 'application/pdf') throw new RuntimeException('La ficha técnica debe estar en formato PDF.');
+    $folder = '/uploads/' . date('Y/m');
+    $absolute = dirname(__DIR__) . $folder;
+    if (!is_dir($absolute) && !mkdir($absolute, 0755, true) && !is_dir($absolute)) throw new RuntimeException('No se pudo crear la carpeta de documentos.');
+    $name = bin2hex(random_bytes(14)) . '.pdf';
+    if (!move_uploaded_file($file['tmp_name'], $absolute . '/' . $name)) throw new RuntimeException('No se pudo guardar el PDF.');
+    $path = $folder . '/' . $name;
+    $s = $db->prepare('INSERT INTO media (path,original_name,mime_type,size_bytes,uploaded_by) VALUES (?,?,?,?,?)');
+    $s->execute([$path,mb_substr((string) $file['name'],0,255),$mime,(int) $file['size'],$userId]);
+    return $path;
+}

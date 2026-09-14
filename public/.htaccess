@@ -12,3 +12,12 @@ ErrorDocument 404 /404.html
   ExpiresByType image/webp "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^productos/(linea-convencional|linea-retail)/([^/]+)/?$ product.php?lang=es&line=$1&slug=$2 [L,QSA]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^en/products/(conventional-line|retail-line)/([^/]+)/?$ product.php?lang=en&line=$1&slug=$2 [L,QSA]
+</IfModule>

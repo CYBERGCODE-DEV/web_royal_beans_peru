@@ -73,6 +73,67 @@ CREATE TABLE IF NOT EXISTS product_translations (
   CONSTRAINT fk_translation_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS product_specs (
+  product_id BIGINT UNSIGNED PRIMARY KEY,
+  scientific_name VARCHAR(190) NOT NULL DEFAULT '',
+  tariff_code VARCHAR(80) NOT NULL DEFAULT '',
+  caliber_es VARCHAR(190) NOT NULL DEFAULT '',
+  caliber_en VARCHAR(190) NOT NULL DEFAULT '',
+  destinations_es VARCHAR(500) NOT NULL DEFAULT '',
+  destinations_en VARCHAR(500) NOT NULL DEFAULT '',
+  technical_sheet_path VARCHAR(500) NOT NULL DEFAULT '',
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_specs_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS product_gallery (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  product_id BIGINT UNSIGNED NOT NULL,
+  media_type ENUM('image','video') NOT NULL DEFAULT 'image',
+  media_path VARCHAR(500) NOT NULL,
+  alt_es VARCHAR(255) NOT NULL DEFAULT '',
+  alt_en VARCHAR(255) NOT NULL DEFAULT '',
+  sort_order INT NOT NULL DEFAULT 0,
+  CONSTRAINT fk_gallery_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS product_packages (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  product_id BIGINT UNSIGNED NOT NULL,
+  weight_primary VARCHAR(80) NOT NULL,
+  weight_secondary VARCHAR(80) NOT NULL DEFAULT '',
+  material_es VARCHAR(190) NOT NULL DEFAULT '',
+  material_en VARCHAR(190) NOT NULL DEFAULT '',
+  package_type ENUM('bag','sack','big-bag','other') NOT NULL DEFAULT 'sack',
+  sort_order INT NOT NULL DEFAULT 0,
+  CONSTRAINT fk_packages_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS product_harvest (
+  product_id BIGINT UNSIGNED NOT NULL,
+  month_number TINYINT UNSIGNED NOT NULL,
+  availability ENUM('none','harvest','available','limited') NOT NULL DEFAULT 'none',
+  PRIMARY KEY (product_id,month_number),
+  CONSTRAINT fk_harvest_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS product_certifications (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  product_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  CONSTRAINT fk_certification_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS product_relations (
+  product_id BIGINT UNSIGNED NOT NULL,
+  related_product_id BIGINT UNSIGNED NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (product_id,related_product_id),
+  CONSTRAINT fk_relation_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+  CONSTRAINT fk_relation_related FOREIGN KEY (related_product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS content_fields (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   page_key VARCHAR(80) NOT NULL,
