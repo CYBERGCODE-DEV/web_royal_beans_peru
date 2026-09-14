@@ -1,5 +1,5 @@
-import { Check, Globe2, Leaf, MapPin, Sprout, ArrowUpRight, Mail, Phone } from "lucide-react";
-import { AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
+import { BadgeCheck, Check, Globe2, Leaf, MapPin, ArrowUpRight, Mail, Phone } from "lucide-react";
+import { AboutVideo, AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
 import products from "./products.json";
 
 import { pages, pagePath, type Lang, type PageKey } from "./routes";
@@ -140,14 +140,75 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
       },
     ],
   } : organizationSchema;
+  const aboutPage = lang === "es" ? {
+    heroTitle: "Cultivamos confianza desde el origen.",
+    heroText: "Conectamos productos agrícolas peruanos con compradores que valoran la calidad, la trazabilidad y una relación comercial directa.",
+    introTitle: "Una empresa que crece cerca del campo.",
+    introText: "Royal Beans Perú integra conocimiento agrícola, selección responsable y atención cercana en cada operación.",
+    pillars: [
+      ["Nuestra Esencia", "Origen, cercanía y compromiso guían cada decisión."],
+      ["Nuestra Historia", "Nacimos en Lambayeque en 2022 para llevar productos peruanos a nuevos mercados."],
+      ["Nuestro Propósito", "Crear relaciones duraderas entre agricultores y compradores."],
+    ],
+    videoKicker: "Conócenos",
+    videoTitle: "Royal Beans Perú, desde el campo.",
+    principlesTitle: "Una forma clara de trabajar.",
+    mission: "Comercializar productos agrícolas confiables, atendiendo cada requerimiento con calidad y responsabilidad.",
+    vision: "Ser un aliado peruano reconocido por su origen, cumplimiento y capacidad exportadora.",
+    values: ["Cercanía", "Trazabilidad", "Cumplimiento"],
+    traceTitle: "Del campo al contenedor.",
+    traceText: "Siete etapas conectan el origen del producto con una entrega comercial ordenada.",
+    trace: [
+      ["Acopio", "Recepción de origen"], ["Proceso", "Limpieza y selección"], ["Control de Calidad", "Parámetros verificados"],
+      ["Inspección", "Revisión del lote"], ["Carga", "Acondicionamiento seguro"], ["Documentación", "Expediente completo"], ["Despacho", "Salida coordinada"],
+    ],
+    standardsTitle: "Estándares que respaldan nuestro trabajo.",
+    standardsText: "Referencias y controles aplicados a nuestra operación comercial.",
+    standards: [
+      ["FDA", "Registro para mercados internacionales"], ["SENASA", "Control sanitario nacional"], ["HACCP Interno", "Procedimientos preventivos"],
+    ],
+    ctaKicker: "Hablemos de negocios",
+    ctaTitle: "Construyamos una operación confiable.",
+    ctaButton: "Contáctanos",
+  } : {
+    heroTitle: "Building trust from the source.",
+    heroText: "We connect Peruvian agricultural products with buyers who value quality, traceability and direct business relationships.",
+    introTitle: "A company growing close to the field.",
+    introText: "Royal Beans Perú combines agricultural knowledge, responsible selection and close service in every operation.",
+    pillars: [
+      ["Our Essence", "Origin, proximity and commitment guide every decision."],
+      ["Our Story", "We began in Lambayeque in 2022 to take Peruvian products into new markets."],
+      ["Our Purpose", "To create lasting relationships between growers and buyers."],
+    ],
+    videoKicker: "Meet us",
+    videoTitle: "Royal Beans Perú, from the field.",
+    principlesTitle: "A clear way of working.",
+    mission: "To market reliable agricultural products while meeting every requirement with quality and responsibility.",
+    vision: "To be a Peruvian partner recognized for origin, reliability and export capability.",
+    values: ["Proximity", "Traceability", "Reliability"],
+    traceTitle: "From field to container.",
+    traceText: "Seven stages connect product origin with an orderly commercial delivery.",
+    trace: [
+      ["Sourcing", "Origin reception"], ["Processing", "Cleaning and selection"], ["Quality Control", "Verified parameters"],
+      ["Inspection", "Lot review"], ["Loading", "Safe preparation"], ["Documentation", "Complete records"], ["Dispatch", "Coordinated departure"],
+    ],
+    standardsTitle: "Standards supporting our work.",
+    standardsText: "References and controls applied to our commercial operation.",
+    standards: [
+      ["FDA", "International market registration"], ["SENASA", "National sanitary control"], ["Internal HACCP", "Preventive procedures"],
+    ],
+    ctaKicker: "Let's talk business",
+    ctaTitle: "Let’s build a reliable operation.",
+    ctaButton: "Contact us",
+  };
 
   return (
     <>
       <a className="skip-link" href="#contenido">{lang === "es" ? "Ir al contenido" : "Skip to content"}</a>
       <ConversionTracker />
       <Header nav={nav} lang={lang} page={page} />
-      <main id="contenido" className={page === "inicio" ? "home-page" : "inner-page"}>
-        {page !== "inicio" && <div className="page-intro"><div className="container"><nav className="breadcrumbs" aria-label={lang === "es" ? "Ruta de navegación" : "Breadcrumb"}><a href={pagePath("inicio", lang)}>{pages.inicio.label[lang]}</a><span>/</span><span aria-current="page">{pages[page].label[lang]}</span></nav><h1>{pages[page].label[lang]}</h1><p>{pages[page].description[lang]}</p></div></div>}
+      <main id="contenido" className={page === "inicio" ? "home-page" : page === "nosotros" ? "inner-page about-page" : "inner-page"}>
+        {page !== "inicio" && page !== "nosotros" && <div className="page-intro"><div className="container"><nav className="breadcrumbs" aria-label={lang === "es" ? "Ruta de navegación" : "Breadcrumb"}><a href={pagePath("inicio", lang)}>{pages.inicio.label[lang]}</a><span>/</span><span aria-current="page">{pages[page].label[lang]}</span></nav><h1>{pages[page].label[lang]}</h1><p>{pages[page].description[lang]}</p></div></div>}
         {page === "inicio" && (<section id="inicio" className="hero" aria-labelledby="hero-title">
           <picture className="hero-picture" aria-hidden="true">
             <source media="(max-width: 599px)" type="image/avif" srcSet="/images/hero-mobile.avif" />
@@ -196,24 +257,65 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
           </section>
         </>}
 
-        {page === "nosotros" && (<section id="nosotros" className="about section-pad">
-          <div className="container about-grid">
-            <div className="section-heading">
-              <p className="eyebrow"><span />{t.aboutKicker}</p>
-              <h2>{t.aboutTitle}</h2>
+        {page === "nosotros" && <>
+          <section id="nosotros" className="about-hero" aria-labelledby="about-hero-title">
+            <div className="container">
+              <div className="about-hero-panel">
+                <img src="/images/about-field.webp" alt="" width="1400" height="800" fetchPriority="high" />
+                <div className="about-hero-content">
+                  <nav className="about-hero-breadcrumbs" aria-label={lang === "es" ? "Ruta de navegación" : "Breadcrumb"}><a href={pagePath("inicio", lang)}>{pages.inicio.label[lang]}</a><span>/</span><span aria-current="page">{pages.nosotros.label[lang]}</span></nav>
+                  <p className="about-hero-kicker">{pages.nosotros.label[lang]}</p>
+                  <h1 id="about-hero-title">{aboutPage.heroTitle}</h1>
+                  <p>{aboutPage.heroText}</p>
+                </div>
+              </div>
             </div>
-            <div className="about-copy">
-              <p>{t.aboutBody}</p>
-              <blockquote>{t.aboutQuote}</blockquote>
-              <ul>{t.values.map((value) => <li key={value}><Check size={16} />{value}</li>)}</ul>
+          </section>
+
+          <section className="about-story section-pad" aria-labelledby="about-story-title">
+            <div className="container">
+              <div className="about-story-heading">
+                <div><p className="eyebrow"><span />{lang === "es" ? "Nuestra esencia" : "Our essence"}</p><h2 id="about-story-title">{aboutPage.introTitle}</h2></div>
+                <p>{aboutPage.introText}</p>
+              </div>
+              <div className="about-pillar-grid">
+                {aboutPage.pillars.map(([title, text], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}
+              </div>
+              <div className="about-video-grid">
+                <div className="about-video-copy"><p className="eyebrow"><span />{aboutPage.videoKicker}</p><h3>{aboutPage.videoTitle}</h3><p>{lang === "es" ? "Conoce el trabajo, el equipo y el origen que forman parte de Royal Beans Perú." : "Discover the work, team and origin behind Royal Beans Perú."}</p></div>
+                {lang === "es" ? <div className="about-video-frame"><AboutVideo lang={lang} /></div> : <div className="about-video-pending" role="img" aria-label="English corporate video coming soon"><img src="/images/expo-team.webp" alt="" loading="lazy" /><div><span>Royal Beans Perú</span><strong>English video coming soon</strong></div></div>}
+              </div>
             </div>
-            <div className="company-principles"><article><h3>{lang === "es" ? "Nuestra historia" : "Our story"}</h3><p>{lang === "es" ? "Fundada en junio de 2022 por la Lic. Erika Torres, Royal Beans Perú reúne experiencia en el sector agrícola y una atención cercana a cada cliente." : "Founded in June 2022 by Erika Torres, Royal Beans Perú brings together agricultural sector experience and personal attention to every customer."}</p></article><article><h3>{lang === "es" ? "Nuestro propósito" : "Our purpose"}</h3><p>{lang === "es" ? "Comercializar productos de calidad, atender los requerimientos de nuestros compradores y cultivar relaciones comerciales responsables y duraderas." : "To supply quality products, meet our buyers’ requirements and grow responsible, lasting business relationships."}</p></article></div>
-            <div className="about-image image-reveal">
-              <img src="/images/about-field.webp" alt={lang === "es" ? "Cultivo peruano supervisado por Royal Beans Perú" : "Peruvian crop supervised by Royal Beans Perú"} loading="lazy" width="1400" height="800" />
-              <div className="image-stamp"><Sprout size={22} /><span>Lambayeque<br />Perú</span></div>
+          </section>
+
+          <section className="about-principles section-pad" aria-labelledby="about-principles-title">
+            <div className="container">
+              <p className="eyebrow eyebrow-light"><span />{lang === "es" ? "Nuestra dirección" : "Our direction"}</p>
+              <h2 id="about-principles-title">{aboutPage.principlesTitle}</h2>
+              <div className="about-principles-grid">
+                <article><span>01</span><h3>{lang === "es" ? "Nuestra Misión" : "Our Mission"}</h3><p>{aboutPage.mission}</p></article>
+                <article><span>02</span><h3>{lang === "es" ? "Nuestra Visión" : "Our Vision"}</h3><p>{aboutPage.vision}</p></article>
+                <article><span>03</span><h3>{lang === "es" ? "Lo que nos define" : "What defines us"}</h3><ul>{aboutPage.values.map(value => <li key={value}><Check size={16} />{value}</li>)}</ul></article>
+              </div>
             </div>
-          </div>
-        </section>)}
+          </section>
+
+          <section className="about-trace section-pad" aria-labelledby="about-trace-title">
+            <div className="container">
+              <div className="about-section-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Trazabilidad de productos" : "Product traceability"}</p><h2 id="about-trace-title">{aboutPage.traceTitle}</h2></div><p>{aboutPage.traceText}</p></div>
+              <ol className="trace-steps">{aboutPage.trace.map(([title, text], index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol>
+            </div>
+          </section>
+
+          <section className="about-standards section-pad" aria-labelledby="about-standards-title">
+            <div className="container">
+              <div className="about-section-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Estándares de calidad" : "Quality standards"}</p><h2 id="about-standards-title">{aboutPage.standardsTitle}</h2></div><p>{aboutPage.standardsText}</p></div>
+              <div className="standards-grid">{aboutPage.standards.map(([title, text]) => <article key={title}><span><BadgeCheck size={28} strokeWidth={1.6} /></span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+            </div>
+          </section>
+
+          <section className="about-cta" aria-labelledby="about-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{aboutPage.ctaKicker}</p><h2 id="about-cta-title">{aboutPage.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto", lang)}>{aboutPage.ctaButton}<ArrowUpRight size={18} /></a></div></section>
+        </>}
 
         {page === "productos" && (<section id="productos" className="products section-pad">
           <div className="container">
