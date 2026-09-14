@@ -78,7 +78,7 @@ export function Header({ nav, lang, page }: { nav: NavItem[]; lang: Lang; page: 
     const update = () => setScrolled(window.scrollY > 28);
     update(); window.addEventListener("scroll", update, { passive: true });
     const reveal = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("reveal-in"); reveal.unobserve(entry.target); } }); }, { threshold: 0.12 });
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".section-heading,.presence-intro,.impact-copy").forEach(el => reveal.observe(el));
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".section-heading,.presence-intro,.impact-copy,.image-reveal,.event-grid figure,.home-about-media,.product-card").forEach(el => reveal.observe(el));
     return () => { window.removeEventListener("scroll", update); reveal.disconnect(); };
   }, []);
   useEffect(() => {
@@ -113,7 +113,7 @@ export function Header({ nav, lang, page }: { nav: NavItem[]; lang: Lang; page: 
   }, [open]);
   return <header ref={headerRef} className={`site-header ${page !== "inicio" ? "interior-header" : ""} ${scrolled || open ? "is-scrolled" : ""}`}>
     <a className="brand" href={pagePath("inicio", lang)} aria-label={lang === "es" ? "Royal Beans Perú — Inicio" : "Royal Beans Perú — Home"}><Brand /></a>
-    <nav className="desktop-nav gooey-nav" aria-label={lang === "es" ? "Navegación principal" : "Main navigation"}>{nav.map((item, index) => <a key={item.href} aria-current={active === item.href ? "page" : undefined} className={index === nav.length - 1 ? "nav-contact" : "gooey-nav-item"} href={item.href}><span className="nav-label">{item.label}</span></a>)}</nav>
+    <nav className="desktop-nav gooey-nav" aria-label={lang === "es" ? "Navegación principal" : "Main navigation"}>{nav.map((item, index) => <a key={item.href} aria-current={active === item.href ? "page" : undefined} className={`gooey-nav-item${index === nav.length - 1 ? " nav-contact" : ""}`} href={item.href}><span className="nav-label">{item.label}</span></a>)}</nav>
     <div className="header-actions"><Globe2 size={16} aria-hidden="true" /><div className="languages"><a href={pagePath(page, "es")} lang="es" aria-current={lang === "es" ? "page" : undefined}>ES</a><span>/</span><a href={pagePath(page, "en")} lang="en" aria-current={lang === "en" ? "page" : undefined}>EN</a></div><button ref={menuRef} className="menu-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-menu" aria-label={lang === "es" ? (open ? "Cerrar menú" : "Abrir menú") : (open ? "Close menu" : "Open menu")}>
       {open ? <X size={24} /> : <Menu size={24} />}</button></div>
     <nav id="mobile-menu" className="mobile-menu" hidden={!open} aria-label={lang === "es" ? "Navegación móvil" : "Mobile navigation"}>{nav.map(item => <a key={item.href} href={item.href} aria-current={active === item.href ? "page" : undefined} onClick={() => setOpen(false)}>{item.label}<ArrowUpRight size={18} /></a>)}</nav>

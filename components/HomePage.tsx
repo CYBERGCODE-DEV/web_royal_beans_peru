@@ -1,11 +1,23 @@
-import { Check, Globe2, Leaf, MapPin, Sprout, ArrowUpRight, PackageCheck, Mail, Phone, UserRound } from "lucide-react";
+import { Check, Globe2, Leaf, MapPin, Sprout, ArrowUpRight, Mail, Phone } from "lucide-react";
 import { AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
 import products from "./products.json";
 
 import { pages, pagePath, type Lang, type PageKey } from "./routes";
 
 function PeruMapIcon({ size = 22 }: { size?: number }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.2 2.3 9.9 3.5 7.7 2.6 5.2 3.6l.4 2.3-2 2 1 2.5-.8 2.7 1.9 1.8.5 3.5 2.2 3.2 2.8-1.1 1.4-2.8 2.5-1.9.4-3.2 2-2-1-2.5 1.3-2.4-2.2-1.2-2.3-2.2Z" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/><circle cx="7.2" cy="10.8" r="1.25" fill="currentColor"/><path d="m7.2 12.1.1 2.4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/></svg>;
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.1 2.2 10 3.5 7.7 2.6 5.1 3.7l.5 2.2-2 2 1 2.5-.8 2.7 1.9 1.8.5 3.5 2.2 3.3 2.8-1.2 1.4-2.8 2.5-1.9.4-3.2 2-2-1-2.5 1.3-2.4-2.2-1.2-2.3-2.2Z" fill="currentColor" fillOpacity=".12" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+}
+
+function SelectionIcon({ size = 22 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="8" cy="8.5" rx="2.4" ry="3.4" transform="rotate(-35 8 8.5)" stroke="currentColor" strokeWidth="1.45"/><ellipse cx="14.8" cy="7.5" rx="2.2" ry="3.1" transform="rotate(28 14.8 7.5)" stroke="currentColor" strokeWidth="1.45"/><ellipse cx="9.8" cy="15" rx="2.2" ry="3.1" transform="rotate(22 9.8 15)" stroke="currentColor" strokeWidth="1.45"/><path d="m14.2 15.8 2 2 4-4.3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+}
+
+function ExportIcon({ size = 22 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4 8 7.5-4L19 8l-7.5 4L4 8Z" stroke="currentColor" strokeWidth="1.45" strokeLinejoin="round"/><path d="M4 8v8l7.5 4 3.2-1.7M11.5 12v8M19 8v3" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round"/><path d="M15.5 15.5 20 11m-4.2 0H20v4.2" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+}
+
+function GrowerIcon({ size = 22 }: { size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8.2h10M8.4 7.9c.3-2.3 1.5-3.7 3.6-3.7s3.3 1.4 3.6 3.7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="11" r="3.3" stroke="currentColor" strokeWidth="1.45"/><path d="M5.5 20c.5-3.4 2.7-5.3 6.5-5.3s6 1.9 6.5 5.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M18.3 8.2c1.8-.2 2.9-1 3.4-2.5-1.9-.3-3.1.5-3.4 2.5Z" fill="currentColor" fillOpacity=".2" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round"/></svg>;
 }
 
 const content = {
@@ -170,9 +182,9 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
           </div>
           <div className="origin-strip"><div className="container">
             <article><span className="feature-icon"><PeruMapIcon size={22} /></span><strong>{lang === "es" ? "Origen peruano" : "Peruvian origin"}</strong></article>
-            <article><span className="feature-icon"><PackageCheck size={22} /></span><strong>{lang === "es" ? "Selección cuidadosa" : "Carefully selected"}</strong></article>
-            <article><span className="feature-icon"><Globe2 size={22} /></span><strong>{lang === "es" ? "Vocación exportadora" : "Export focused"}</strong></article>
-            <article><span className="feature-icon"><UserRound size={22} /></span><strong>{lang === "es" ? "Cerca del agricultor" : "Close to growers"}</strong></article>
+            <article><span className="feature-icon"><SelectionIcon size={22} /></span><strong>{lang === "es" ? "Selección cuidadosa" : "Carefully selected"}</strong></article>
+            <article><span className="feature-icon"><ExportIcon size={22} /></span><strong>{lang === "es" ? "Vocación exportadora" : "Export focused"}</strong></article>
+            <article><span className="feature-icon"><GrowerIcon size={22} /></span><strong>{lang === "es" ? "Cerca del agricultor" : "Close to growers"}</strong></article>
           </div></div>
         </section>)}
 
