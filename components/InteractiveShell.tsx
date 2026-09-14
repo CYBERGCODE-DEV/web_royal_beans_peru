@@ -101,7 +101,7 @@ export function Header({ nav, lang, page }: { nav: NavItem[]; lang: Lang; page: 
     const update = () => setScrolled(window.scrollY > 28);
     update(); window.addEventListener("scroll", update, { passive: true });
     const reveal = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("reveal-in"); reveal.unobserve(entry.target); } }); }, { threshold: 0.12 });
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".section-heading,.presence-intro,.impact-copy,.image-reveal,.event-grid figure,.home-about-media,.product-card,.about-pillar-grid article,.trace-steps li,.standards-grid article").forEach(el => reveal.observe(el));
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".section-heading,.content-heading,.content-traits article,.presence-intro,.presence-visual,.impact-copy,.impact-media,.impact-feature-grid article,.image-reveal,.event-grid figure,.home-about-media,.product-card,.about-pillar-grid article,.trace-steps li,.standards-grid article").forEach(el => reveal.observe(el));
     return () => { window.removeEventListener("scroll", update); reveal.disconnect(); };
   }, []);
   useEffect(() => {

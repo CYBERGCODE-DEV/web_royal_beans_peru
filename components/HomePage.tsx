@@ -1,4 +1,4 @@
-import { BadgeCheck, Check, Globe2, Leaf, MapPin, ArrowUpRight, ArrowRight, Mail, Phone, Sprout, History, Handshake, Target, Telescope, Fingerprint, Warehouse, SlidersHorizontal, ShieldCheck, SearchCheck, Container, FileCheck2, Truck } from "lucide-react";
+import { BadgeCheck, Check, Globe2, Leaf, MapPin, ArrowUpRight, ArrowRight, Mail, Phone, Sprout, History, Handshake, Target, Telescope, Fingerprint, Warehouse, SlidersHorizontal, ShieldCheck, SearchCheck, Container, FileCheck2, Truck, PackageCheck, ScanLine, Ship, UsersRound, CalendarCheck, Network, Route, Radar, MessageCircle, Clock3 } from "lucide-react";
 import { AboutVideo, AnimatedCounter, Brand, ContactForm, ConversionTracker, FacebookIcon, Header, HomeProductCarousel, HorizontalRail, InstagramIcon, ProductCatalog, WhatsappIcon } from "./InteractiveShell";
 import products from "./products.json";
 
@@ -118,6 +118,21 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
     telephone: "+51 961 804 500",
     sameAs: ["https://www.instagram.com/royalbeans_peru/", "https://www.facebook.com/profile.php?id=61573866174999"],
   };
+  const secondary = lang === "es" ? {
+    products: { kicker: "Catálogo", title: "Productos peruanos para mercados exigentes.", text: "Legumbres, granos, maíces y especias seleccionados con atención directa para cada requerimiento comercial.", section: "Encuentra el producto para tu próxima operación.", note: "Consulta disponibilidad, presentación y volumen con nuestro equipo.", traits: [["Selección", "Materia prima revisada"], ["Trazabilidad", "Origen y lote identificados"], ["Despacho", "Atención según destino"]] },
+    events: { kicker: "Participación", title: "Conexiones que abren nuevos mercados.", text: "Presentamos nuestra oferta peruana y construimos relaciones directas con compradores y aliados del sector alimentario.", section: "Royal Beans Perú en Expoalimentaria.", note: "Un espacio para mostrar productos, escuchar al mercado y crear oportunidades comerciales.", traits: [["Presentación", "Portafolio peruano"], ["Conexión", "Diálogo con compradores"], ["Seguimiento", "Relaciones de largo plazo"]] },
+    presence: { kicker: "Presencia", title: "Desde Lambayeque hacia nuevos destinos.", text: "Conectamos el origen agrícola peruano con oportunidades nacionales e internacionales desde nuestra operación en Chiclayo.", section: "Una operación cercana con alcance comercial.", note: "Coordinamos cada consulta desde el origen hasta el destino requerido.", traits: [["Origen", "Chiclayo · Lambayeque"], ["Cobertura", "Mercado nacional"], ["Proyección", "Comercio internacional"]] },
+    impact: { kicker: "Impacto", title: "Crecemos cuidando cada vínculo.", text: "Acompañamos el trabajo del campo, revisamos la materia prima y promovemos relaciones responsables en toda la cadena.", section: "Valor compartido desde el origen.", note: "Una cadena confiable comienza con presencia, criterios claros y comunicación directa.", traits: [["Campo", "Acompañamiento cercano"], ["Calidad", "Materia prima revisada"], ["Relaciones", "Compromiso continuo"]] },
+    contact: { kicker: "Contáctanos", title: "Conversemos sobre tu próxima operación.", text: "Indícanos producto, volumen y destino. Nuestro equipo atenderá tu consulta de forma directa.", section: "Estamos listos para escucharte.", note: "Elige el canal que prefieras o completa el formulario para preparar tu consulta." },
+    ctaKicker: "Hablemos de negocios", ctaTitle: "Construyamos una oportunidad juntos.", ctaButton: "Contáctanos",
+  } : {
+    products: { kicker: "Catalogue", title: "Peruvian products for demanding markets.", text: "Pulses, grains, corn and spices selected with direct service for each commercial requirement.", section: "Find the product for your next operation.", note: "Ask our team about availability, presentation and volume.", traits: [["Selection", "Inspected raw material"], ["Traceability", "Identified origin and lot"], ["Dispatch", "Service for each destination"]] },
+    events: { kicker: "Events", title: "Connections that open new markets.", text: "We present our Peruvian portfolio and build direct relationships with buyers and food industry partners.", section: "Royal Beans Perú at Expoalimentaria.", note: "A space to showcase products, understand the market and create business opportunities.", traits: [["Presentation", "Peruvian portfolio"], ["Connection", "Dialogue with buyers"], ["Follow-up", "Long-term relationships"]] },
+    presence: { kicker: "Presence", title: "From Lambayeque to new destinations.", text: "We connect Peruvian agricultural origin with domestic and international opportunities from our Chiclayo operation.", section: "A close operation with commercial reach.", note: "We coordinate every enquiry from origin to the required destination.", traits: [["Origin", "Chiclayo · Lambayeque"], ["Coverage", "Domestic market"], ["Outlook", "International trade"]] },
+    impact: { kicker: "Impact", title: "Growing by caring for every relationship.", text: "We support field work, inspect raw materials and encourage responsible relationships throughout the chain.", section: "Shared value from the source.", note: "A reliable chain begins with presence, clear criteria and direct communication.", traits: [["Field", "Close support"], ["Quality", "Inspected raw material"], ["Relationships", "Ongoing commitment"]] },
+    contact: { kicker: "Contact us", title: "Let’s discuss your next operation.", text: "Tell us the product, volume and destination. Our team will handle your enquiry directly.", section: "We are ready to listen.", note: "Choose your preferred channel or complete the form to prepare your enquiry." },
+    ctaKicker: "Let's talk business", ctaTitle: "Let’s build an opportunity together.", ctaButton: "Contact us",
+  };
   const schema = page === "inicio" ? {
     "@context": "https://schema.org",
     "@graph": [
@@ -207,8 +222,7 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
       <a className="skip-link" href="#contenido">{lang === "es" ? "Ir al contenido" : "Skip to content"}</a>
       <ConversionTracker />
       <Header nav={nav} lang={lang} page={page} />
-      <main id="contenido" className={page === "inicio" ? "home-page" : page === "nosotros" ? "inner-page about-page" : "inner-page"}>
-        {page !== "inicio" && page !== "nosotros" && <div className="page-intro"><div className="container"><nav className="breadcrumbs" aria-label={lang === "es" ? "Ruta de navegación" : "Breadcrumb"}><a href={pagePath("inicio", lang)}>{pages.inicio.label[lang]}</a><span>/</span><span aria-current="page">{pages[page].label[lang]}</span></nav><h1>{pages[page].label[lang]}</h1><p>{pages[page].description[lang]}</p></div></div>}
+      <main id="contenido" className={page === "inicio" ? "home-page" : page === "nosotros" ? "inner-page about-page" : `inner-page content-page ${page}-page`}>
         {page === "inicio" && (<section id="inicio" className="hero" aria-labelledby="hero-title">
           <picture className="hero-picture" aria-hidden="true">
             <source media="(max-width: 599px)" type="image/avif" srcSet="/images/hero-mobile.avif" />
@@ -324,73 +338,36 @@ export default function HomePage({ lang, page = "inicio" }: { lang: Lang; page?:
           <section className="about-cta" aria-labelledby="about-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{aboutPage.ctaKicker}</p><h2 id="about-cta-title">{aboutPage.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto", lang)}>{aboutPage.ctaButton}<ArrowUpRight size={18} /></a></div></section>
         </>}
 
-        {page === "productos" && (<section id="productos" className="products section-pad">
-          <div className="container">
-            <div className="section-heading split-heading">
-              <div><p className="eyebrow"><span />{t.productsKicker}</p><h2>{t.productsTitle}</h2></div>
-              <p>{t.productsIntro}</p>
-            </div>
-            <ProductCatalog lang={lang} />
-          </div>
-        </section>)}
+        {page === "productos" && <>
+          <section id="productos" className="subpage-hero subpage-hero-products" aria-labelledby="products-hero-title"><img src="/images/product-2.webp" alt="" width="1200" height="800" fetchPriority="high" /><div className="container subpage-hero-content"><p className="eyebrow eyebrow-light"><span />{secondary.products.kicker}</p><h1 id="products-hero-title">{secondary.products.title}</h1><p>{secondary.products.text}</p></div></section>
+          <section className="content-traits" aria-label={lang === "es" ? "Características del catálogo" : "Catalogue features"}><div className="container">{secondary.products.traits.map(([title,text],index) => { const Icon=[PackageCheck,ScanLine,Ship][index]; return <article key={title}><span><Icon size={23} strokeWidth={1.6} /></span><div><h2>{title}</h2><p>{text}</p></div></article>; })}</div></section>
+          <section className="products products-catalog section-pad" aria-labelledby="products-catalog-title"><div className="container"><div className="content-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Nuestros productos" : "Our products"}</p><h2 id="products-catalog-title">{secondary.products.section}</h2></div><p>{secondary.products.note}</p></div><ProductCatalog lang={lang} /></div></section>
+          <section className="content-cta" aria-labelledby="products-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{secondary.ctaKicker}</p><h2 id="products-cta-title">{secondary.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto",lang)}>{secondary.ctaButton}<ArrowUpRight size={18} /></a></div></section>
+        </>}
 
-        {page === "participacion" && (<section id="participacion" className="participation section-pad">
-          <div className="container">
-            <div className="section-heading participation-heading">
-              <div><p className="eyebrow eyebrow-light"><span />{t.participationKicker}</p><h2>{t.participationTitle}</h2></div>
-              <p>{t.participationText}</p>
-            </div>
-            <div className="event-grid">
-              <figure className="event-main"><img src="/images/expo-main.webp" alt={lang === "es" ? "Royal Beans Perú en Expoalimentaria 2024" : "Royal Beans Perú at Expoalimentaria 2024"} loading="lazy" /><figcaption><span>2024</span><h3>Expoalimentaria</h3><p>{t.eventLabel} · Lima, Perú</p></figcaption></figure>
-              <figure><img src="/images/expo-team.webp" alt={lang === "es" ? "Equipo Royal Beans Perú en feria internacional" : "Royal Beans Perú team at an international trade fair"} loading="lazy" /><figcaption><span>2025</span><h3>Expoalimentaria</h3><p>{t.eventLabel} · Lima, Perú</p></figcaption></figure>
-            </div>
-          </div>
-        </section>)}
+        {page === "participacion" && <>
+          <section id="participacion" className="subpage-hero subpage-hero-events" aria-labelledby="events-hero-title"><img src="/images/expo-main.webp" alt="" width="1200" height="800" fetchPriority="high" /><div className="container subpage-hero-content"><p className="eyebrow eyebrow-light"><span />{secondary.events.kicker}</p><h1 id="events-hero-title">{secondary.events.title}</h1><p>{secondary.events.text}</p></div></section>
+          <section className="event-story section-pad" aria-labelledby="events-title"><div className="container"><div className="content-heading"><div><p className="eyebrow"><span />Expoalimentaria</p><h2 id="events-title">{secondary.events.section}</h2></div><p>{secondary.events.note}</p></div><div className="event-grid"><figure className="event-main"><img src="/images/expo-main.webp" alt={lang === "es" ? "Royal Beans Perú en Expoalimentaria 2024" : "Royal Beans Perú at Expoalimentaria 2024"} loading="lazy" /><figcaption><span>2024</span><h3>Expoalimentaria</h3><p>{t.eventLabel} · Lima, Perú</p></figcaption></figure><figure><img src="/images/expo-team.webp" alt={lang === "es" ? "Equipo Royal Beans Perú en Expoalimentaria 2025" : "Royal Beans Perú team at Expoalimentaria 2025"} loading="lazy" /><figcaption><span>2025</span><h3>Expoalimentaria</h3><p>{t.eventLabel} · Lima, Perú</p></figcaption></figure></div></div></section>
+          <section className="content-traits content-traits-dark" aria-label={lang === "es" ? "Valor de nuestra participación" : "Value of our participation"}><div className="container">{secondary.events.traits.map(([title,text],index) => { const Icon=[CalendarCheck,UsersRound,Handshake][index]; return <article key={title}><span><Icon size={23} strokeWidth={1.6} /></span><div><h2>{title}</h2><p>{text}</p></div></article>; })}</div></section>
+          <section className="content-cta" aria-labelledby="events-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{secondary.ctaKicker}</p><h2 id="events-cta-title">{secondary.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto",lang)}>{secondary.ctaButton}<ArrowUpRight size={18} /></a></div></section>
+        </>}
 
-        {page === "presencia" && (<section id="presencia" className="presence section-pad">
-          <div className="container presence-grid">
-            <div className="presence-intro">
-              <p className="eyebrow"><span />{t.presenceKicker}</p>
-              <h2>{t.presenceTitle}</h2>
-              <p>{t.presenceText}</p>
-            </div>
-            <div className="route-panel">
-              <div className="route-origin"><span className="pulse" /><MapPin size={21} /><div><small>{t.origin}</small><strong>Chiclayo · Lambayeque</strong></div></div>
-              <div className="route-line"><span /><span /><span /></div>
-              <div className="destination-list"><small>{t.destinations}</small>{t.destinationsList.map((place, index) => <div key={place}><span>0{index + 1}</span><strong>{place}</strong>{index < 3 && <Globe2 size={17} />}</div>)}</div>
-            </div>
-          </div>
-        </section>)}
+        {page === "presencia" && <>
+          <section id="presencia" className="subpage-hero subpage-hero-presence" aria-labelledby="presence-hero-title"><img src="/images/about-field.webp" alt="" width="1400" height="800" fetchPriority="high" /><div className="container subpage-hero-content"><p className="eyebrow eyebrow-light"><span />{secondary.presence.kicker}</p><h1 id="presence-hero-title">{secondary.presence.title}</h1><p>{secondary.presence.text}</p></div></section>
+          <section className="presence presence-story section-pad" aria-labelledby="presence-title"><div className="container"><div className="content-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Nuestro alcance" : "Our reach"}</p><h2 id="presence-title">{secondary.presence.section}</h2></div><p>{secondary.presence.note}</p></div><div className="presence-grid"><div className="presence-visual"><img src="/images/hero-tablet.webp" alt={lang === "es" ? "Cultivo peruano de origen" : "Peruvian crop at origin"} loading="lazy" /><span><MapPin size={19} />Chiclayo · Lambayeque</span></div><div className="route-panel"><div className="route-origin"><span className="pulse" /><img src="/icons/peru-map.svg" alt="" width="24" height="24" /><div><small>{t.origin}</small><strong>Chiclayo · Lambayeque</strong></div></div><div className="route-line"><span /><span /><span /></div><div className="destination-list"><small>{t.destinations}</small>{secondary.presence.traits.map(([title,text],index) => { const Icon=[MapPin,Route,Globe2][index]; return <div key={title}><Icon size={18} /><div><strong>{title}</strong><p>{text}</p></div><ArrowUpRight size={17} /></div>; })}</div></div></div></div></section>
+          <section className="content-cta" aria-labelledby="presence-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{secondary.ctaKicker}</p><h2 id="presence-cta-title">{secondary.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto",lang)}>{secondary.ctaButton}<ArrowUpRight size={18} /></a></div></section>
+        </>}
 
-        {page === "impacto" && (<section id="impacto" className="impact section-pad">
-          <div className="impact-image"><img src="/images/impact-crop.webp" alt={lang === "es" ? "Detalle de cultivo agrícola en Perú" : "Detail of a Peruvian crop"} loading="lazy" /></div>
-          <div className="container impact-grid">
-            <div className="impact-copy">
-              <p className="eyebrow eyebrow-light"><span />{t.impactKicker}</p>
-              <h2>{t.impactTitle}</h2>
-              <p>{t.impactText}</p>
-            </div>
-            <div className="impact-list">
-              {t.impactItems.map(([number, title, text]) => <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div><Leaf size={20} /></article>)}
-            </div>
-          </div>
-        </section>)}
+        {page === "impacto" && <>
+          <section id="impacto" className="subpage-hero subpage-hero-impact" aria-labelledby="impact-hero-title"><img src="/images/impact-crop.webp" alt="" width="1200" height="800" fetchPriority="high" /><div className="container subpage-hero-content"><p className="eyebrow eyebrow-light"><span />{secondary.impact.kicker}</p><h1 id="impact-hero-title">{secondary.impact.title}</h1><p>{secondary.impact.text}</p></div></section>
+          <section className="impact-story section-pad" aria-labelledby="impact-title"><div className="container"><div className="content-heading"><div><p className="eyebrow"><span />{lang === "es" ? "Nuestra forma de trabajar" : "How we work"}</p><h2 id="impact-title">{secondary.impact.section}</h2></div><p>{secondary.impact.note}</p></div><div className="impact-feature-grid">{secondary.impact.traits.map(([title,text],index) => { const Icon=[Sprout,ShieldCheck,Handshake][index]; return <article key={title}><span><Icon size={25} strokeWidth={1.55} /></span><h3>{title}</h3><p>{text}</p></article>; })}</div><div className="impact-media"><img src="/images/hero-tablet.webp" alt={lang === "es" ? "Trabajo agrícola en el campo peruano" : "Agricultural work in Peruvian fields"} loading="lazy" /><div><p className="eyebrow eyebrow-light"><span />{lang === "es" ? "Desde el origen" : "From the source"}</p><h2>{lang === "es" ? "Cercanía que fortalece la cadena." : "Proximity that strengthens the chain."}</h2><p>{lang === "es" ? "Conocer el producto y mantener una comunicación directa nos permite responder con mayor claridad a productores y compradores." : "Knowing the product and maintaining direct communication helps us respond more clearly to growers and buyers."}</p></div></div></div></section>
+          <section className="content-cta" aria-labelledby="impact-cta-title"><div className="container"><div><p className="eyebrow eyebrow-light"><span />{secondary.ctaKicker}</p><h2 id="impact-cta-title">{secondary.ctaTitle}</h2></div><a className="button button-lime" href={pagePath("contacto",lang)}>{secondary.ctaButton}<ArrowUpRight size={18} /></a></div></section>
+        </>}
 
-        {page === "contacto" && (<section id="contacto" className="contact section-pad">
-          <div className="container contact-grid">
-            <div className="contact-copy">
-              <p className="eyebrow eyebrow-light"><span />{t.contactKicker}</p>
-              <h2>{t.contactTitle}</h2>
-              <p>{t.contactText}</p>
-              <div className="contact-details">
-                <div><h3>{t.addressLabel}</h3><p>{t.address}</p></div>
-                <div><h3>{t.emailLabel}</h3><a href="mailto:administracion@royalbeansperu.com">administracion@royalbeansperu.com</a></div>
-                <div><h3>{t.phoneLabel}</h3><a href="tel:+51961804500">+51 961 804 500</a></div>
-              </div>
-            </div>
-            <ContactForm lang={lang} />
-          </div>
-        </section>)}
+        {page === "contacto" && <>
+          <section id="contacto" className="subpage-hero subpage-hero-contact" aria-labelledby="contact-hero-title"><img src="/images/expo-team.webp" alt="" width="1200" height="800" fetchPriority="high" /><div className="container subpage-hero-content"><p className="eyebrow eyebrow-light"><span />{secondary.contact.kicker}</p><h1 id="contact-hero-title">{secondary.contact.title}</h1><p>{secondary.contact.text}</p></div></section>
+          <section className="contact contact-page-body section-pad" aria-labelledby="contact-section-title"><div className="container"><div className="content-heading content-heading-light"><div><p className="eyebrow eyebrow-light"><span />{lang === "es" ? "Contacto directo" : "Direct contact"}</p><h2 id="contact-section-title">{secondary.contact.section}</h2></div><p>{secondary.contact.note}</p></div><div className="contact-grid"><div className="contact-copy"><div className="contact-details"><article><span><MapPin size={22} /></span><div><h3>{t.addressLabel}</h3><p>{t.address}</p></div></article><article><span><Mail size={22} /></span><div><h3>{t.emailLabel}</h3><a href="mailto:administracion@royalbeansperu.com">administracion@royalbeansperu.com</a></div></article><article><span><Phone size={22} /></span><div><h3>{t.phoneLabel}</h3><a href="tel:+51961804500">+51 961 804 500</a></div></article><article><span><Clock3 size={22} /></span><div><h3>{lang === "es" ? "Atención" : "Availability"}</h3><p>{lang === "es" ? "Respuesta comercial directa" : "Direct business response"}</p></div></article></div><a className="contact-whatsapp" href="https://wa.me/51961804500" target="_blank" rel="noreferrer"><MessageCircle size={22} /><span><strong>WhatsApp</strong><small>{lang === "es" ? "Iniciar conversación" : "Start conversation"}</small></span><ArrowUpRight size={18} /></a></div><ContactForm lang={lang} /></div></div></section>
+        </>}
       </main>
 
       <footer className="site-footer">
