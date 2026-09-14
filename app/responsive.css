@@ -43,14 +43,16 @@ p { text-wrap: pretty; }
   transition: background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
 }
 .site-header:not(.is-scrolled) {
-  background: linear-gradient(108deg, #052f26fa 0%, #0a493cf5 27%, #24765fe9 54%, #0d5848ed 76%, #052f26f5 100%);
-  box-shadow: 0 14px 38px #052f2629, inset 0 -1px #c5e59b24;
-  backdrop-filter: blur(12px) saturate(1.18);
+  background: linear-gradient(105deg, #052f26c7 0%, #052f2696 52%, #052f26b5 100%);
+  box-shadow: 0 12px 32px #052f2624, inset 0 -1px #ffffff24;
+  backdrop-filter: blur(14px) saturate(1.08);
+  -webkit-backdrop-filter: blur(14px) saturate(1.08);
 }
 .site-header.is-scrolled {
-  background: linear-gradient(108deg, #052f26fc 0%, #094438fa 28%, #1a6854f7 54%, #0c5142f9 76%, #052f26fc 100%);
-  box-shadow: 0 10px 34px #052f2640, inset 0 -1px #c5e59b1f;
-  backdrop-filter: blur(18px) saturate(1.16);
+  background: linear-gradient(105deg, #052f26ed 0%, #052f26d4 52%, #052f26e3 100%);
+  box-shadow: 0 10px 32px #052f263b, inset 0 -1px #ffffff1c;
+  backdrop-filter: blur(18px) saturate(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
 }
 .brand { gap: 10px; }
 .brand > img { width: 40px; height: 48px; }
