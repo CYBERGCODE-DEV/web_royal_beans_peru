@@ -42,6 +42,7 @@ export const metadata: Metadata = {
 export default function SiteDocument({ children, lang }: Readonly<{ children: React.ReactNode; lang: "es" | "en" }>) {
   return (
     <html lang={lang} className={`${display.variable} ${body.variable}`}>
+      <head><link rel="stylesheet" href="/shared-chrome.css" /></head>
       <body>{children}</body>
     </html>
   );

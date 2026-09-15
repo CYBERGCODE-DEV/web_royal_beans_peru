@@ -411,7 +411,7 @@ export default function HomePage({ lang, page = "inicio", productLine }: { lang:
         </>}
       </main>
 
-      <footer className="site-footer">
+      <footer className="site-footer shared-site-footer">
         <div className="container footer-grid">
           <div className="footer-brand"><a className="brand" href={pagePath("inicio", lang)} aria-label="Royal Beans Perú"><Brand /></a><p>{t.footerText}</p></div>
           <nav className="footer-column" aria-label={lang === "es" ? "Enlaces del sitio" : "Site links"}><h2>{lang === "es" ? "Explora" : "Explore"}</h2>{nav.map(item => <a key={item.href} href={item.href}>{item.label}</a>)}</nav>

@@ -191,7 +191,7 @@ export function Header({ nav, lang, page, languagePaths }: { nav: NavItem[]; lan
       background.forEach((element, index) => { element.inert = previousInert[index]; });
     };
   }, [open]);
-  return <header ref={headerRef} className={`site-header ${page !== "inicio" ? "interior-header" : ""} ${scrolled || open ? "is-scrolled" : ""}`}>
+  return <header ref={headerRef} className={`site-header shared-site-header ${page !== "inicio" ? "interior-header" : ""} ${scrolled || open ? "is-scrolled" : ""}`}>
     <a className="brand" href={pagePath("inicio", lang)} aria-label={lang === "es" ? "Royal Beans Perú — Inicio" : "Royal Beans Perú — Home"}><Brand /></a>
     <nav className="desktop-nav gooey-nav" aria-label={lang === "es" ? "Navegación principal" : "Main navigation"}>{nav.map((item, index) => <a key={item.href} aria-current={active === item.href ? "page" : undefined} className={`gooey-nav-item${index === nav.length - 1 ? " nav-contact" : ""}`} href={item.href}><span className="nav-label">{item.label}</span></a>)}</nav>
     <div className="header-actions"><Globe2 size={16} aria-hidden="true" /><div className="languages"><a href={languagePaths?.es ?? pagePath(page, "es")} lang="es" aria-current={lang === "es" ? "page" : undefined}>ES</a><span>/</span><a href={languagePaths?.en ?? pagePath(page, "en")} lang="en" aria-current={lang === "en" ? "page" : undefined}>EN</a></div><button ref={menuRef} className="menu-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-menu" aria-label={lang === "es" ? (open ? "Cerrar menú" : "Abrir menú") : (open ? "Close menu" : "Open menu")}>
