@@ -6,18 +6,67 @@ ErrorDocument 404 /404.html
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
+  Header always set Content-Security-Policy "default-src 'self' https: data: blob:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https:; media-src 'self' https: blob:; frame-src 'self' https://www.google.com https://www.youtube.com"
+  <FilesMatch "\.(html|txt)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=86400, must-revalidate"
+  </FilesMatch>
+  <IfModule mod_setenvif.c>
+    SetEnvIf Request_URI "^/_next/static/" royalbeans_hashed_asset=1
+    Header set Cache-Control "public, max-age=31536000, immutable" env=royalbeans_hashed_asset
+  </IfModule>
 </IfModule>
 <IfModule mod_expires.c>
   ExpiresActive On
+  ExpiresByType image/avif "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
   ExpiresByType image/webp "access plus 1 month"
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^www\.royalbeansperu\.com$ [NC]
+  RewriteRule ^ https://royalbeansperu.com%{REQUEST_URI} [R=301,L]
+  # URLs heredadas y variantes del indice: una sola URL canonica por idioma.
+  RewriteRule ^en/home/?$ /en/ [R=301,L,NC]
+  RewriteRule ^home/?$ / [R=301,L,NC]
+  RewriteRule ^index\.txt$ /seo-home.php?lang=es&format=rsc [END]
+  RewriteRule ^en/index\.txt$ /seo-home.php?lang=en&format=rsc [END]
+  RewriteRule ^$ /seo-home.php?lang=es [END]
+  RewriteRule ^en/?$ /seo-home.php?lang=en [END]
+  RewriteRule ^en/products/retail-line/?$ /en/products/retail/ [R=301,L,NC]
+  RewriteRule ^en/products/retail-line/index\.html$ /en/products/retail/ [R=301,L,NC]
+  RewriteCond %{THE_REQUEST} \s/+en/index\.html(?:[?\s]) [NC]
+  RewriteRule ^en/index\.html$ /en/ [R=301,L]
+  RewriteCond %{THE_REQUEST} \s/+index\.html(?:[?\s]) [NC]
+  RewriteRule ^index\.html$ / [R=301,L]
+  RewriteRule ^productos/linea-convencional/?$ /productos/linea-a-granel/ [R=301,L,NC]
+  RewriteRule ^en/products/conventional-line/?$ /en/products/bulk-line/ [R=301,L,NC]
+  RewriteRule ^productos/linea-convencional/index\.html$ /productos/linea-a-granel/ [R=301,L,NC]
+  RewriteRule ^en/products/conventional-line/index\.html$ /en/products/bulk-line/ [R=301,L,NC]
+  RewriteRule ^productos/?$ /productos/linea-a-granel/ [R=301,L,NC]
+  RewriteRule ^en/products/?$ /en/products/bulk-line/ [R=301,L,NC]
+  RewriteCond %{THE_REQUEST} \s/+[^\s?]+/index\.html(?:[?\s]) [NC]
+  RewriteRule ^(nosotros|participacion|impacto|contacto|politica-de-privacidad|terminos-y-condiciones|productos/linea-a-granel|productos/linea-retail|en/about-us|en/events|en/impact|en/contact|en/privacy-policy|en/terms-and-conditions|en/products/bulk-line|en/products/retail)/index\.html$ /$1/ [R=301,L,NC]
+  RewriteRule ^sitemap\.xml$ /sitemap.php [L]
+  RewriteRule ^product-seo\.php$ /seo-legacy-product.php [END,NC]
+  RewriteRule ^productos/(legumbres|granos-andinos|maices|especias)/?$ /productos/linea-a-granel/ [R=301,L,NC]
+  RewriteRule ^en/products/(pulses|andean-grains|corn|spices)/?$ /en/products/bulk-line/ [R=301,L,NC]
+  # Public CMS pages are assembled from current BD values on every request.
+  RewriteRule ^((?:en/)?(?:nosotros|participacion|impacto|contacto|politica-de-privacidad|terminos-y-condiciones|about-us|events|impact|contact|privacy-policy|terms-and-conditions|productos/linea-a-granel|productos/linea-retail|products/bulk-line|products/retail))/(?:index\.txt)$ /cms-page.php?path=$1&format=rsc [QSA,END,NC]
+  RewriteRule ^((?:en/)?(?:nosotros|participacion|impacto|contacto|politica-de-privacidad|terminos-y-condiciones|about-us|events|impact|contact|privacy-policy|terms-and-conditions|productos/linea-a-granel|productos/linea-retail|products/bulk-line|products/retail))/?$ /cms-page.php?path=$1 [QSA,END,NC]
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^productos/(linea-convencional|linea-retail)/([^/]+)/?$ product.php?lang=es&line=$1&slug=$2 [L,QSA]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^en/products/(conventional-line|retail-line)/([^/]+)/?$ product.php?lang=en&line=$1&slug=$2 [L,QSA]
+  RewriteRule ^(.+\.(?:avif|bmp|gif|ico|jpe?g|png|svg|tiff?|webp))$ /media-redirect.php?path=/$1 [B,L,QSA,NC]
+  # Las fichas anteriores se resuelven desde BD y redirigen a la línea + modal.
+  RewriteRule ^productos/(linea-convencional|linea-a-granel|linea-retail)/([^/]+)/?$ /seo-legacy-product.php?lang=es&line=$1&slug=$2 [B,END]
+  RewriteRule ^en/products/(conventional-line|bulk-line|retail-line)/([^/]+)/?$ /seo-legacy-product.php?lang=en&line=$1&slug=$2 [B,END]
+  # Las antiguas fichas anidadas bajo una categoria solo redirigen a la ficha BD.
+  RewriteRule ^productos/(legumbres|granos-andinos|maices|especias)/([^/]+)/?$ /seo-legacy-product.php?lang=es&slug=$2 [B,END,NC]
+  RewriteRule ^en/products/(pulses|andean-grains|corn|spices)/([^/]+)/?$ /seo-legacy-product.php?lang=en&slug=$2 [B,END,NC]
+  RewriteRule ^productos/([^/]+)/?$ /seo-legacy-product.php?lang=es&slug=$1 [B,END]
+  RewriteRule ^en/products/([^/]+)/?$ /seo-legacy-product.php?lang=en&slug=$1 [B,END]
 </IfModule>

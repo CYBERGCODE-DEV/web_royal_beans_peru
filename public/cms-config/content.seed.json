@@ -1,0 +1,1424 @@
+[
+    {
+        "page_key": "inicio",
+        "section_key": "hero",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/hero-desktop.webp",
+        "value_en": "/images/hero-desktop.webp"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "p-eyebrow-eyebrow-light-1",
+        "field_type": "text",
+        "label": "Origen peruano · Alcance global",
+        "value_es": "Origen peruano · Alcance global",
+        "value_en": "Peruvian origin · Global reach"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "hero",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Mensaje principal del Home",
+        "value_es": "Granos, legumbres y especias del Perú para el mundo.",
+        "value_en": "Peruvian grains, pulses and spices for the world."
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "hero",
+        "field_key": "description",
+        "field_type": "textarea",
+        "label": "Descripción principal del Home",
+        "value_es": "Seleccionamos productos peruanos para mercados nacionales e internacionales.",
+        "value_en": "We select Peruvian products for domestic and international markets."
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "a-button-button-lime-1",
+        "field_type": "text",
+        "label": "Botón Línea a Granel",
+        "value_es": "Ver Línea a Granel",
+        "value_en": "Explore Bulk Line"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "a-button-button-outline-1",
+        "field_type": "text",
+        "label": "Hablemos de negocios",
+        "value_es": "Hablemos de negocios",
+        "value_en": "Let’s talk business"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "image-1",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/peru-map.svg",
+        "value_en": "/icons/peru-map.svg"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "strong-text-1",
+        "field_type": "text",
+        "label": "Origen peruano",
+        "value_es": "Origen peruano",
+        "value_en": "Peruvian origin"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "image-2",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/selection.svg",
+        "value_en": "/icons/selection.svg"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "strong-text-2",
+        "field_type": "text",
+        "label": "Selección cuidadosa",
+        "value_es": "Selección cuidadosa",
+        "value_en": "Carefully selected"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "image-3",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/sailboat.svg",
+        "value_en": "/icons/sailboat.svg"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "strong-text-3",
+        "field_type": "text",
+        "label": "Vocación exportadora",
+        "value_es": "Vocación exportadora",
+        "value_en": "Export focused"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "image-4",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/user-avatar.svg",
+        "value_en": "/icons/user-avatar.svg"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "inicio",
+        "field_key": "strong-text-4",
+        "field_type": "text",
+        "label": "Cerca del agricultor",
+        "value_es": "Cerca del agricultor",
+        "value_en": "Close to growers"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "about",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Campo agrícola peruano",
+        "value_es": "/images/about-field.webp",
+        "value_en": "/images/about-field.webp"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "about",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Calidad que nace en el campo",
+        "value_es": "Calidad que nace en el campo",
+        "value_en": "Quality rooted in the field"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "about",
+        "field_key": "description",
+        "field_type": "textarea",
+        "label": "Seleccionamos, procesamos y comercializamos productos peru",
+        "value_es": "Seleccionamos, procesamos y comercializamos productos peruanos con altos estándares, conectando el esfuerzo de nuestros productores con el mundo.",
+        "value_en": "We select, process and market Peruvian products to high standards, connecting the work of our growers with the world."
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-about",
+        "field_key": "image-1",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/quality-sprout.svg",
+        "value_en": "/icons/quality-sprout.svg"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-about",
+        "field_key": "h3-text-1",
+        "field_type": "text",
+        "label": "Calidad",
+        "value_es": "Calidad",
+        "value_en": "Quality"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-about",
+        "field_key": "image-2",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/traceability-gear.svg",
+        "value_en": "/icons/traceability-gear.svg"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-about",
+        "field_key": "h3-text-2",
+        "field_type": "text",
+        "label": "Trazabilidad",
+        "value_es": "Trazabilidad",
+        "value_en": "Traceability"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-about",
+        "field_key": "image-3",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/commitment-handshake.svg",
+        "value_en": "/icons/commitment-handshake.svg"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-about",
+        "field_key": "h3-text-3",
+        "field_type": "text",
+        "label": "Compromiso",
+        "value_es": "Compromiso",
+        "value_en": "Commitment"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-products",
+        "field_key": "h2-home-products-title-1",
+        "field_type": "text",
+        "label": "Nuestros productos",
+        "value_es": "Nuestros productos",
+        "value_en": "Our products"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-products",
+        "field_key": "a-text-link-1",
+        "field_type": "text",
+        "label": "Ver Línea a Granel",
+        "value_es": "Ver Línea a Granel",
+        "value_en": "View Bulk Line"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-origin",
+        "field_key": "image-1",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/impact-crop.webp",
+        "value_en": "/images/impact-crop.webp"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "home-origin",
+        "field_key": "p-eyebrow-eyebrow-light-1",
+        "field_type": "text",
+        "label": "Del origen al destino",
+        "value_es": "Del origen al destino",
+        "value_en": "From origin to destination"
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "origin",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Una cadena responsable, preparada para nuevos mercados.",
+        "value_es": "Una cadena responsable, preparada para nuevos mercados.",
+        "value_en": "A responsible chain, ready for new markets."
+    },
+    {
+        "page_key": "inicio",
+        "section_key": "origin",
+        "field_key": "description",
+        "field_type": "text",
+        "label": "Cuidamos cada etapa para conectar el campo peruano con el ",
+        "value_es": "Cuidamos cada etapa para conectar el campo peruano con el mundo.",
+        "value_en": "We care for every stage to connect Peruvian growers with the world."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "hero",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/hero-desktop.webp",
+        "value_en": "/images/hero-desktop.webp"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "hero",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Nuestra historia",
+        "value_es": "Nuestra historia",
+        "value_en": "Our story"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "hero",
+        "field_key": "description",
+        "field_type": "textarea",
+        "label": "Somos una agroexportadora peruana especializada en la prod",
+        "value_es": "Somos una agroexportadora peruana especializada en la producción y comercialización de productos agrícolas de calidad.",
+        "value_en": "We are a Peruvian agricultural exporter specializing in the production and marketing of quality agricultural products."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h2-sr-only-1",
+        "field_type": "text",
+        "label": "Misión, visión y valores",
+        "value_es": "Misión, visión y valores",
+        "value_en": "Mission, vision and values"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "image-1",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/mission-target.svg",
+        "value_en": "/icons/mission-target.svg"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h3-text-1",
+        "field_type": "text",
+        "label": "Misión",
+        "value_es": "Misión",
+        "value_en": "Mission"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "p-text-1",
+        "field_type": "textarea",
+        "label": "Comercializar productos agrícolas confiables, atendiendo c",
+        "value_es": "Comercializar productos agrícolas confiables, atendiendo cada requerimiento con calidad y responsabilidad.",
+        "value_en": "To market reliable agricultural products while meeting every requirement with quality and responsibility."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "image-2",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/vision-eye.svg",
+        "value_en": "/icons/vision-eye.svg"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h3-text-2",
+        "field_type": "text",
+        "label": "Visión",
+        "value_es": "Visión",
+        "value_en": "Vision"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "p-text-2",
+        "field_type": "text",
+        "label": "Ser un aliado peruano reconocido por su origen, cumplimien",
+        "value_es": "Ser un aliado peruano reconocido por su origen, cumplimiento y capacidad exportadora.",
+        "value_en": "To be a Peruvian partner recognized for origin, reliability and export capability."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Nuestros valores",
+        "value_es": "Nuestros valores",
+        "value_en": "Our values"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "image-3",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/quality-sprout.svg",
+        "value_en": "/icons/quality-sprout.svg"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h3-text-3",
+        "field_type": "text",
+        "label": "Calidad",
+        "value_es": "Calidad",
+        "value_en": "Quality"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "image-4",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/traceability-gear.svg",
+        "value_en": "/icons/traceability-gear.svg"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h3-text-4",
+        "field_type": "text",
+        "label": "Transparencia",
+        "value_es": "Transparencia",
+        "value_en": "Transparency"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "image-5",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/responsibility-person.svg",
+        "value_en": "/icons/responsibility-person.svg"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h3-text-5",
+        "field_type": "text",
+        "label": "Responsabilidad",
+        "value_es": "Responsabilidad",
+        "value_en": "Responsibility"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "image-6",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/icons/commitment-handshake.svg",
+        "value_en": "/icons/commitment-handshake.svg"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h3-text-6",
+        "field_type": "text",
+        "label": "Compromiso",
+        "value_es": "Compromiso",
+        "value_en": "Commitment"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "p-eyebrow-1",
+        "field_type": "text",
+        "label": "Conócenos",
+        "value_es": "Conócenos",
+        "value_en": "Meet us"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "h3-text-7",
+        "field_type": "text",
+        "label": "Así trabajamos. Así crecemos.",
+        "value_es": "Así trabajamos. Así crecemos.",
+        "value_en": "How we work. How we grow."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "p-text-3",
+        "field_type": "text",
+        "label": "Conoce el trabajo, el equipo y el origen que forman parte ",
+        "value_es": "Conoce el trabajo, el equipo y el origen que forman parte de Royal Beans Perú.",
+        "value_en": "Discover the work, team and origin behind Royal Beans Perú."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "image-7",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/about-video-poster.jpg",
+        "value_en": "/images/expo-connection.webp"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "span-text-1",
+        "field_type": "text",
+        "label": "Reproducir video",
+        "value_es": "Reproducir video",
+        "value_en": "Royal Beans Perú"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-eyebrow-1",
+        "field_type": "text",
+        "label": "Del campo al contenedor",
+        "value_es": "Del campo al contenedor",
+        "value_en": "From field to container"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Trazabilidad de productos.",
+        "value_es": "Trazabilidad de productos.",
+        "value_en": "Product traceability."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Siete etapas conectan el origen del producto con una entre",
+        "value_es": "Siete etapas conectan el origen del producto con una entrega comercial ordenada.",
+        "value_en": "Seven stages connect product origin with an orderly commercial delivery."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h3-text-1",
+        "field_type": "text",
+        "label": "Acopio",
+        "value_es": "Acopio",
+        "value_en": "Sourcing"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-2",
+        "field_type": "text",
+        "label": "Recepción de origen",
+        "value_es": "Recepción de origen",
+        "value_en": "Origin reception"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h3-text-2",
+        "field_type": "text",
+        "label": "Proceso",
+        "value_es": "Proceso",
+        "value_en": "Processing"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-3",
+        "field_type": "text",
+        "label": "Limpieza y selección",
+        "value_es": "Limpieza y selección",
+        "value_en": "Cleaning and selection"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h3-text-3",
+        "field_type": "text",
+        "label": "Control de Calidad",
+        "value_es": "Control de Calidad",
+        "value_en": "Quality Control"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-4",
+        "field_type": "text",
+        "label": "Parámetros verificados",
+        "value_es": "Parámetros verificados",
+        "value_en": "Verified parameters"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h3-text-4",
+        "field_type": "text",
+        "label": "Inspección",
+        "value_es": "Inspección",
+        "value_en": "Inspection"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-5",
+        "field_type": "text",
+        "label": "Revisión del lote",
+        "value_es": "Revisión del lote",
+        "value_en": "Lot review"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h3-text-5",
+        "field_type": "text",
+        "label": "Carga",
+        "value_es": "Carga",
+        "value_en": "Loading"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-6",
+        "field_type": "text",
+        "label": "Acondicionamiento seguro",
+        "value_es": "Acondicionamiento seguro",
+        "value_en": "Safe preparation"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h3-text-6",
+        "field_type": "text",
+        "label": "Documentación",
+        "value_es": "Documentación",
+        "value_en": "Documentation"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-7",
+        "field_type": "text",
+        "label": "Expediente completo",
+        "value_es": "Expediente completo",
+        "value_en": "Complete records"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "h3-text-7",
+        "field_type": "text",
+        "label": "Despacho",
+        "value_es": "Despacho",
+        "value_en": "Dispatch"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-trace",
+        "field_key": "p-text-8",
+        "field_type": "text",
+        "label": "Salida coordinada",
+        "value_es": "Salida coordinada",
+        "value_en": "Coordinated departure"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Nuestros estándares de calidad.",
+        "value_es": "Nuestros estándares de calidad.",
+        "value_en": "Our quality standards."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "image-1",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/standards/fda.png",
+        "value_en": "/images/standards/fda.png"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "h3-text-1",
+        "field_type": "text",
+        "label": "FDA",
+        "value_es": "FDA",
+        "value_en": "FDA"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Registro internacional",
+        "value_es": "Registro internacional",
+        "value_en": "International registration"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "image-2",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/standards/senasa.png",
+        "value_en": "/images/standards/senasa.png"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "h3-text-2",
+        "field_type": "text",
+        "label": "SENASA",
+        "value_es": "SENASA",
+        "value_en": "SENASA"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "p-text-2",
+        "field_type": "text",
+        "label": "Control sanitario",
+        "value_es": "Control sanitario",
+        "value_en": "Sanitary control"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "image-3",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/standards/haccp.png",
+        "value_en": "/images/standards/haccp.png"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "h3-text-3",
+        "field_type": "text",
+        "label": "HACCP INTERNO",
+        "value_es": "HACCP INTERNO",
+        "value_en": "Internal HACCP"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "p-text-3",
+        "field_type": "text",
+        "label": "Control preventivo",
+        "value_es": "Control preventivo",
+        "value_en": "Preventive control"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-standards",
+        "field_key": "p-standards-description-1",
+        "field_type": "text",
+        "label": "Referencias y controles aplicados a nuestra operación come",
+        "value_es": "Referencias y controles aplicados a nuestra operación comercial.",
+        "value_en": "References and controls applied to our commercial operation."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-cta",
+        "field_key": "p-eyebrow-eyebrow-light-1",
+        "field_type": "text",
+        "label": "Hablemos de negocios",
+        "value_es": "Hablemos de negocios",
+        "value_en": "Let's talk business"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-cta",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Conversemos sobre su próxima operación.",
+        "value_es": "Conversemos sobre su próxima operación.",
+        "value_en": "Let’s discuss your next operation."
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-cta",
+        "field_key": "a-button-button-lime-1",
+        "field_type": "text",
+        "label": "Contáctanos",
+        "value_es": "Contáctanos",
+        "value_en": "Contact us"
+    },
+    {
+        "page_key": "nosotros",
+        "section_key": "about-story",
+        "field_key": "strong-text-1",
+        "field_type": "text",
+        "label": "English video coming soon",
+        "value_es": null,
+        "value_en": "English video coming soon"
+    },
+    {
+        "page_key": "productos-conventional",
+        "section_key": "hero",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/conventional-hero.webp",
+        "value_en": "/images/conventional-hero.webp"
+    },
+    {
+        "page_key": "productos-conventional",
+        "section_key": "productos",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Granos que conectan el mundo",
+        "value_es": "Granos que conectan el mundo",
+        "value_en": "Grains that connect the world"
+    },
+    {
+        "page_key": "productos-conventional",
+        "section_key": "hero",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Línea a Granel",
+        "value_es": "Línea a Granel",
+        "value_en": "Bulk Line"
+    },
+    {
+        "page_key": "productos-conventional",
+        "section_key": "hero",
+        "field_key": "description",
+        "field_type": "text",
+        "label": "Granos seleccionados para comercialización a mayor escala.",
+        "value_es": "Granos seleccionados para comercialización a mayor escala.",
+        "value_en": "Selected grains for large-scale commercialization."
+    },
+    {
+        "page_key": "productos-retail",
+        "section_key": "hero",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/expo-connection.webp",
+        "value_en": "/images/expo-connection.webp"
+    },
+    {
+        "page_key": "productos-retail",
+        "section_key": "productos",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Granos que conectan el mundo",
+        "value_es": "Granos que conectan el mundo",
+        "value_en": "Grains that connect the world"
+    },
+    {
+        "page_key": "productos-retail",
+        "section_key": "hero",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Línea retail",
+        "value_es": "Línea retail",
+        "value_en": "Retail line"
+    },
+    {
+        "page_key": "productos-retail",
+        "section_key": "hero",
+        "field_key": "description",
+        "field_type": "text",
+        "label": "Presentaciones listas para acercarse al consumidor final.",
+        "value_es": "Presentaciones listas para acercarse al consumidor final.",
+        "value_en": "Presentations ready to reach the final consumer."
+    },
+    {
+        "page_key": "participacion",
+        "section_key": "hero",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/events/expo-2026-hero.png",
+        "value_en": "/images/events/expo-2026-hero.png"
+    },
+    {
+        "page_key": "participacion",
+        "section_key": "participacion",
+        "field_key": "p-eyebrow-eyebrow-light-1",
+        "field_type": "text",
+        "label": "Participación",
+        "value_es": "Participación",
+        "value_en": "Events"
+    },
+    {
+        "page_key": "participacion",
+        "section_key": "hero",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Nos vemos en los grandes encuentros.",
+        "value_es": "Nos vemos en los grandes encuentros.",
+        "value_en": "Meet us at the leading events."
+    },
+    {
+        "page_key": "participacion",
+        "section_key": "hero",
+        "field_key": "description",
+        "field_type": "text",
+        "label": "Compartimos lo mejor del frejol peruano con el mundo.",
+        "value_es": "Compartimos lo mejor del frejol peruano con el mundo.",
+        "value_en": "We share the best of Peruvian beans with the world."
+    },
+    {
+        "page_key": "participacion",
+        "section_key": "participacion",
+        "field_key": "span-events-hero-signal-1",
+        "field_type": "text",
+        "label": "Conectando cultivos con oportunidades",
+        "value_es": "Conectando cultivos con oportunidades",
+        "value_en": "Connecting crops with opportunities"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "hero",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Trabajo y producción agrícola en el campo peruano",
+        "value_es": "/images/hero-tablet.webp",
+        "value_en": "/images/hero-tablet.webp"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "hero",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Impacto que impulsa oportunidades",
+        "value_es": "Impacto que impulsa oportunidades",
+        "value_en": "Impact that creates opportunities"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "hero",
+        "field_key": "description",
+        "field_type": "textarea",
+        "label": "Generamos oportunidades para mujeres trabajadoras, madres ",
+        "value_es": "Generamos oportunidades para mujeres trabajadoras, madres de familia y mujeres que buscan crecer con dignidad y compromiso.",
+        "value_en": "We create opportunities for working women, mothers and women who seek to grow with dignity and commitment."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impacto",
+        "field_key": "strong-text-1",
+        "field_type": "text",
+        "label": "Inclusión que transforma.",
+        "value_es": "Inclusión que transforma.",
+        "value_en": "Inclusion that transforms."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impacto",
+        "field_key": "p-impact-hero-note-1",
+        "field_type": "text",
+        "label": "Mujeres quecultivan unmejor mañana.",
+        "value_es": "Mujeres quecultivan unmejor mañana.",
+        "value_en": "Women growinga bettertomorrow."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-commitment",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Nuestro compromiso",
+        "value_es": "Nuestro compromiso",
+        "value_en": "Our commitment"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-commitment",
+        "field_key": "h3-text-1",
+        "field_type": "text",
+        "label": "Inclusión laboral",
+        "value_es": "Inclusión laboral",
+        "value_en": "Workplace inclusion"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-commitment",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Abrimos más oportunidades de trabajo para mujeres.",
+        "value_es": "Abrimos más oportunidades de trabajo para mujeres.",
+        "value_en": "We open more employment opportunities for women."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-commitment",
+        "field_key": "h3-text-2",
+        "field_type": "text",
+        "label": "Impulso a madres de familia",
+        "value_es": "Impulso a madres de familia",
+        "value_en": "Support for mothers"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-commitment",
+        "field_key": "p-text-2",
+        "field_type": "text",
+        "label": "Acompañamos el desarrollo de mujeres que sostienen a sus h",
+        "value_es": "Acompañamos el desarrollo de mujeres que sostienen a sus hogares.",
+        "value_en": "We support the growth of women who sustain their households."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-commitment",
+        "field_key": "h3-text-3",
+        "field_type": "text",
+        "label": "Oportunidades para todas",
+        "value_es": "Oportunidades para todas",
+        "value_en": "Opportunities for all"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-commitment",
+        "field_key": "p-text-3",
+        "field_type": "text",
+        "label": "Creemos en el talento, el esfuerzo y el crecimiento con eq",
+        "value_es": "Creemos en el talento, el esfuerzo y el crecimiento con equidad.",
+        "value_en": "We believe in talent, effort and equitable growth."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-values",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Lo que queremos representar",
+        "value_es": "Lo que queremos representar",
+        "value_en": "What we want to represent"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-values",
+        "field_key": "h3-text-1",
+        "field_type": "text",
+        "label": "Trabajo con propósito",
+        "value_es": "Trabajo con propósito",
+        "value_en": "Purposeful work"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-values",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Un empleo que genera bienestar.",
+        "value_es": "Un empleo que genera bienestar.",
+        "value_en": "Employment that creates wellbeing."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-values",
+        "field_key": "h3-text-2",
+        "field_type": "text",
+        "label": "Desarrollo personal",
+        "value_es": "Desarrollo personal",
+        "value_en": "Personal development"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-values",
+        "field_key": "p-text-2",
+        "field_type": "text",
+        "label": "Herramientas para crecer.",
+        "value_es": "Herramientas para crecer.",
+        "value_en": "Tools for growth."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-values",
+        "field_key": "h3-text-3",
+        "field_type": "text",
+        "label": "Participación femenina",
+        "value_es": "Participación femenina",
+        "value_en": "Women’s participation"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-values",
+        "field_key": "p-text-3",
+        "field_type": "text",
+        "label": "Mujeres que construyen un mejor mañana.",
+        "value_es": "Mujeres que construyen un mejor mañana.",
+        "value_en": "Women building a better tomorrow."
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-testimonial",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Historias que inspiran",
+        "value_es": "Historias que inspiran",
+        "value_en": "Stories that inspire"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-testimonial",
+        "field_key": "image-1",
+        "field_type": "image",
+        "label": "Equipo de Royal Beans Perú creando nuevas oportunidades",
+        "value_es": "/images/expo-connection.webp",
+        "value_en": "/images/expo-connection.webp"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-testimonial",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "“Aquí encontramos una oportunidad para salir adelante y cr",
+        "value_es": "“Aquí encontramos una oportunidad para salir adelante y crecer con nuestro trabajo.”",
+        "value_en": "“Here we found an opportunity to move forward and grow through our work.”"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-closing",
+        "field_key": "image-1",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/impact-crop.webp",
+        "value_en": "/images/impact-crop.webp"
+    },
+    {
+        "page_key": "impacto",
+        "section_key": "impact-closing",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Más oportunidades, más inclusión,un mejor futuro.",
+        "value_es": "Más oportunidades, más inclusión,un mejor futuro.",
+        "value_en": "More opportunities, more inclusion,a better future."
+    },
+    {
+        "page_key": "contacto",
+        "section_key": "hero",
+        "field_key": "image",
+        "field_type": "image",
+        "label": "Imagen",
+        "value_es": "/images/expo-connection.webp",
+        "value_en": "/images/expo-connection.webp"
+    },
+    {
+        "page_key": "contacto",
+        "section_key": "contacto",
+        "field_key": "p-eyebrow-eyebrow-light-1",
+        "field_type": "text",
+        "label": "Contáctanos",
+        "value_es": "Contáctanos",
+        "value_en": "Contact us"
+    },
+    {
+        "page_key": "contacto",
+        "section_key": "hero",
+        "field_key": "title",
+        "field_type": "text",
+        "label": "Conversemos sobre tu próxima operación.",
+        "value_es": "Conversemos sobre tu próxima operación.",
+        "value_en": "Let’s discuss your next operation."
+    },
+    {
+        "page_key": "contacto",
+        "section_key": "hero",
+        "field_key": "description",
+        "field_type": "textarea",
+        "label": "Indícanos producto, volumen y destino. Nuestro equipo aten",
+        "value_es": "Indícanos producto, volumen y destino. Nuestro equipo atenderá tu consulta de forma directa.",
+        "value_en": "Tell us the product, volume and destination. Our team will handle your enquiry directly."
+    },
+    {
+        "page_key": "contacto",
+        "section_key": "contact",
+        "field_key": "p-eyebrow-eyebrow-light-1",
+        "field_type": "text",
+        "label": "Información comercial",
+        "value_es": "Información comercial",
+        "value_en": "Business information"
+    },
+    {
+        "page_key": "contacto",
+        "section_key": "contact",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Canales directos",
+        "value_es": "Canales directos",
+        "value_en": "Direct channels"
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "a-text-1",
+        "field_type": "text",
+        "label": "← Royal Beans Perú",
+        "value_es": "← Royal Beans Perú",
+        "value_en": "← Royal Beans Perú"
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "h1-text-1",
+        "field_type": "text",
+        "label": "Privacidad y contacto",
+        "value_es": "Privacidad y contacto",
+        "value_en": "Privacy and contact"
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "p-text-1",
+        "field_type": "text",
+        "label": "Esta página describe cómo funciona el contacto en este sit",
+        "value_es": "Esta página describe cómo funciona el contacto en este sitio de Royal Beans Perú S.A.C.",
+        "value_en": "This page explains how contact works on this Royal Beans Perú S.A.C. website."
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Los datos de tu consulta",
+        "value_es": "Los datos de tu consulta",
+        "value_en": "Your enquiry details"
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "p-text-2",
+        "field_type": "textarea",
+        "label": "El formulario registra el tipo de participante, nombre, em",
+        "value_es": "El formulario registra el tipo de participante, nombre, empresa, país, correo, teléfono, línea, productos de interés y mensaje en el sistema administrativo de Royal Beans Perú para atender y dar seguimiento a tu solicitud. También prepara el mensaje para abrir WhatsApp.",
+        "value_en": "The form stores the participant type, name, company, country, email, phone number, product line, products of interest and message in the Royal Beans Perú administration system so the team can respond and follow up. It also prepares the message for WhatsApp."
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "h2-text-2",
+        "field_type": "text",
+        "label": "Cuando abres WhatsApp",
+        "value_es": "Cuando abres WhatsApp",
+        "value_en": "When you open WhatsApp"
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "p-text-3",
+        "field_type": "textarea",
+        "label": "Al pulsar «Conversar por WhatsApp», se abre ese servicio e",
+        "value_es": "Al pulsar «Conversar por WhatsApp», se abre ese servicio externo con el texto preparado. Puedes revisarlo antes de enviarlo. El uso de WhatsApp está sujeto a las condiciones y políticas de ese servicio.",
+        "value_en": "Selecting ‘Chat on WhatsApp’ opens that external service with your prepared text. You can review it before sending. WhatsApp use is subject to that service’s terms and policies."
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "h2-text-3",
+        "field_type": "text",
+        "label": "Cookies y recursos",
+        "value_es": "Cookies y recursos",
+        "value_en": "Cookies and resources"
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "p-text-4",
+        "field_type": "textarea",
+        "label": "Esta versión del sitio no incorpora herramientas de public",
+        "value_es": "Esta versión del sitio no incorpora herramientas de publicidad ni analítica y no instala cookies propias. Las fuentes e imágenes se sirven desde el propio sitio. Los servicios externos a los que accedas mediante enlaces aplican sus propias políticas.",
+        "value_en": "This version of the website includes no advertising or analytics tools and sets no first-party cookies. Fonts and images are served by this website. External services you visit through links apply their own policies."
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "h2-text-4",
+        "field_type": "text",
+        "label": "Consultas sobre tu información",
+        "value_es": "Consultas sobre tu información",
+        "value_en": "Questions about your information"
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "p-text-5",
+        "field_type": "textarea",
+        "label": "Para consultar sobre la información que compartes con la e",
+        "value_es": "Para consultar sobre la información que compartes con la empresa o solicitar su actualización o eliminación, escribe a administracion@royalbeansperu.com.",
+        "value_en": "For questions about information you share with the company, or to request an update or deletion, contact administracion@royalbeansperu.com."
+    },
+    {
+        "page_key": "privacidad",
+        "section_key": "legal",
+        "field_key": "a-text-2",
+        "field_type": "text",
+        "label": "administracion@royalbeansperu.com",
+        "value_es": "administracion@royalbeansperu.com",
+        "value_en": "administracion@royalbeansperu.com"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "a-text-1",
+        "field_type": "text",
+        "label": "← Royal Beans Perú",
+        "value_es": "← Royal Beans Perú",
+        "value_en": "← Royal Beans Perú"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h1-text-1",
+        "field_type": "text",
+        "label": "Términos y condiciones",
+        "value_es": "Términos y condiciones",
+        "value_en": "Terms and conditions"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-1",
+        "field_type": "textarea",
+        "label": "Estas condiciones regulan el acceso y uso del sitio web de",
+        "value_es": "Estas condiciones regulan el acceso y uso del sitio web de Royal Beans Perú S.A.C. Al navegar por este sitio, aceptas estas condiciones.",
+        "value_en": "These terms govern access to and use of the Royal Beans Perú S.A.C. website. By browsing this website, you accept these terms."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h2-text-1",
+        "field_type": "text",
+        "label": "Información del sitio",
+        "value_es": "Información del sitio",
+        "value_en": "Website information"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-2",
+        "field_type": "textarea",
+        "label": "El contenido presenta a la empresa, sus líneas de producto",
+        "value_es": "El contenido presenta a la empresa, sus líneas de productos y sus actividades comerciales. La información es referencial y puede actualizarse sin previo aviso. No constituye una oferta contractual ni reemplaza una cotización formal.",
+        "value_en": "The content presents the company, its product lines and commercial activities. Information is provided for reference and may be updated without notice. It is not a contractual offer and does not replace a formal quotation."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h2-text-2",
+        "field_type": "text",
+        "label": "Productos y operaciones comerciales",
+        "value_es": "Productos y operaciones comerciales",
+        "value_en": "Products and commercial transactions"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-3",
+        "field_type": "textarea",
+        "label": "La disponibilidad, especificaciones, certificaciones, prec",
+        "value_es": "La disponibilidad, especificaciones, certificaciones, precios, condiciones de entrega y demás términos de una operación se confirman directamente con Royal Beans Perú y constan en la documentación comercial correspondiente.",
+        "value_en": "Availability, specifications, certifications, prices, delivery conditions and all other transaction terms are confirmed directly with Royal Beans Perú and recorded in the relevant commercial documentation."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h2-text-3",
+        "field_type": "text",
+        "label": "Uso permitido",
+        "value_es": "Uso permitido",
+        "value_en": "Permitted use"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-4",
+        "field_type": "textarea",
+        "label": "Puedes utilizar el sitio para conocer la empresa y realiza",
+        "value_es": "Puedes utilizar el sitio para conocer la empresa y realizar consultas legítimas. No debes interferir con su funcionamiento, intentar acceder a áreas restringidas, introducir código malicioso ni utilizar su contenido de forma ilícita o engañosa.",
+        "value_en": "You may use the website to learn about the company and make legitimate enquiries. You must not interfere with its operation, attempt to access restricted areas, introduce malicious code, or use its content unlawfully or deceptively."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h2-text-4",
+        "field_type": "text",
+        "label": "Propiedad intelectual",
+        "value_es": "Propiedad intelectual",
+        "value_en": "Intellectual property"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-5",
+        "field_type": "textarea",
+        "label": "Las marcas, fotografías, textos, gráficos y demás contenid",
+        "value_es": "Las marcas, fotografías, textos, gráficos y demás contenidos del sitio pertenecen a Royal Beans Perú o se utilizan con autorización. No pueden reproducirse, distribuirse ni explotarse comercialmente sin autorización previa por escrito.",
+        "value_en": "Trademarks, photographs, text, graphics and other website content belong to Royal Beans Perú or are used with permission. They may not be reproduced, distributed or commercially exploited without prior written authorisation."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h2-text-5",
+        "field_type": "text",
+        "label": "Enlaces y servicios externos",
+        "value_es": "Enlaces y servicios externos",
+        "value_en": "External links and services"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-6",
+        "field_type": "textarea",
+        "label": "El sitio puede enlazar a servicios de terceros, como Whats",
+        "value_es": "El sitio puede enlazar a servicios de terceros, como WhatsApp y redes sociales. Royal Beans Perú no controla esos servicios y su uso se rige por las condiciones y políticas de cada proveedor.",
+        "value_en": "The website may link to third-party services such as WhatsApp and social media. Royal Beans Perú does not control those services, and their use is governed by each provider's terms and policies."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h2-text-6",
+        "field_type": "text",
+        "label": "Responsabilidad",
+        "value_es": "Responsabilidad",
+        "value_en": "Liability"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-7",
+        "field_type": "textarea",
+        "label": "Royal Beans Perú procura mantener información correcta y e",
+        "value_es": "Royal Beans Perú procura mantener información correcta y el sitio disponible, pero no garantiza que esté libre de interrupciones o errores. En la medida permitida por la ley, no responde por daños derivados del uso indebido del sitio o de servicios externos.",
+        "value_en": "Royal Beans Perú seeks to keep information accurate and the website available, but does not guarantee uninterrupted or error-free operation. To the extent permitted by law, it is not liable for damage arising from misuse of the website or third-party services."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "h2-text-7",
+        "field_type": "text",
+        "label": "Cambios y contacto",
+        "value_es": "Cambios y contacto",
+        "value_en": "Changes and contact"
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "p-text-8",
+        "field_type": "textarea",
+        "label": "Estas condiciones pueden actualizarse cuando cambien el si",
+        "value_es": "Estas condiciones pueden actualizarse cuando cambien el sitio o las normas aplicables. Para consultas, escribe a administracion@royalbeansperu.com.",
+        "value_en": "These terms may be updated when the website or applicable rules change. For enquiries, contact administracion@royalbeansperu.com."
+    },
+    {
+        "page_key": "terminos",
+        "section_key": "legal",
+        "field_key": "a-text-2",
+        "field_type": "text",
+        "label": "administracion@royalbeansperu.com",
+        "value_es": "administracion@royalbeansperu.com",
+        "value_en": "administracion@royalbeansperu.com"
+    }
+]

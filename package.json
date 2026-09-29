@@ -5,6 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:staging": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-hostinger.ps1 -Environment staging -BuildOnly",
+    "build:production": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-hostinger.ps1 -Environment production -BuildOnly",
+    "dist:staging": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-hostinger.ps1 -Environment staging",
+    "dist:production": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-hostinger.ps1 -Environment production",
+    "dist:hostinger": "npm run dist:staging",
     "start": "next start"
   },
   "dependencies": {

@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
   email VARCHAR(190) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   role ENUM('admin','editor') NOT NULL DEFAULT 'editor',
+  permissions_json JSON NULL,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   last_login_at DATETIME NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -36,11 +37,39 @@ CREATE TABLE IF NOT EXISTS media (
   original_name VARCHAR(255) NOT NULL,
   mime_type VARCHAR(100) NOT NULL,
   size_bytes INT UNSIGNED NOT NULL DEFAULT 0,
+  content_hash CHAR(64) NULL,
   alt_es VARCHAR(255) NOT NULL DEFAULT '',
   alt_en VARCHAR(255) NOT NULL DEFAULT '',
   uploaded_by BIGINT UNSIGNED NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_media_path (path),
+  INDEX idx_media_content_hash (content_hash),
+  INDEX idx_media_type_id (mime_type,id),
   CONSTRAINT fk_media_user FOREIGN KEY (uploaded_by) REFERENCES admin_users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS media_aliases (
+  local_path VARCHAR(500) PRIMARY KEY,
+  remote_path VARCHAR(1000) NOT NULL,
+  content_hash CHAR(64) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_media_alias_hash (content_hash)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS home_announcements (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(190) NOT NULL,
+  image_path VARCHAR(1000) NOT NULL,
+  alt_es VARCHAR(255) NOT NULL DEFAULT '',
+  alt_en VARCHAR(255) NOT NULL DEFAULT '',
+  is_permanent TINYINT(1) NOT NULL DEFAULT 1,
+  expires_at DATETIME NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_home_announcements_public (is_active,is_permanent,expires_at,sort_order)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS products (
@@ -94,6 +123,7 @@ CREATE TABLE IF NOT EXISTS product_gallery (
   alt_es VARCHAR(255) NOT NULL DEFAULT '',
   alt_en VARCHAR(255) NOT NULL DEFAULT '',
   sort_order INT NOT NULL DEFAULT 0,
+  INDEX idx_gallery_product_sort (product_id,sort_order,id),
   CONSTRAINT fk_gallery_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -104,15 +134,18 @@ CREATE TABLE IF NOT EXISTS product_packages (
   weight_secondary VARCHAR(80) NOT NULL DEFAULT '',
   material_es VARCHAR(190) NOT NULL DEFAULT '',
   material_en VARCHAR(190) NOT NULL DEFAULT '',
+  image_path VARCHAR(500) NOT NULL DEFAULT '',
+  is_available TINYINT(1) NOT NULL DEFAULT 1,
   package_type ENUM('bag','sack','big-bag','other') NOT NULL DEFAULT 'sack',
   sort_order INT NOT NULL DEFAULT 0,
+  INDEX idx_packages_product_sort (product_id,sort_order,id),
   CONSTRAINT fk_packages_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS product_harvest (
   product_id BIGINT UNSIGNED NOT NULL,
   month_number TINYINT UNSIGNED NOT NULL,
-  availability ENUM('none','harvest','available','limited') NOT NULL DEFAULT 'none',
+  availability ENUM('none','planting','harvest','available','limited') NOT NULL DEFAULT 'none',
   PRIMARY KEY (product_id,month_number),
   CONSTRAINT fk_harvest_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -122,6 +155,7 @@ CREATE TABLE IF NOT EXISTS product_certifications (
   product_id BIGINT UNSIGNED NOT NULL,
   name VARCHAR(160) NOT NULL,
   sort_order INT NOT NULL DEFAULT 0,
+  INDEX idx_certifications_product_sort (product_id,sort_order,id),
   CONSTRAINT fk_certification_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -130,6 +164,7 @@ CREATE TABLE IF NOT EXISTS product_relations (
   related_product_id BIGINT UNSIGNED NOT NULL,
   sort_order INT NOT NULL DEFAULT 0,
   PRIMARY KEY (product_id,related_product_id),
+  INDEX idx_relations_product_sort (product_id,sort_order,related_product_id),
   CONSTRAINT fk_relation_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
   CONSTRAINT fk_relation_related FOREIGN KEY (related_product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -143,10 +178,56 @@ CREATE TABLE IF NOT EXISTS content_fields (
   label VARCHAR(190) NOT NULL,
   value_es MEDIUMTEXT NULL,
   value_en MEDIUMTEXT NULL,
+  style_json JSON NULL,
   updated_by BIGINT UNSIGNED NULL,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uq_content_field (page_key,section_key,field_key),
   CONSTRAINT fk_content_user FOREIGN KEY (updated_by) REFERENCES admin_users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS cms_collections (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  module_key ENUM('presentation','impact','standards') NOT NULL,
+  entry_type ENUM('event','presence','standard') NOT NULL,
+  title_es VARCHAR(190) NOT NULL,
+  title_en VARCHAR(190) NOT NULL DEFAULT '',
+  description_es TEXT NULL,
+  description_en TEXT NULL,
+  event_date DATE NULL,
+  location_es VARCHAR(190) NOT NULL DEFAULT '',
+  location_en VARCHAR(190) NOT NULL DEFAULT '',
+  logo_path VARCHAR(500) NOT NULL DEFAULT '',
+  cover_path VARCHAR(500) NOT NULL DEFAULT '',
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_collection_public (module_key,entry_type,is_active,sort_order)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS cms_collection_media (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  collection_id BIGINT UNSIGNED NOT NULL,
+  media_path VARCHAR(500) NOT NULL,
+  caption_es VARCHAR(255) NOT NULL DEFAULT '',
+  caption_en VARCHAR(255) NOT NULL DEFAULT '',
+  sort_order INT NOT NULL DEFAULT 0,
+  INDEX idx_collection_media_sort (collection_id,sort_order,id),
+  CONSTRAINT fk_collection_media FOREIGN KEY (collection_id) REFERENCES cms_collections(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS contact_channels (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  channel_type ENUM('email','phone','whatsapp','address','other') NOT NULL DEFAULT 'other',
+  label_es VARCHAR(160) NOT NULL,
+  label_en VARCHAR(160) NOT NULL DEFAULT '',
+  value_text VARCHAR(500) NOT NULL,
+  link_url VARCHAR(500) NOT NULL DEFAULT '',
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_contact_public (is_active,sort_order,id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS settings (
@@ -158,11 +239,15 @@ CREATE TABLE IF NOT EXISTS settings (
 
 CREATE TABLE IF NOT EXISTS inquiries (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  participant_type VARCHAR(80) NOT NULL DEFAULT '',
   name VARCHAR(140) NOT NULL,
   company VARCHAR(180) NOT NULL DEFAULT '',
   email VARCHAR(190) NOT NULL,
+  phone VARCHAR(80) NOT NULL DEFAULT '',
   country VARCHAR(120) NOT NULL DEFAULT '',
+  product_line VARCHAR(40) NOT NULL DEFAULT '',
   product_name VARCHAR(190) NOT NULL DEFAULT '',
+  product_names TEXT NULL,
   message TEXT NOT NULL,
   locale ENUM('es','en') NOT NULL DEFAULT 'es',
   status ENUM('new','contacted','closed','spam') NOT NULL DEFAULT 'new',
@@ -184,7 +269,7 @@ CREATE TABLE IF NOT EXISTS audit_log (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT IGNORE INTO product_lines (slug,name_es,name_en,sort_order) VALUES
-('conventional','Línea Convencional','Conventional Line',10),
+('conventional','Línea a Granel','Bulk Line',10),
 ('retail','Línea Retail','Retail Line',20);
 
 INSERT IGNORE INTO product_categories (slug,name_es,name_en,sort_order) VALUES
@@ -197,7 +282,16 @@ INSERT IGNORE INTO settings (setting_key,value_text,is_public) VALUES
 ('company_email','administracion@royalbeansperu.com',1),
 ('company_phone','+51 961 804 500',1),
 ('whatsapp','51961804500',1),
-('site_name','Royal Beans Perú',1);
+('site_name','Royal Beans Perú',1),
+('theme_palette','royal',1),
+('theme_font','bricolage-dm',1),
+('theme_background','paper',1),
+('media_storage','r2',0),
+('r2_account_id','',0),
+('r2_access_key_id','',0),
+('r2_secret_access_key','',0),
+('r2_bucket','',0),
+('r2_public_url','',0);
 
 INSERT IGNORE INTO content_fields (page_key,section_key,field_key,field_type,label) VALUES
 ('inicio','hero','title','text','Título principal'),
@@ -209,16 +303,15 @@ INSERT IGNORE INTO content_fields (page_key,section_key,field_key,field_type,lab
 ('nosotros','hero','title','text','Título principal'),
 ('nosotros','hero','description','textarea','Descripción principal'),
 ('nosotros','hero','image','image','Imagen principal'),
+('nosotros','about-video','source','url','Video institucional'),
 ('productos','hero','title','text','Título principal'),
 ('productos','hero','description','textarea','Descripción principal'),
-('productos-conventional','hero','title','text','Título de Línea Convencional'),
-('productos-conventional','hero','description','textarea','Descripción de Línea Convencional'),
+('productos-conventional','hero','title','text','Título de Línea a Granel'),
+('productos-conventional','hero','description','textarea','Descripción de Línea a Granel'),
 ('productos-retail','hero','title','text','Título de Línea Retail'),
 ('productos-retail','hero','description','textarea','Descripción de Línea Retail'),
 ('participacion','hero','title','text','Título principal'),
 ('participacion','hero','description','textarea','Descripción principal'),
-('presencia','hero','title','text','Título principal'),
-('presencia','hero','description','textarea','Descripción principal'),
 ('impacto','hero','title','text','Título principal'),
 ('impacto','hero','description','textarea','Descripción principal'),
 ('contacto','hero','title','text','Título principal'),

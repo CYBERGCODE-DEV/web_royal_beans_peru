@@ -383,14 +383,12 @@ components/HomePage.tsx      Estructura de páginas y footer
 components/InteractiveShell.tsx
                              Cabecera, carrusel, catálogo e hidratación CMS
 public/shared-chrome.css     Cabecera y footer globales protegidos
-public/product.php           Ficha dinámica de producto
-public/product-detail.css    Base visual de la ficha
-public/product-detail-complete.css
-                             Componentes completos de la ficha
+components/InteractiveShell.tsx
+                             Ficha modal nativa alimentada por MySQL
 public/admin/                Panel administrativo y editor
 public/api/                  API del catálogo, contenido y consultas
 public/cms-config/schema.sql Esquema MySQL
-public/router.php            Rutas dinámicas locales
+public/router.php            Enrutamiento local y redirecciones heredadas
 scripts/seed-products.php    Carga inicial del catálogo
 out/                         Exportación preparada para servidor
 ```

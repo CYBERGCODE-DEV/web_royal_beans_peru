@@ -16,6 +16,49 @@ La base de datos local no es un archivo dentro de la web: está ejecutándose en
 5. Extráelo directamente dentro de `public_html`.
 6. Confirma que `index.html`, `.htaccess`, `product.php`, `admin/`, `api/` y `cms-config/` estén directamente dentro de `public_html`, no dentro de otra carpeta intermedia.
 
+### Si la web ya está publicada
+
+No sigas los pasos de creación e importación de base de datos de las secciones siguientes. Para actualizar únicamente el código:
+
+1. Exporta la base publicada desde phpMyAdmin.
+2. Conserva `public_html/cms-config/database.local.php` y `public_html/uploads/`.
+3. No vacíes `public_html` y no importes ningún SQL.
+4. Extrae el ZIP sobre `public_html`, sobrescribiendo los archivos incluidos pero sin borrar archivos existentes.
+5. Purga la caché de Hostinger/CDN.
+
+El paquete de producción excluye `database.local.php`, `schema.sql`, `products.seed.json` y `admin/install.php`; actualizar archivos no modifica la base MySQL.
+
+## Sincronizar producción hacia la web local
+
+Cloudflare R2 almacena imágenes, pero no replica MySQL. La base de Hostinger debe considerarse la fuente principal de productos, textos y configuración del CMS.
+
+Después de descargar un respaldo nuevo desde phpMyAdmin, ejecuta desde `web_royalbeans`:
+
+```powershell
+php scripts/sync-hostinger-to-local.php "C:\ruta\al\respaldo.sql" "https://tu-dominio.com"
+```
+
+El comando:
+
+- Solo acepta una conexión MySQL local (`localhost`, `127.0.0.1` o `::1`).
+- Crea un respaldo previo en `_local_cache/db-backups/`.
+- Reemplaza la base local con el dump de producción.
+- Descarga las imágenes `/uploads/` que falten.
+- Refleja esas imágenes en `out/` cuando el servidor local usa ese directorio.
+- Informa la cantidad final de productos, medios e imágenes pendientes.
+
+No publiques los respaldos locales ni los guardes dentro de `public/`.
+
+## Flujo recomendado con Cloudflare R2
+
+1. Configura R2 desde `/admin/configuration.php` en Hostinger.
+2. Desde **Imágenes**, ejecuta una sola vez **Migrar imágenes locales a R2**.
+3. Verifica que el panel indique que todo está sincronizado.
+4. A partir de ese momento, las nuevas imágenes subidas desde el CMS se guardan directamente en R2 y su URL pública queda registrada en MySQL.
+5. Para actualizar local, exporta la base de Hostinger y ejecuta el comando anterior. Las URLs R2 funcionarán también en local sin copiar las imágenes.
+
+No existe sincronización automática de MySQL por activar Cloudflare. Una réplica bidireccional entre local y producción puede sobrescribir cambios recientes. Para evitar conflictos, edita contenidos en el CMS de Hostinger y usa local principalmente para cambios de código y diseño.
+
 ## 2. Crear la base de datos
 
 1. En hPanel abre **Sitios web → Dashboard → Gestión de bases de datos**.

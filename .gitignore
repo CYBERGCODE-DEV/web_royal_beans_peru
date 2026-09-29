@@ -4,6 +4,10 @@ node_modules/
 # Next.js generated files
 .next/
 out/
+dist-hostinger/
+dist-hostinger.zip
+dist-staging/
+dist-production/
 
 # Tests and local captures
 verification/
@@ -14,6 +18,13 @@ coverage/
 
 # Deployment packages
 *.zip
+dist/
+
+# Local diagnostics and database copies (never publish)
+_local_cache/
+database-exports/
+outputs/
+public/cms-config/content-version.json
 
 # Environment and logs
 .env*
@@ -23,6 +34,13 @@ public/uploads/*
 !public/uploads/.htaccess
 *.log
 npm-debug.log*
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.swp
+*.swo
 
 # Editors and operating systems
 .vscode/

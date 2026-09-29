@@ -6,7 +6,7 @@ $db = new PDO(sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $config
 if ((int) $db->query('SELECT COUNT(*) FROM products')->fetchColumn() > 0) exit("Products already seeded\n");
 $lineId=(int)$db->query("SELECT id FROM product_lines WHERE slug='conventional'")->fetchColumn();
 $categories=[];foreach($db->query('SELECT id,slug FROM product_categories') as $row)$categories[$row['slug']]=$row['id'];
-$items=json_decode((string)file_get_contents(dirname(__DIR__).'/components/products.json'),true,512,JSON_THROW_ON_ERROR);
+$items=json_decode((string)file_get_contents(dirname(__DIR__).'/public/cms-config/products.seed.json'),true,512,JSON_THROW_ON_ERROR);
 $product=$db->prepare('INSERT INTO products (line_id,category_id,image_path,is_active,featured_home,sort_order) VALUES (?,?,?,?,?,?)');
 $translation=$db->prepare('INSERT INTO product_translations (product_id,locale,name,slug) VALUES (?,?,?,?)');
 $slug=static function(string $value):string{$ascii=iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$value)?:$value;return trim(strtolower((string)preg_replace('/[^a-zA-Z0-9]+/','-',$ascii)),'-');};

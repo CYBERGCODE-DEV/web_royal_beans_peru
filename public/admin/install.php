@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/_bootstrap.php';
+if (!admin_install_enabled()) { http_response_code(404); exit('Página no encontrada.'); }
 if (admin_configured()) { header('Location: /admin/'); exit; }
 $error = '';
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
