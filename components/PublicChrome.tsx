@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ConversionTracker, Header, WhatsappMascot } from "./InteractiveShell";
 import SharedFooter from "./SharedFooter";
 import { pages, pageFromSlug, pagePath, productLinePath, type Lang, type PageKey } from "./routes";
@@ -60,10 +60,66 @@ function routeState(pathname: string, lang: Lang): { page: PageKey; languagePath
   return { page: pageFromSlug(slug, lang) ?? "inicio" };
 }
 
+const curtainPaths = new Set([
+  ...(["es", "en"] as const).flatMap(language => [
+    ...(Object.keys(pages) as PageKey[]).map(page => pagePath(page, language)),
+    productLinePath("conventional", language),
+    productLinePath("retail", language),
+  ]),
+]);
+
 function PublicRouteLoader({ pathname, lang }: { pathname: string; lang: Lang }) {
-  const [loading, setLoading] = useState(false);
-  const activeRef = useRef(false);
+  const initialPhase = curtainPaths.has(pathname) ? "active" : "idle";
+  const [phase, setPhase] = useState<"active" | "leaving" | "idle">(initialPhase);
+  const phaseRef = useRef<"active" | "leaving" | "idle">(initialPhase);
+  const targetPathRef = useRef(pathname);
   const safetyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const readyRef = useRef(0);
+  const changePhase = (next: "active" | "leaving" | "idle") => { phaseRef.current = next; setPhase(next); };
+
+  useLayoutEffect(() => {
+    const isProductPreview = new URLSearchParams(window.location.search).has("producto") || new URLSearchParams(window.location.search).has("product");
+    document.documentElement.toggleAttribute("data-product-preview", isProductPreview);
+    if (targetPathRef.current !== pathname) {
+      targetPathRef.current = pathname;
+      if (!isProductPreview) changePhase(curtainPaths.has(pathname) ? "active" : "idle");
+    }
+    if (isProductPreview || !curtainPaths.has(pathname)) changePhase("idle");
+    const clearTimers = () => {
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+    };
+    const leave = () => {
+      clearTimers();
+      if (phaseRef.current !== "active") return;
+      changePhase("leaving");
+      exitTimerRef.current = setTimeout(() => changePhase("idle"), 680);
+    };
+    const waitForVisuals = async (request: number) => {
+      const stage = document.querySelector<HTMLElement>(".public-page-stage");
+      const hero = stage?.querySelector<HTMLImageElement>("[data-hero] img[data-cms='hero.image']");
+      await Promise.all([
+        document.fonts?.ready.catch(() => undefined),
+        hero && !hero.complete ? new Promise<void>(resolve => {
+          hero.addEventListener("load", () => resolve(), { once: true });
+          hero.addEventListener("error", () => resolve(), { once: true });
+        }) : hero?.decode?.().catch(() => undefined),
+      ]);
+      if (request === readyRef.current) leave();
+    };
+    const cmsReady = () => {
+      if (phaseRef.current !== "active" || window.location.pathname !== targetPathRef.current) return;
+      void waitForVisuals(++readyRef.current);
+    };
+    window.addEventListener("royalbeans:cms-ready", cmsReady);
+    const stage = document.querySelector<HTMLElement>(".public-page-stage");
+    if (!isProductPreview && curtainPaths.has(pathname)) {
+      if (stage?.dataset.cmsState === "ready" && (window as Window & { __ROYALBEANS_SERVER_CMS_PATH__?: string }).__ROYALBEANS_SERVER_CMS_PATH__ === pathname) cmsReady();
+      safetyTimerRef.current = setTimeout(leave, 10000);
+    }
+    return () => { window.removeEventListener("royalbeans:cms-ready", cmsReady); clearTimers(); readyRef.current++; };
+  }, [pathname]);
 
   useEffect(() => {
     const startLoading = (event: MouseEvent) => {
@@ -74,29 +130,21 @@ function PublicRouteLoader({ pathname, lang }: { pathname: string; lang: Lang })
       const target = new URL(link.href, window.location.href);
       if (target.origin !== window.location.origin) return;
       const current = new URL(window.location.href);
-      if (target.pathname === current.pathname && target.search === current.search) return;
-      activeRef.current = true;
-      setLoading(true);
-      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
-      safetyTimerRef.current = setTimeout(() => { activeRef.current = false; setLoading(false); }, 10000);
+      if (target.pathname === current.pathname || !curtainPaths.has(target.pathname) || target.searchParams.has("producto") || target.searchParams.has("product")) return;
+      document.documentElement.removeAttribute("data-product-preview");
+      targetPathRef.current = target.pathname;
+      readyRef.current++;
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+      changePhase("active");
     };
     document.addEventListener("click", startLoading, true);
     return () => document.removeEventListener("click", startLoading, true);
   }, []);
 
-  useEffect(() => {
-    if (!activeRef.current) return;
-    activeRef.current = false;
-    setLoading(false);
-    if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
-  }, [pathname]);
-
-  useEffect(() => () => {
-    if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
-  }, []);
-
-  return <div className={`public-route-loader${loading ? " is-active" : ""}`} role="status" aria-label={lang === "es" ? "Abriendo página" : "Opening page"} aria-hidden={!loading}>
-    <div><img src="/images/logo.webp" alt="Royal Beans Perú" width="54" height="54" /><span aria-hidden="true" /></div>
+  return <div className="public-route-loader" data-phase={phase} role="status" aria-label={lang === "es" ? "Abriendo página" : "Opening page"} aria-hidden={phase === "idle"}>
+    <span className="public-route-loader-panel public-route-loader-panel-left" aria-hidden="true" />
+    <span className="public-route-loader-panel public-route-loader-panel-right" aria-hidden="true" />
+    <div className="public-route-loader-logo"><img src="/images/logo.webp" alt="" width="86" height="100" /></div>
   </div>;
 }
 

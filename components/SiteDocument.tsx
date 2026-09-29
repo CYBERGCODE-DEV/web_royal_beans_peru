@@ -18,6 +18,7 @@ const body = DM_Sans({
 });
 
 const scrollRestoreScript = `(()=>{try{const n=performance.getEntriesByType('navigation')[0];if(!n||!['reload','back_forward'].includes(n.type))return;const k='royalbeans:scroll:'+location.pathname+location.search;const y=Number(sessionStorage.getItem(k)||0);if(y<=0)return;if('scrollRestoration'in history)history.scrollRestoration='manual';const d=document.documentElement;d.setAttribute('data-scroll-restoring','');let stopped=false,t=0,stable=0;const finish=()=>{if(stopped)return;stopped=true;clearTimeout(t);d.removeAttribute('data-scroll-restoring')};const restore=()=>{if(stopped)return;const max=Math.max(0,d.scrollHeight-innerHeight);scrollTo(0,Math.min(y,max));stable=max>=y-2&&Math.abs(scrollY-y)<=2?stable+1:0;if(stable>=8){requestAnimationFrame(()=>requestAnimationFrame(finish));return}t=setTimeout(restore,60)};['wheel','touchstart','pointerdown','keydown'].forEach(e=>addEventListener(e,finish,{once:true,passive:true}));document.readyState==='loading'?addEventListener('DOMContentLoaded',restore,{once:true}):restore();addEventListener('load',restore,{once:true});setTimeout(finish,2200)}catch(e){document.documentElement.removeAttribute('data-scroll-restoring')}})()`;
+const productPreviewScript = `(()=>{const q=new URLSearchParams(location.search);if(q.has('producto')||q.has('product'))document.documentElement.setAttribute('data-product-preview','')})()`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
 export default function SiteDocument({ children, lang }: Readonly<{ children: React.ReactNode; lang: "es" | "en" }>) {
   return (
     <html lang={lang} className={`${display.variable} ${body.variable}`}>
-      <head><link rel="stylesheet" href="/shared-chrome.css?v=20260918-5" /><script dangerouslySetInnerHTML={{ __html: scrollRestoreScript }} /></head>
+      <head><link rel="preload" as="image" href="/images/logo.webp" type="image/webp" /><link rel="stylesheet" href="/shared-chrome.css?v=20260918-5" /><script dangerouslySetInnerHTML={{ __html: productPreviewScript }} /><script dangerouslySetInnerHTML={{ __html: scrollRestoreScript }} /><noscript><style>{".public-route-loader{display:none}"}</style></noscript></head>
       <body>{children}<ContentProtection lang={lang} /></body>
     </html>
   );

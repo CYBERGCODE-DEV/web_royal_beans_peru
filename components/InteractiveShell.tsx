@@ -248,6 +248,28 @@ export function ContentProtection({ lang }: { lang: Lang }) {
   return <div className="content-protected-notice" data-visible={visible ? "true" : "false"} role="status" aria-live="polite">{lang === "es" ? "Contenido protegido" : "Protected content"}</div>;
 }
 
+function enforceCmsTitleBreak(element: HTMLElement) {
+  if (!element.hasAttribute("data-cms-break-after") || element.querySelector("br")) return;
+  const text = element.textContent ?? "";
+  const words = Array.from(text.matchAll(/\S+/g));
+  const breakAfter = Math.max(1, Math.min(words.length - 1, Number(element.dataset.cmsBreakAfter || 1)));
+  if (words.length < 2 || breakAfter >= words.length) return;
+  const offset = (words[breakAfter - 1].index ?? 0) + words[breakAfter - 1][0].length;
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  let consumed = 0;
+  let node = walker.nextNode() as Text | null;
+  while (node) {
+    const next = consumed + node.data.length;
+    if (offset <= next) {
+      const tail = node.splitText(Math.max(0, offset - consumed));
+      tail.parentNode?.insertBefore(document.createElement("br"), tail);
+      return;
+    }
+    consumed = next;
+    node = walker.nextNode() as Text | null;
+  }
+}
+
 function renderCmsText(element: HTMLElement, value: string, runs?: RichTextRun[]) {
   const preserveChildren = Boolean(element.querySelector(":scope > svg, :scope > img, :scope > span:not([data-cms-run])"));
   const validRuns = Array.isArray(runs)
@@ -258,10 +280,12 @@ function renderCmsText(element: HTMLElement, value: string, runs?: RichTextRun[]
     const textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
     if (textNode) textNode.textContent = value;
     else element.prepend(document.createTextNode(value));
+    enforceCmsTitleBreak(element);
     return;
   }
   if (!validRuns) {
     element.textContent = value;
+    enforceCmsTitleBreak(element);
     return;
   }
   element.replaceChildren(...runs.map(run => {
@@ -272,6 +296,7 @@ function renderCmsText(element: HTMLElement, value: string, runs?: RichTextRun[]
     span.textContent = run.text;
     return span;
   }));
+  enforceCmsTitleBreak(element);
 }
 
 export function ContentHydrator({ page, lang }: { page: string; lang: Lang }) {
@@ -281,33 +306,12 @@ export function ContentHydrator({ page, lang }: { page: string; lang: Lang }) {
     const serverRendered = publicRevision === 0 && (window as Window & { __ROYALBEANS_SERVER_CMS_PATH__?: string }).__ROYALBEANS_SERVER_CMS_PATH__ === window.location.pathname;
     if (stateRoot && !serverRendered) stateRoot.dataset.cmsState = "loading";
     const forcedBreakElements = Array.from(document.querySelectorAll<HTMLElement>("[data-cms-break-after]"));
-    const enforceTitleBreak = (element: HTMLElement) => {
-      if (element.querySelector("br")) return;
-      const text = element.textContent ?? "";
-      const words = Array.from(text.matchAll(/\S+/g));
-      const breakAfter = Math.max(1, Math.min(words.length - 1, Number(element.dataset.cmsBreakAfter || 1)));
-      if (words.length < 2 || breakAfter >= words.length) return;
-      const offset = (words[breakAfter - 1].index ?? 0) + words[breakAfter - 1][0].length;
-      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-      let consumed = 0;
-      let node = walker.nextNode() as Text | null;
-      while (node) {
-        const next = consumed + node.data.length;
-        if (offset <= next) {
-          const tail = node.splitText(Math.max(0, offset - consumed));
-          tail.parentNode?.insertBefore(document.createElement("br"), tail);
-          return;
-        }
-        consumed = next;
-        node = walker.nextNode() as Text | null;
-      }
-    };
-    forcedBreakElements.forEach(enforceTitleBreak);
+    forcedBreakElements.forEach(enforceCmsTitleBreak);
     const forcedBreakObserver = new MutationObserver(records => records.forEach(record => {
       const element = record.target instanceof Element
         ? record.target.closest<HTMLElement>("[data-cms-break-after]")
         : record.target.parentElement?.closest<HTMLElement>("[data-cms-break-after]");
-      if (element) enforceTitleBreak(element);
+      if (element) enforceCmsTitleBreak(element);
     }));
     forcedBreakElements.forEach(element => forcedBreakObserver.observe(element, { childList: true, characterData: true, subtree: true }));
     const roots = Array.from(document.querySelectorAll<HTMLElement>("main"));
@@ -798,7 +802,7 @@ export function ProductCatalog({ lang, line = "conventional", initialProducts = 
   const warmPreview = (_index: number) => {};
   return <><div className="catalog-toolbar" data-cms-managed><div className="product-filters" role="group" aria-label={lang === "es" ? "Filtrar productos" : "Filter products"}>{Object.entries(filters).map(([key, label]) => <button type="button" key={key} aria-pressed={category === key} onClick={() => { setCategory(key); setExpanded(false); }}>{label}</button>)}</div></div>
     {catalogProducts === null ? <CatalogLoadingState lang={lang} /> : failed && catalogProducts.length === 0 ? <CatalogErrorState lang={lang} retry={retry} /> : filtered.length ? <div className={`product-grid ${expanded ? "is-expanded" : ""}`}>{filtered.map((product, index) => <article className="product-card" data-product-id={product.id} key={product.id ?? product.es}>
-      <a href={productPublicPath(product,lang)} data-product-preview-link className="product-image" onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }} aria-label={`${lang === "es" ? "Ver detalles de" : "View details for"} ${product[lang]}`}><span className="product-index">{String(index + 1).padStart(2, "0")}</span><img src={product.image} srcSet={product.image_320 && product.image_640 ? `${product.image_320} 320w, ${product.image_640} 640w` : undefined} sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 260px" alt={productImageAlt(product,lang)} loading="lazy" decoding="async" width="640" height="640" /><span className="product-arrow"><ArrowUpRight size={20} /></span></a><div className="product-meta"><p>{filters[categoryGroup(product.category)]}</p><h3><a href={productPublicPath(product,lang)} data-product-preview-link className="product-title-button" onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }}>{product[lang]}</a></h3><div className="home-product-actions product-card-actions"><a className="button button-forest" href={productPublicPath(product,lang)} data-product-preview-link onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }}>{lang === "es" ? "Ver detalles" : "View details"}<ArrowUpRight size={15} aria-hidden="true" /></a></div></div>
+      <a href={productPublicPath(product,lang)} data-product-preview-link className="product-image" onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }} aria-label={`${lang === "es" ? "Ver detalles de" : "View details for"} ${product[lang]}`}><span className="product-index">{String(index + 1).padStart(2, "0")}</span><img src={product.image} srcSet={product.image_320 && product.image_640 ? `${product.image_320} 320w, ${product.image_640} 640w` : undefined} sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 260px" alt={productImageAlt(product,lang)} loading={index < 4 ? "eager" : "lazy"} decoding="async" width="640" height="640" /><span className="product-arrow"><ArrowUpRight size={20} /></span></a><div className="product-meta"><p>{filters[categoryGroup(product.category)]}</p><h3><a href={productPublicPath(product,lang)} data-product-preview-link className="product-title-button" onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }}>{product[lang]}</a></h3><div className="home-product-actions product-card-actions"><a className="button button-forest" href={productPublicPath(product,lang)} data-product-preview-link onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }}>{lang === "es" ? "Ver detalles" : "View details"}<ArrowUpRight size={15} aria-hidden="true" /></a></div></div>
     </article>)}</div> : <div className="catalog-empty"><span><PackageIcon /></span><h3>{lang === "es" ? "Catálogo en preparación" : "Catalogue in preparation"}</h3><p>{lang === "es" ? "Añade los productos Retail desde el panel administrativo para publicarlos aquí." : "Add Retail products from the administration panel to publish them here."}</p></div>}{filtered.length > 4 && <button className="catalog-more text-link" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? (lang === "es" ? "Ver menos" : "Show less") : (lang === "es" ? `Explorar los ${filtered.length} productos` : `Explore all ${filtered.length} products`)}<ArrowRight size={18} /></button>}
     <ProductSheetDialog product={previewIndex === null ? serverSelectedProduct : filtered[previewIndex]} lang={lang} onClose={() => { const selectedId=(previewIndex === null ? serverSelectedProduct : filtered[previewIndex])?.id; removeProductFromUrl(catalogPath(line,lang)); setServerSelectedProduct(null); setPreviewIndex(null); if(selectedId) requestAnimationFrame(() => document.querySelector<HTMLElement>(`.product-card[data-product-id="${selectedId}"] a[data-product-preview-link]`)?.focus()); }} />
   </>;
