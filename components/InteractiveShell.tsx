@@ -763,14 +763,9 @@ export function ProductCatalog({ lang, line = "conventional", initialProducts = 
       const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[data-product-preview-link]");
       if (link) event.preventDefault();
     };
-    const loader = document.querySelector<HTMLElement>(".public-route-loader");
-    const previousPosition = loader?.style.position ?? "";
-    const previousInset = loader?.style.inset ?? "";
-    if (loader) { loader.style.position = "absolute"; loader.style.inset = "0"; }
     window.addEventListener("click",preventPreviewNavigation,true);
     return () => {
       window.removeEventListener("click",preventPreviewNavigation,true);
-      if (loader) { loader.style.position = previousPosition; loader.style.inset = previousInset; }
     };
   }, []);
   useLayoutEffect(() => {

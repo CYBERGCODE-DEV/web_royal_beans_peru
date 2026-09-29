@@ -68,6 +68,16 @@ const curtainPaths = new Set([
   ]),
 ]);
 
+function waitForImage(image: HTMLImageElement | null): Promise<void> {
+  if (!image) return Promise.resolve();
+  const decode = () => image.decode?.().then(() => undefined).catch(() => undefined) ?? Promise.resolve();
+  if (image.complete) return decode();
+  return new Promise(resolve => {
+    image.addEventListener("load", () => { void decode().then(resolve); }, { once: true });
+    image.addEventListener("error", () => resolve(), { once: true });
+  });
+}
+
 function PublicRouteLoader({ pathname, lang }: { pathname: string; lang: Lang }) {
   const initialPhase = curtainPaths.has(pathname) ? "active" : "idle";
   const [phase, setPhase] = useState<"active" | "leaving" | "idle">(initialPhase);
@@ -97,14 +107,15 @@ function PublicRouteLoader({ pathname, lang }: { pathname: string; lang: Lang })
       exitTimerRef.current = setTimeout(() => changePhase("idle"), 680);
     };
     const waitForVisuals = async (request: number) => {
-      const stage = document.querySelector<HTMLElement>(".public-page-stage");
-      const hero = stage?.querySelector<HTMLImageElement>("[data-hero] img[data-cms='hero.image']");
+      const images = [
+        document.querySelector<HTMLImageElement>(".public-page-stage [data-hero] img[data-cms='hero.image']"),
+        document.querySelector<HTMLImageElement>(".shared-site-header .brand-mark img"),
+        document.querySelector<HTMLImageElement>(".shared-site-footer .brand-mark img"),
+        document.querySelector<HTMLImageElement>(".whatsapp-mascot img"),
+      ];
       await Promise.all([
         document.fonts?.ready.catch(() => undefined),
-        hero && !hero.complete ? new Promise<void>(resolve => {
-          hero.addEventListener("load", () => resolve(), { once: true });
-          hero.addEventListener("error", () => resolve(), { once: true });
-        }) : hero?.decode?.().catch(() => undefined),
+        ...images.map(waitForImage),
       ]);
       if (request === readyRef.current) leave();
     };
@@ -157,8 +168,9 @@ export default function PublicChrome({ lang, children }: { lang: Lang; children:
     <PublicContentSync />
     <ConversionTracker />
     <Header nav={nav} lang={lang} page={route.page} languagePaths={route.languagePaths} />
-    <div className="public-page-stage" data-cms-state="ready">{children}<PublicRouteLoader pathname={pathname} lang={lang} /></div>
+    <div className="public-page-stage" data-cms-state="ready">{children}</div>
     <SharedFooter lang={lang} />
     <WhatsappMascot lang={lang} />
+    <PublicRouteLoader pathname={pathname} lang={lang} />
   </>;
 }

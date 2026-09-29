@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 export default function SiteDocument({ children, lang }: Readonly<{ children: React.ReactNode; lang: "es" | "en" }>) {
   return (
     <html lang={lang} className={`${display.variable} ${body.variable}`}>
-      <head><link rel="preload" as="image" href="/images/logo.webp" type="image/webp" /><link rel="stylesheet" href="/shared-chrome.css?v=20260918-5" /><script dangerouslySetInnerHTML={{ __html: productPreviewScript }} /><script dangerouslySetInnerHTML={{ __html: scrollRestoreScript }} /><noscript><style>{".public-route-loader{display:none}"}</style></noscript></head>
+      <head><link rel="preload" as="image" href="/images/logo.webp" type="image/webp" /><link rel="preload" as="image" href="/images/mascotita-whatsapp.png" type="image/png" media="(min-width: 900px)" fetchPriority="low" /><link rel="stylesheet" href="/shared-chrome.css?v=20260918-5" /><script dangerouslySetInnerHTML={{ __html: productPreviewScript }} /><script dangerouslySetInnerHTML={{ __html: scrollRestoreScript }} /><noscript><style>{".public-route-loader{display:none}"}</style></noscript></head>
       <body>{children}<ContentProtection lang={lang} /></body>
     </html>
   );
