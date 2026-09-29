@@ -153,6 +153,7 @@ function PublicRouteLoader({ pathname, lang }: { pathname: string; lang: Lang })
   }, []);
 
   return <div className="public-route-loader" data-phase={phase} role="status" aria-label={lang === "es" ? "Abriendo página" : "Opening page"} aria-hidden={phase === "idle"}>
+    <span className="public-route-loader-backdrop" aria-hidden="true" />
     <span className="public-route-loader-panel public-route-loader-panel-left" aria-hidden="true" />
     <span className="public-route-loader-panel public-route-loader-panel-right" aria-hidden="true" />
     <div className="public-route-loader-logo"><img src="/images/logo.webp" alt="" width="86" height="100" /></div>
