@@ -109,15 +109,18 @@ html[data-scroll-restoring] body { visibility: hidden; }
 html[data-product-preview] .public-route-loader { visibility: hidden; pointer-events: none; }
 .public-route-loader-backdrop { position: absolute; z-index: 0; inset: 0; background: transparent; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); pointer-events: none; }
 .public-route-loader-panel { position: absolute; z-index: 1; top: 0; bottom: 0; width: 50%; background: var(--forest); transition: transform .68s cubic-bezier(.76, 0, .24, 1); }
-.public-route-loader-panel-left { left: 0; border-right: 1px solid var(--lime); }
-.public-route-loader-panel-right { right: 0; border-left: 1px solid var(--lime); }
-.public-route-loader[data-phase="leaving"] .public-route-loader-panel-left { transform: translateX(-101%); }
-.public-route-loader[data-phase="leaving"] .public-route-loader-panel-right { transform: translateX(101%); }
-.public-route-loader-logo { position: absolute; z-index: 2; inset: 0; display: grid; place-items: center; opacity: 1; transform: scale(1); animation: royalbeans-curtain-logo .35s ease both; pointer-events: none; }
-.public-route-loader-logo img { position: relative; display: block; width: 86px; height: 100px; object-fit: contain; filter: drop-shadow(0 5px 9px rgba(0,20,15,.22)); }
-.public-route-loader[data-phase="leaving"] .public-route-loader-logo { animation: none; opacity: 0; transform: scale(.96); transition: opacity .2s ease, transform .2s ease; }
-@keyframes royalbeans-curtain-logo { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
-@media (prefers-reduced-motion: reduce) { .public-route-loader-panel, .public-route-loader-logo { animation: none; transition-duration: .01ms; } }
+.public-route-loader-panel-left { left: 0; border-right: 1px solid var(--lime); transform-origin: right center; }
+.public-route-loader-panel-right { right: 0; border-left: 0; transform-origin: left center; }
+.public-route-loader[data-phase="leaving"] .public-route-loader-panel-left { transform: translateX(calc(-105% - 4svh)) skewX(-4deg); }
+.public-route-loader[data-phase="leaving"] .public-route-loader-panel-right { transform: translateX(calc(105% + 4svh)) skewX(4deg); }
+.public-route-loader-logo { position: absolute; z-index: 2; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.public-route-loader-logo img { position: relative; display: block; width: clamp(68px, 8vmin, 124px); height: auto; max-height: 18svh; object-fit: contain; filter: drop-shadow(0 5px 9px rgba(0,20,15,.22)); animation: royalbeans-curtain-logo-enter .5s cubic-bezier(.22,1,.36,1) both; }
+.public-route-loader[data-phase="leaving"] .public-route-loader-logo img { animation: royalbeans-curtain-logo-exit .4s .16s ease both; }
+@keyframes royalbeans-curtain-logo-enter { 0% { opacity: 0; transform: translateY(8px) scale(.84); filter: blur(6px) drop-shadow(0 5px 9px rgba(0,20,15,.22)); } 65% { opacity: 1; transform: translateY(0) scale(1.04); filter: blur(0) drop-shadow(0 5px 9px rgba(0,20,15,.22)); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) drop-shadow(0 5px 9px rgba(0,20,15,.22)); } }
+@keyframes royalbeans-curtain-logo-exit { 0% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) drop-shadow(0 5px 9px rgba(0,20,15,.22)); } 35% { opacity: 1; transform: translateY(-2px) scale(1.025); filter: blur(0) drop-shadow(0 5px 9px rgba(0,20,15,.22)); } 100% { opacity: 0; transform: translateY(-8px) scale(1.08); filter: blur(2px) drop-shadow(0 5px 9px rgba(0,20,15,.22)); } }
+@media (min-width: 600px) { .public-route-loader-logo img { width: clamp(76px, 10vmin, 95px); } }
+@media (min-width: 900px) { .public-route-loader-logo img { width: clamp(86px, 12vmin, 124px); } }
+@media (prefers-reduced-motion: reduce) { .public-route-loader-panel { transition-duration: .01ms; } .public-route-loader[data-phase="leaving"] .public-route-loader-panel-left { transform: translateX(calc(-105% - 4svh)); } .public-route-loader[data-phase="leaving"] .public-route-loader-panel-right { transform: translateX(calc(105% + 4svh)); } .public-route-loader-logo img, .public-route-loader[data-phase="leaving"] .public-route-loader-logo img { animation: none; transform: none; filter: drop-shadow(0 5px 9px rgba(0,20,15,.22)); } .public-route-loader[data-phase="leaving"] .public-route-loader-logo img { opacity: 0; } }
 h1,h2,h3,h4,h5,h6,.brand-copy,.button { font-family: var(--font-display-active, var(--font-display)), sans-serif; }
 .page-intro { padding-block: clamp(28px, 4vw, 52px); }
 .page-intro h1 { font-size: clamp(2.35rem, 1.6rem + 3.3vw, 4.75rem); letter-spacing: -.04em; line-height: 1.1; }
