@@ -18,7 +18,7 @@ header($isDocumentGet
 header('Vary: Cookie, Accept');
 if (PHP_SAPI !== 'cli') {
     ob_start(static function (string $output): string {
-        $output = str_replace('</head>', '<link rel="stylesheet" href="/admin/admin-modern.css?v=20260924-orientation"><script src="/admin/admin-performance.js?v=20260921-2" defer></script></head>', $output);
+        $output = str_replace('</head>', '<link rel="stylesheet" href="/admin/admin-modern.css?v=20260929-media-1"><script src="/admin/admin-performance.js?v=20260921-2" defer></script></head>', $output);
         $user = admin_user();
         if (!$user) header('Cache-Control: no-store, max-age=0');
         if (!$user || !str_contains($output, '</body>')) return $output;
@@ -467,6 +467,7 @@ function refresh_media_hashes(PDO $db): int {
     $rows=$db->query("SELECT id,path FROM media WHERE content_hash IS NULL OR content_hash='' ORDER BY id")->fetchAll();$update=$db->prepare('UPDATE media SET content_hash=? WHERE id=?');$updated=0;foreach($rows as $row){$hash=media_hash_from_path((string)$row['path']);if($hash===null)continue;$update->execute([$hash,(int)$row['id']]);$updated++;}return $updated;
 }
 function scan_public_media(PDO $db,int $userId): array {
+    require_once dirname(__DIR__).'/cms-config/migrate.php';
     $aliasesRestored=restore_known_media_aliases($db);$referencesRepaired=repair_known_media_references($db);
     $found=[];$add=static function(string $path,string $name='')use(&$found):void{$path=trim($path);if($path===''||(!str_starts_with($path,'/')&&!preg_match('#^https?://#i',$path)))return;$mime=media_mime_from_path($path);if(!str_starts_with($mime,'image/'))return;$found[$path]=$name!==''?$name:basename((string)(parse_url($path,PHP_URL_PATH)?:$path));};
     foreach($db->query("SELECT value_es,value_en,label FROM content_fields WHERE field_type='image'") as $row){$add((string)$row['value_es'],(string)$row['label']);$add((string)$row['value_en'],(string)$row['label']);}
@@ -612,8 +613,11 @@ function r2_delete_previewed_orphans(PDO $db,string $signature,int $userId): arr
     }
     return $result;
 }
-function replace_media_references(PDO $db,string $oldPath,string $newPath): void {
-    foreach(media_reference_columns() as [$table,$column]){$statement=$db->prepare("UPDATE $table SET $column=? WHERE $column=?");$statement->execute([$newPath,$oldPath]);}$statement=$db->prepare('UPDATE media SET path=? WHERE path=?');$statement->execute([$newPath,$oldPath]);
+function replace_media_references(PDO $db,string $oldPath,string $newPath): int {
+    if($oldPath===$newPath)return 0;
+    $updated=0;
+    foreach(media_reference_columns() as [$table,$column]){$statement=$db->prepare("UPDATE $table SET $column=? WHERE $column=?");$statement->execute([$newPath,$oldPath]);$updated+=$statement->rowCount();}
+    return $updated;
 }
 function link_remote_media_preserving_local(PDO $db,string $localPath,string $remotePath): void {
     $source=$db->prepare('SELECT original_name,mime_type,size_bytes,content_hash,alt_es,alt_en,uploaded_by FROM media WHERE path=? ORDER BY id LIMIT 1');$source->execute([$localPath]);$media=$source->fetch();if(!$media)throw new RuntimeException('No se encontró el registro local que debe vincularse con R2.');$alias=$db->prepare('INSERT INTO media_aliases(local_path,remote_path,content_hash) VALUES(?,?,?) ON DUPLICATE KEY UPDATE remote_path=VALUES(remote_path),content_hash=VALUES(content_hash)');$alias->execute([$localPath,$remotePath,$media['content_hash']]);foreach(media_reference_columns() as [$table,$column]){$statement=$db->prepare("UPDATE $table SET $column=? WHERE $column=?");$statement->execute([$remotePath,$localPath]);}$exists=$db->prepare('SELECT COUNT(*) FROM media WHERE path=?');$exists->execute([$remotePath]);if((int)$exists->fetchColumn()>0){$update=$db->prepare('UPDATE media SET content_hash=COALESCE(content_hash,?) WHERE path=?');$update->execute([$media['content_hash'],$remotePath]);return;}$insert=$db->prepare('INSERT INTO media(path,original_name,mime_type,size_bytes,content_hash,alt_es,alt_en,uploaded_by) VALUES(?,?,?,?,?,?,?,?)');$insert->execute([$remotePath,$media['original_name'],$media['mime_type'],$media['size_bytes'],$media['content_hash'],$media['alt_es'],$media['alt_en'],$media['uploaded_by']]);
@@ -691,12 +695,16 @@ function optimized_webp_payload(string $source, int $maxEdge = 1600, int $qualit
     if(!extension_loaded('gd')||!function_exists('imagewebp'))throw new RuntimeException('El servidor necesita GD con soporte WebP para procesar imágenes.');
     $mime=(new finfo(FILEINFO_MIME_TYPE))->file($source);
     $types=['image/png'=>IMAGETYPE_PNG,'image/jpeg'=>IMAGETYPE_JPEG,'image/webp'=>IMAGETYPE_WEBP];
+    if($mime==='image/avif'){
+        if(!defined('IMAGETYPE_AVIF')||!function_exists('imagecreatefromavif'))throw new RuntimeException('El servidor necesita GD con soporte AVIF para procesar esta imagen.');
+        $types['image/avif']=IMAGETYPE_AVIF;
+    }
     if(!isset($types[$mime]))throw new RuntimeException('Formato permitido: PNG, JPG, JPEG o WebP.');
     $info=@getimagesize($source);
     if(!$info||($info[2]??0)!==$types[$mime])throw new RuntimeException('El archivo no contiene una imagen válida.');
     $width=(int)$info[0];$height=(int)$info[1];
     if($width<1||$height<1||$width*$height>50000000)throw new RuntimeException('Las dimensiones de la imagen no son válidas.');
-    $image=match($mime){'image/png'=>@imagecreatefrompng($source),'image/jpeg'=>@imagecreatefromjpeg($source),'image/webp'=>@imagecreatefromwebp($source)};
+    $image=match($mime){'image/png'=>@imagecreatefrompng($source),'image/jpeg'=>@imagecreatefromjpeg($source),'image/webp'=>@imagecreatefromwebp($source),'image/avif'=>@imagecreatefromavif($source)};
     if(!$image)throw new RuntimeException('No se pudo procesar la imagen.');
     try{
         if($mime==='image/jpeg'&&function_exists('exif_read_data')){
@@ -728,6 +736,37 @@ function optimized_webp_payload(string $source, int $maxEdge = 1600, int $qualit
         if(!$saved||!is_string($payload)||$payload==='')throw new RuntimeException('No se pudo generar la imagen WebP.');
         return $payload;
     }finally{imagedestroy($image);}
+}
+function save_library_image(PDO $db,array $file,int $userId,?string &$creation=null): string {
+    $creation='';
+    if(($file['error']??UPLOAD_ERR_NO_FILE)===UPLOAD_ERR_NO_FILE)return '';
+    if(($file['error']??UPLOAD_ERR_OK)!==UPLOAD_ERR_OK||($file['size']??0)<1||($file['size']??0)>8*1024*1024)throw new RuntimeException('La imagen no es válida o supera 8 MB.');
+    $source=(string)($file['tmp_name']??'');
+    if(!is_uploaded_file($source))throw new RuntimeException('La imagen subida no es válida.');
+    $info=@getimagesize($source);
+    if(!$info||($info[0]??0)<1||($info[1]??0)<1||$info[0]>8000||$info[1]>8000||$info[0]*$info[1]>20000000)throw new RuntimeException('Las dimensiones de la imagen no son válidas o superan el límite permitido.');
+    $original=file_get_contents($source);if($original===false)throw new RuntimeException('No se pudo leer la imagen subida.');
+    $sourceMime=(string)(new finfo(FILEINFO_MIME_TYPE))->file($source);
+    if($sourceMime==='image/avif'&&!function_exists('imagecreatefromavif')){
+        if(($info[2]??0)!==IMAGETYPE_AVIF)throw new RuntimeException('La imagen AVIF no es válida.');
+        $webp=null;
+    }else $webp=optimized_webp_payload($source,1600,80);
+    $useWebp=$webp!==null&&strlen($webp)<strlen($original);
+    $payload=$useWebp?$webp:$original;$mime=$useWebp?'image/webp':$sourceMime;
+    $extension=['image/png'=>'png','image/jpeg'=>'jpg','image/webp'=>'webp','image/avif'=>'avif'][$mime]??'';
+    if($extension==='')throw new RuntimeException('Formato de imagen no compatible.');
+    $hash=hash('sha256',$payload);$settings=r2_settings($db);$key='royalbeans/by-hash/'.$hash.'.'.$extension;$path=r2_object_url($settings,$key);
+    $check=$db->prepare('SELECT COUNT(*) FROM media WHERE path=?');$check->execute([$path]);$mediaExisted=(int)$check->fetchColumn()>0;$uploaded=false;
+    try{
+        try{r2_request($settings,'HEAD',$key);}catch(Throwable $error){if(!str_contains($error->getMessage(),'HTTP 404'))throw $error;r2_request($settings,'PUT',$key,$payload,$mime);$uploaded=true;}
+        register_media($db,$path,(string)($file['name']??'image'),$mime,strlen($payload),$userId,$hash);
+        $creation=$uploaded?'r2':($mediaExisted?'':'catalog');
+        return $path;
+    }catch(Throwable $error){
+        if(!$mediaExisted)try{$db->prepare('DELETE FROM media WHERE path=?')->execute([$path]);}catch(Throwable $cleanupError){error_log('[Royal Beans library rollback] '.$cleanupError->getMessage());}
+        if($uploaded)try{if(media_content_usage_count($db,$path)===0)r2_request($settings,'DELETE',$key);}catch(Throwable $cleanupError){error_log('[Royal Beans library R2 rollback] '.$cleanupError->getMessage());}
+        throw $error;
+    }
 }
 function managed_image_group_urls(PDO $db,string $path): array {
     if(!preg_match('~/royalbeans/products/by-hash/[a-f0-9]{64}/original\.(?:png|jpe?g|webp)$~i',$path))return [$path];

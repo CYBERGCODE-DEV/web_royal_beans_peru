@@ -554,10 +554,11 @@ export function AnimatedCounter({ target, suffix = "" }: { target: number; suffi
   }, [target]);
   return <span ref={counterRef}>{value}{suffix}</span>;
 }
-export function Header({ nav, lang, page, languagePaths }: { nav: NavItem[]; lang: Lang; page: PageKey; languagePaths?: { es: string; en: string } }) {
+export function Header({ nav, lang, page, pathname, languagePaths }: { nav: NavItem[]; lang: Lang; page: PageKey; pathname: string; languagePaths?: { es: string; en: string } }) {
   const [open, setOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [productLanguagePaths, setProductLanguagePaths] = useState<{ es: string; en: string } | null>(() => {
     if (typeof document === "undefined") return null;
     try {
@@ -588,12 +589,23 @@ export function Header({ nav, lang, page, languagePaths }: { nav: NavItem[]; lan
       element.inert = false;
       delete element.dataset.menuInert;
     });
-    const update = () => setScrolled(window.scrollY > 28);
-    update(); window.addEventListener("scroll", update, { passive: true });
-    const reveal = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("reveal-in"); reveal.unobserve(entry.target); } }); }, { threshold: 0.12 });
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".section-heading,.content-heading,.content-traits article,.impact-copy,.impact-media,.impact-feature-grid article,.image-reveal,.event-grid figure,.home-about-media,.home-value-list article,.home-origin-content,.product-card,.about-pillar-grid article,.trace-steps li,.standards-grid article").forEach(el => reveal.observe(el));
-    return () => { window.removeEventListener("scroll", update); reveal.disconnect(); };
-  }, [page]);
+    let previousY = window.scrollY;
+    const update = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 8);
+      document.documentElement.toggleAttribute("data-page-scrolled", currentY > 8);
+      document.documentElement.toggleAttribute("data-page-end", currentY + window.innerHeight >= document.documentElement.scrollHeight - 12);
+      const movement = currentY - previousY;
+      if (currentY < 12 || open) setHidden(false);
+      else if (Math.abs(movement) > 5) setHidden(movement > 0);
+      previousY = currentY;
+    };
+    setHidden(false);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => { window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
+  }, [pathname, open]);
   useEffect(() => { setOpen(false); setProductsOpen(false); }, [page, lang, languagePaths?.es, languagePaths?.en]);
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1280px)");
@@ -646,7 +658,7 @@ export function Header({ nav, lang, page, languagePaths }: { nav: NavItem[]; lan
     document.addEventListener("keydown", close);
     return () => { document.removeEventListener("mousedown", close); document.removeEventListener("keydown", close); };
   }, [productsOpen]);
-  return <header ref={headerRef} data-cms-managed className={`site-header shared-site-header ${page !== "inicio" ? "interior-header" : ""} ${scrolled || open ? "is-scrolled" : ""} ${open ? "is-menu-open" : ""}`}>
+  return <header ref={headerRef} data-cms-managed className={`site-header shared-site-header public-react-header ${page !== "inicio" ? "interior-header" : ""} ${scrolled || open ? "is-scrolled" : ""} ${hidden && !open ? "is-hidden" : ""} ${open ? "is-menu-open" : ""}`}>
     <Link className="brand" href={pagePath("inicio", lang)} prefetch={false} aria-label={lang === "es" ? "Royal Beans Perú — Inicio" : "Royal Beans Perú — Home"}><Brand /></Link>
     <nav className="desktop-nav gooey-nav" aria-label={lang === "es" ? "Navegación principal" : "Main navigation"}>{nav.map((item, index) => item.href === productsHref ? <div className="nav-products" key={item.href}><button type="button" aria-current={page === "productos" ? "page" : undefined} aria-expanded={productsOpen} aria-controls="desktop-products-menu" className="gooey-nav-item nav-products-trigger" onClick={() => setProductsOpen(value => !value)}><span className="nav-label">{item.label}</span><ChevronDown size={15} aria-hidden="true" /></button><div id="desktop-products-menu" className="product-submenu" hidden={!productsOpen}>{productLinks.map(link => <a key={link.href} href={link.href} onClick={() => setProductsOpen(false)}>{link.label}<ArrowUpRight size={16} /></a>)}</div></div> : <Link key={item.href} aria-current={active === item.href ? "page" : undefined} className={`gooey-nav-item${index === nav.length - 1 ? " nav-contact" : ""}`} href={item.href} prefetch={false}><span className="nav-label">{item.label}</span>{index === nav.length - 1 && <ArrowUpRight size={16} aria-hidden="true" />}</Link>)}</nav>
     <div className="header-actions"><Globe2 size={16} aria-hidden="true" /><div className="languages"><a suppressHydrationWarning href={selectedLanguagePaths?.es ?? pagePath(page, "es")} lang="es" aria-current={lang === "es" ? "page" : undefined}>ES</a><span>/</span><a suppressHydrationWarning href={selectedLanguagePaths?.en ?? pagePath(page, "en")} lang="en" aria-current={lang === "en" ? "page" : undefined}>EN</a></div><button ref={menuRef} className="menu-toggle" onClick={() => { setOpen(value => !value); setProductsOpen(false); }} aria-expanded={open} aria-controls="mobile-menu" aria-label={lang === "es" ? (open ? "Cerrar menú" : "Abrir menú") : (open ? "Close menu" : "Open menu")}>
@@ -747,7 +759,7 @@ function removeProductFromUrl(returnPath: string) {
 function langFromPath(path: string): Lang { return path.startsWith("/en/") ? "en" : "es"; }
 export function ProductCatalog({ lang, line = "conventional", initialProducts = [] }: { lang: Lang; line?: "conventional" | "retail"; initialProducts?: CatalogProduct[] }) {
   const categoryGroup = (value: string) => value === "corn" ? "grains" : value;
-  const [category, setCategory] = useState(categoryGroup(initialProducts[0]?.category || "")); const [expanded, setExpanded] = useState(false);
+  const [category, setCategory] = useState(categoryGroup(initialProducts[0]?.category || ""));
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [serverSelectedProduct, setServerSelectedProduct] = useState<CatalogProduct | null>(() => initialServerProduct(line, lang));
   const { products: catalogProducts, failed, retry } = useCatalogProducts(line, false, initialProducts);
@@ -784,7 +796,6 @@ export function ProductCatalog({ lang, line = "conventional", initialProducts = 
       const item = catalogProducts.find(candidate => storedProductSlug(candidate,lang) === requested || (selectedId > 0 && candidate.id === selectedId));
       if (!item) { setPreviewIndex(null); return; }
       setCategory(categoryGroup(item.category));
-      setExpanded(true);
       setPreviewIndex(catalogProducts.filter(candidate => categoryGroup(candidate.category) === categoryGroup(item.category)).findIndex(candidate => candidate.id === item.id));
       setLanguageAlternates({ es: productPublicPath(item,"es"), en: productPublicPath(item,"en") });
       if (item.id) prefetchProductDetail(item.id,lang);
@@ -795,10 +806,10 @@ export function ProductCatalog({ lang, line = "conventional", initialProducts = 
   }, [catalogProducts, lang, line]);
   const openPreview = (index: number) => { const item=filtered[index]; if (item?.id) prefetchProductDetail(item.id,lang); if (item) showProductInUrl(item,lang); setServerSelectedProduct(null); setPreviewIndex(index); };
   const warmPreview = (_index: number) => {};
-  return <><div className="catalog-toolbar" data-cms-managed><div className="product-filters" role="group" aria-label={lang === "es" ? "Filtrar productos" : "Filter products"}>{Object.entries(filters).map(([key, label]) => <button type="button" key={key} aria-pressed={category === key} onClick={() => { setCategory(key); setExpanded(false); }}>{label}</button>)}</div></div>
-    {catalogProducts === null ? <CatalogLoadingState lang={lang} /> : failed && catalogProducts.length === 0 ? <CatalogErrorState lang={lang} retry={retry} /> : filtered.length ? <div className={`product-grid ${expanded ? "is-expanded" : ""}`}>{filtered.map((product, index) => <article className="product-card" data-product-id={product.id} key={product.id ?? product.es}>
+  return <><div className="catalog-toolbar" data-cms-managed><div className="product-filters" role="group" aria-label={lang === "es" ? "Filtrar productos" : "Filter products"}>{Object.entries(filters).map(([key, label]) => <button type="button" key={key} aria-pressed={category === key} onClick={() => setCategory(key)}>{label}</button>)}</div></div>
+    {catalogProducts === null ? <CatalogLoadingState lang={lang} /> : failed && catalogProducts.length === 0 ? <CatalogErrorState lang={lang} retry={retry} /> : filtered.length ? <div className="product-grid is-expanded">{filtered.map((product, index) => <article className="product-card" data-product-id={product.id} key={product.id ?? product.es}>
       <a href={productPublicPath(product,lang)} data-product-preview-link className="product-image" onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }} aria-label={`${lang === "es" ? "Ver detalles de" : "View details for"} ${product[lang]}`}><span className="product-index">{String(index + 1).padStart(2, "0")}</span><img src={product.image} srcSet={product.image_320 && product.image_640 ? `${product.image_320} 320w, ${product.image_640} 640w` : undefined} sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 260px" alt={productImageAlt(product,lang)} loading={index < 4 ? "eager" : "lazy"} decoding="async" width="640" height="640" /><span className="product-arrow"><ArrowUpRight size={20} /></span></a><div className="product-meta"><p>{filters[categoryGroup(product.category)]}</p><h3><a href={productPublicPath(product,lang)} data-product-preview-link className="product-title-button" onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }}>{product[lang]}</a></h3><div className="home-product-actions product-card-actions"><a className="button button-forest" href={productPublicPath(product,lang)} data-product-preview-link onPointerEnter={() => warmPreview(index)} onFocus={() => warmPreview(index)} onClick={event => { event.preventDefault(); openPreview(index); }}>{lang === "es" ? "Ver detalles" : "View details"}<ArrowUpRight size={15} aria-hidden="true" /></a></div></div>
-    </article>)}</div> : <div className="catalog-empty"><span><PackageIcon /></span><h3>{lang === "es" ? "Catálogo en preparación" : "Catalogue in preparation"}</h3><p>{lang === "es" ? "Añade los productos Retail desde el panel administrativo para publicarlos aquí." : "Add Retail products from the administration panel to publish them here."}</p></div>}{filtered.length > 4 && <button className="catalog-more text-link" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? (lang === "es" ? "Ver menos" : "Show less") : (lang === "es" ? `Explorar los ${filtered.length} productos` : `Explore all ${filtered.length} products`)}<ArrowRight size={18} /></button>}
+    </article>)}</div> : <div className="catalog-empty"><span><PackageIcon /></span><h3>{lang === "es" ? "Catálogo en preparación" : "Catalogue in preparation"}</h3><p>{lang === "es" ? "Añade los productos Retail desde el panel administrativo para publicarlos aquí." : "Add Retail products from the administration panel to publish them here."}</p></div>}
     <ProductSheetDialog product={previewIndex === null ? serverSelectedProduct : filtered[previewIndex]} lang={lang} onClose={() => { const selectedId=(previewIndex === null ? serverSelectedProduct : filtered[previewIndex])?.id; removeProductFromUrl(catalogPath(line,lang)); setServerSelectedProduct(null); setPreviewIndex(null); if(selectedId) requestAnimationFrame(() => document.querySelector<HTMLElement>(`.product-card[data-product-id="${selectedId}"] a[data-product-preview-link]`)?.focus()); }} />
   </>;
 }

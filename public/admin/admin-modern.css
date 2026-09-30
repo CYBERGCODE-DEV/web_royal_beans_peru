@@ -197,6 +197,10 @@ td.actions form { display: inline; margin-left: 12px; }
 .media-card-actions button { min-height: 34px; padding: 7px 10px; border: 1px solid #cbd4ca; border-radius: 6px; background: #fff; cursor: pointer; font-size: 11px; font-weight: 700; }
 .media-card-actions .danger-button { color: #9b3030; border-color: #dfb8b8; background: #fff8f8; }
 .media-card-actions button:disabled { cursor: not-allowed; opacity: .45; }
+.media-replace-form { min-width: 0; display: grid; gap: 7px; padding-top: 10px; border-top: 1px solid var(--admin-line); }
+.media-replace-form label { min-width: 0; display: grid; gap: 5px; color: var(--admin-forest); font-size: 11px; font-weight: 750; }
+.media-replace-form input[type="file"] { width: 100%; min-width: 0; padding: 6px; border: 1px solid var(--admin-line); border-radius: 5px; background: #f8faf6; font-size: 10px; }
+.media-replace-form button { min-height: 34px; border: 0; border-radius: 5px; color: var(--admin-forest); background: var(--admin-lime); font-size: 11px; font-weight: 750; cursor: pointer; }
 .media-protected { color: #66756d; font-size: 10px; font-weight: 750; }
 .alert.warning { color: #63480c; border-color: #dfc675; background: #fff9df; }
 .inquiry-toolbar { display: grid; gap: 20px; margin-bottom: 20px; padding: 20px; border: 1px solid var(--admin-line); border-radius: 8px; background: #fff; }

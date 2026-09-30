@@ -244,7 +244,6 @@ export default function HomePage({ lang, page = "inicio", productLine, initialPr
           </section>
           <HomeProductCarousel lang={lang} initialProducts={initialProducts} />
           <section className="home-origin home-origin-compact" aria-labelledby="home-origin-title">
-            <img src="/images/impact-crop.webp" alt="" loading="lazy" width="1200" height="800" />
             <div className="container home-origin-content">
               <p className="eyebrow eyebrow-light"><span />{lang === "es" ? "Del origen al destino" : "From origin to destination"}</p>
               <h2 id="home-origin-title" data-cms="origin.title">{lang === "es" ? "Una cadena responsable, preparada para nuevos mercados." : "A responsible chain, ready for new markets."}</h2>
@@ -323,7 +322,7 @@ export default function HomePage({ lang, page = "inicio", productLine, initialPr
             <img className="conventional-hero-image" data-cms="hero.image" src="https://pub-9f6a575b45bb44898756ec5620ef77a6.r2.dev/royalbeans/by-hash/dd34642831d182d25ba8903d23f4cce7d5eb432142531d8e324c50c4c6be8aa9.webp" alt="" fetchPriority="high" />
             <div className="container conventional-hero-copy" data-hero-content>
               <p>{lang === "es" ? "Granos que conectan el mundo" : "Grains that connect the world"}</p>
-              <h1 id="conventional-hero-title" data-cms="hero.title" data-cms-break-after="1">{lang === "es" ? <>Línea <br />a Granel</> : <>Bulk <br />Line</>}</h1>
+              <h1 id="conventional-hero-title" data-cms="hero.title">{lang === "es" ? "Línea a Granel" : "Bulk Line"}</h1>
               <span data-cms="hero.description">{lang === "es" ? "Granos seleccionados para comercialización a mayor escala." : "Selected grains for large-scale commercialization."}</span>
             </div>
           </section>
@@ -335,7 +334,7 @@ export default function HomePage({ lang, page = "inicio", productLine, initialPr
             <img className="conventional-hero-image" data-cms="hero.image" src="/images/expo-connection.webp" alt="" fetchPriority="high" />
             <div className="container conventional-hero-copy" data-hero-content>
               <p>{lang === "es" ? "Granos que conectan el mundo" : "Grains that connect the world"}</p>
-              <h1 id="retail-hero-title" data-cms="hero.title" data-cms-break-after="1">{lang === "es" ? <>Línea <br />retail</> : <>Retail <br />line</>}</h1>
+              <h1 id="retail-hero-title" data-cms="hero.title">{lang === "es" ? "Línea retail" : "Retail line"}</h1>
               <span data-cms="hero.description">{lang === "es" ? "Presentaciones listas para acercarse al consumidor final." : "Presentations ready to reach the final consumer."}</span>
             </div>
           </section>
@@ -357,7 +356,7 @@ export default function HomePage({ lang, page = "inicio", productLine, initialPr
           <section className="impact-values" aria-labelledby="impact-values-title"><div className="container"><h2 id="impact-values-title">{lang === "es" ? "Lo que queremos representar" : "What we want to represent"}</h2><div className="impact-values-grid">{(lang === "es" ? [["Trabajo con propósito","Un empleo que genera bienestar."],["Desarrollo personal","Herramientas para crecer."],["Participación femenina","Mujeres que construyen un mejor mañana."]] : [["Purposeful work","Employment that creates wellbeing."],["Personal development","Tools for growth."],["Women’s participation","Women building a better tomorrow."]]).map(([title,text],index) => { const Icon=[Sprout,Target,UsersRound][index]; return <article key={title}><span><Icon size={29} strokeWidth={1.6} /></span><div><h3>{title}</h3><p>{text}</p></div></article>; })}</div></div></section>
           <section className="impact-testimonial section-pad" aria-labelledby="impact-testimonial-title"><div className="container"><h2 id="impact-testimonial-title">{lang === "es" ? "Historias que inspiran" : "Stories that inspire"}</h2><article><img src="/images/expo-connection.webp" alt={lang === "es" ? "Equipo de Royal Beans Perú creando nuevas oportunidades" : "Royal Beans Perú team creating new opportunities"} loading="lazy" /><blockquote><p>{lang === "es" ? "“Aquí encontramos una oportunidad para salir adelante y crecer con nuestro trabajo.”" : "“Here we found an opportunity to move forward and grow through our work.”"}</p><footer>{lang === "es" ? "Colaboradora" : "Team member"}</footer></blockquote></article></div></section>
           <ImpactGallery lang={lang} />
-          <section className="impact-closing" aria-label={lang === "es" ? "Compromiso de impacto" : "Impact commitment"}><img src="/images/impact-crop.webp" alt="" loading="lazy" /><div><p>{lang === "es" ? <>Más oportunidades, más inclusión,<br />un mejor futuro.</> : <>More opportunities, more inclusion,<br />a better future.</>}</p><span aria-hidden="true"><i /><Sprout size={20} /><i /></span></div></section>
+          <section className="impact-closing" aria-label={lang === "es" ? "Compromiso de impacto" : "Impact commitment"}><div><p>{lang === "es" ? <>Más oportunidades, más inclusión,<br />un mejor futuro.</> : <>More opportunities, more inclusion,<br />a better future.</>}</p><span aria-hidden="true"><i /><Sprout size={20} /><i /></span></div></section>
         </>}
 
         {page === "contacto" && <>
